@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPrincipal" >
+               <p:menubar>
+                    <p:menuitem value="Certificar" icon="certificado" action="#{bancoProveedoresBean.trasladoOferente}" update="pnlTrasladoEmpresas"/>
+                    <f:facet name="options">
+                        <p:outputLabel value="Usuario: "/>
+                         <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
+                        <p:spacer width="10" height="8"/>
+                        
+                        <p:growl id="message" showDetail="true" />
+     
+                        <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
+                            <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
+                        </p:confirmDialog>      
+                        
+                        
+                    </f:facet>
+               </p:menubar>
+               <p:panel id="pnlTrasladoEmpresas">
+                    <f:facet name="header">
+                        <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                        <p:spacer width="10"/>
+                        <h:outputText value="Translado de Oferentes"/>
+                    </f:facet>
+
+                   <p:dataTable id="tblTraslado" value="#{bancoProveedoresBean.lstTrasladoEmpresa}" var="empresa">
+                        <p:column headerText="Id" width="20" style="text-align: right; vertical-align: middle;">
+                            <p:outputLabel value="#{empresa.identificadorPrimarioDeLaEmpresa}" />
+                        </p:column>
+
+                        <p:column headerText="N.I.T." width="85" style="white-space: normal;">
+                            <p:outputLabel value="#{empresa.numeroDeNit}" />
+                        </p:column>
+
+                       <p:column headerText="Razon Social" width="100" style="white-space: normal;">
+                            <p:outputLabel value="#{empresa.razonSocial}" style="display: block; width: 100px;"/>
+                        </p:column>
+
+                       <p:column headerText="Representante" width="100" style="white-space: normal;">
+                           <p:outputLabel value="#{empresa.nombreRepresentante}" style="display: block; width: 100px;"/>                        
+                        </p:column>
+
+                        <p:column headerText="Estado" width="60" style="white-space: normal;">
+                            <p:outputLabel value="#{empresa.descripcionDeEstado}" />
+                        </p:column>
+
+                        <p:column headerText="F.Ingreso">
+                            <h:outputText value="#{empresa.fechaDeInsercion}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="F.Modif">
+                            <h:outputText value="#{empresa.fechaDeModificacion}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Seleccionar" style="text-align: center; vertical-align: middle;">
+                            <p:selectBooleanCheckbox value="#{empresa.seleccionado}"/>
+                        </p:column>
+
+                        <p:column headerText="Ficha" width="23" style="text-align: center; vertical-align: middle;">
+                            <p:commandButton icon="imprimir" onclick="this.form.target='_blank';" action="#{bancoProveedoresBean.imprimir}" ajax="false">
+                                <f:setPropertyActionListener target="#{bancoProveedoresBean.idEmpresa}" value="#{empresa.identificadorPrimarioDeLaEmpresa}" />
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+                <p:spacer width="20" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

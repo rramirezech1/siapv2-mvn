@@ -1,0 +1,694 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <script type="text/javascript">
+            function setaModulo() {
+                document.getElementById("frmPrincipal:tblMetas").click();
+            }
+        </script>
+
+    </h:head>
+    <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPrincipal">
+                <p:menubar id="menuBtns">
+                    <p:menuitem value="Nuevo" icon="nuevo" ajax="true" action="#{planGlobalBean.nuevo}" disabled="#{planGlobalBean.disabledBtnNuevo}"/>
+                    <p:menuitem value="Modificar" icon="modificar" disabled="#{planGlobalBean.diabledBtnModificar}"/>
+                    <p:menuitem value="Eliminar" icon="eliminar" update=":frmPrincipal:confirmDialog" action="#{planGlobalBean.eliminar}" disabled="#{planGlobalBean.disabledBtnBorrar}"/>
+                    <p:menuitem value="Guardar" icon="guardar" ajax="true" action="#{planGlobalBean.guardar}" update="tblMetas tblActividades dlgRecurso" disabled="#{planGlobalBean.disableBtnGuardar}"/>
+                    <p:menuitem value="Recuperar" icon="recuperar" disabled="#{planGlobalBean.diabledBtnRecuperar}"/>
+                    <p:menuitem value="Imprimir" icon="imprimir" disabled="#{planGlobalBean.disabledBtnImprimir}"/>
+                    <f:facet name="options" >
+                        <h:panelGrid columns="4">
+                            <p:spacer width="8" height="8"/>
+                            <p:commandButton value="Salir" icon="salir" />
+                        </h:panelGrid>
+                    </f:facet>
+                </p:menubar>
+
+                <div class="dvProceso">
+                    <div style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 100px; left: 100px;">
+                        <p:spacer width="20" height="20"/>
+                    </div>
+                    <div style="position: absolute; border: 1px solid #ccc; left: 110px; height: 28px; top: 121px;"/>
+                    <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 150px; left: 45px; width: 140px; height: 24px; text-align: center; padding-top: 6px;" onclick="visiblePgMeta();">
+                        <p:outputLabel value="1. Digitación Plan Global" />
+                    </div>
+                    <div style="position: absolute; border: 1px solid #ccc; left: 186px; width: 62px; top: 165px;"/>
+                    <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 145px; left: 250px; width: 150px; height: 50px; text-align: center; padding-top: 6px;" onclick="visibleDlgVerificacioPap();">
+                        <p:outputLabel value="2. Verificación y generación de los PAP individuales" />
+                    </div>
+                    <div style="position: absolute; border: 1px solid #ccc; left: 401px; width: 62px; top: 165px;" />
+                    <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 150px; left: 464px; width: 150px; height: 35px; text-align: center; padding-top: 6px;" onclick="visibleMontoPap();">
+                        <p:outputLabel value="3. Edición de PAP individuales" />
+                    </div>
+                    <div style="position: absolute; border: 1px solid #ccc; left: 616px; width: 62px; top: 165px;" />
+                    <div style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 155px; left: 680px;">
+                        <p:spacer width="20" height="20"/>
+                    </div>
+                </div>
+
+                <p:remoteCommand name="visiblePgMeta" action="#{planGlobalBean.primerPaso}"/>  
+                <p:remoteCommand name="visibleDlgVerificacioPap" action="#{planGlobalBean.segundoPaso}" />
+                <p:remoteCommand name="visibleMontoPap" actionListener="#{planGlobalBean.tercerPaso}"/>
+
+                <!--DIALOG PARA METAS-->
+                <p:dialog id="dlgMeta" widgetVar="dlgMeta" header="1. Digitacion del Plan Global" visible="#{planGlobalBean.showMeta}" width="730" 
+                          resizable="false">
+                    <p:ajax event="close" listener="#{planGlobalBean.cerrarPopupMeta}"/>  
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="1. Origen de los recursos:"/>
+                        <p:selectOneMenu id="cbOrigenRe" value="#{planGlobalBean.idOrigen}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstOrigenRecursos}" var="origen" itemValue="#{origen.idOrigenRecursos}" itemLabel="#{origen.descripcionDeLosRecursos}"/>
+                            <p:ajax update=":frmPrincipal:dlgMeta :frmPrincipal:dlgVerificacionPap :frmPrincipal:dlgMontoPap cbEstado" listener="#{planGlobalBean.limpiarDesdeOrigen}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="2. Proyecto/Convenio:"/>
+                        <p:selectOneMenu id="cbProyecto" value="#{planGlobalBean.idConvenio}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
+                            <p:ajax update=":frmPrincipal:dlgMeta :frmPrincipal:dlgVerificacionPap :frmPrincipal:dlgMontoPap cbEstado" listener="#{planGlobalBean.armarTreeComponentes}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="3. Estado:"/>
+                        <p:selectOneMenu id="cbEstado" value="#{planGlobalBean.idEstadoEjeConvenio}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstEstadoEjecConvenio}" var="estadoEje" itemValue="#{estadoEje.idEstadoEjecProyecto}" itemLabel="#{estadoEje.descripciondeEstado}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="4. Plantilla de configuración"/>
+                        <p:inputTextarea id="txtPlantilla" readonly="true" value="#{planGlobalBean.detCompPlanilla.descripcionDeLaPlantilla}" cols="85" rows="3"/>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="1">
+                        <p:outputLabel value="5. Seleccione el componente/sub-componente:" rendered="#{planGlobalBean.visibleComponentes}"/>
+                        <p:tree id="trComponentes" style="width: 700px; height: 100px;" value="#{planGlobalBean.nodoComponentes}" var="comp" cache="false" selectionMode="single" rendered="#{planGlobalBean.visibleComponentes}" >
+                            <p:ajax event="select" update=":frmPrincipal:tblMetas :frmPrincipal:lblComponente" listener="#{planGlobalBean.onNodeSelect}" />  
+
+                            <p:treeNode id="treeNode" >  
+                                <h:outputText value="#{comp}" id="lblNode"/>  
+                            </p:treeNode>  
+                        </p:tree>
+
+                        <h:panelGroup >
+                            <p:outputLabel id="lblComponente" value="5. Sub-componente seleccionado:" rendered="#{planGlobalBean.visibleComponentes}" />
+                            <p:outputLabel value=" #{planGlobalBean.nombreComponente}" rendered="#{planGlobalBean.visibleComponentes}" style="font-weight: bold;"/>
+                        </h:panelGroup>
+
+                        <p:dataTable id="tblMetas" widgetVar="tblMetas" value="#{planGlobalBean.lstMetas}" var="meta" editMode="cell" 
+                                     rowIndexVar="rowId" editable="true" rowKey="#{meta.meta}" style="width: 700px !important;" 
+                                     paginator="true" rows="3" paginatorPosition="top" rendered="#{planGlobalBean.visibleMetas}"
+                                     selectionMode="single"  selection="#{planGlobalBean.pgMeta}" rowStyleClass="#{meta.estadoDeEliminacion eq 1 ? 'filaEliminada': null}">
+                            <p:ajax event="rowSelect" listener="#{planGlobalBean.onSelectElemento}" update=":frmPrincipal:menuBtns"/>
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="2" headerText="Id"/>
+                                    <p:column rowspan="2" headerText="Código"/>
+                                    <p:column rowspan="2" headerText="Meta"/>
+                                    <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="A. Monto asignado"/>
+                                    <p:column rowspan="2" headerText="Tipo Meta"/>
+                                    <p:column rowspan="2" headerText=""/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                    <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                    <p:column headerText="Total"/>
+                                </p:row>
+                            </p:columnGroup>
+
+                            <p:column headerText="Id" >
+                                <h:outputText value="#{meta.meta}"/>
+                            </p:column>
+
+                            <p:column headerText="Código" style="width: 50px; text-align: right;">
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{meta.codigoMeta}"/>
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{meta.codigoMeta}" size="8" disabled="#{meta.eliminado}"  onkeypress="numEntero(event);" required="true" requiredMessage="El código de la meta es requerido" />
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Meta" footerText="Sub-total" styleClass="wrap" width="50" >
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{meta.metaNombre}" />  
+                                    </f:facet>  
+                                    <f:facet name="input">  
+                                        <p:inputTextarea value="#{meta.metaNombre}" style="width:90%" disabled="#{meta.eliminado}"/>  
+                                    </f:facet>  
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column rendered="#{planGlobalBean.contrapartida}" width="125" styleClass="numero">
+                                <h:outputText value="#{meta.montoBanco}">
+                                    <f:convertNumber pattern="#,##0.00" />
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMontoBancoMeta}" id="totalBanco">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column rendered="#{planGlobalBean.contrapartida}" width="125" styleClass="numero">
+                                <h:outputText value="#{meta.montoGoes}">
+                                    <f:convertNumber pattern="#,##0.00"  />
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMontoGoesMeta}" id="totalGoes">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column styleClass="numero" width="125">
+                                <h:outputText value="#{meta.montoBanco+meta.montoGoes}" id="totalMeta">
+                                    <f:convertNumber pattern="#,##0.00"  />
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMeta}" id="total">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column>
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <p:outputLabel id="cbTipoMeta" value="#{meta.desTipoDeMeta}" />
+                                    </f:facet>
+
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu value="#{meta.tipoDeMetas}" style="width: 100px;" disabled="#{meta.eliminado}">
+                                            <f:selectItems value="#{planGlobalBean.lstTipoMeta}" />
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width:30px;text-align: center;">
+                                <p:commandButton actionListener="#{planGlobalBean.newActividad}" disabled="#{meta.eliminado}"  icon="ui-icon-search" >
+                                    <f:attribute name="meta" value="#{meta}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="Agregar Actividades" action="#{planGlobalBean.newActividad}" rendered="#{planGlobalBean.visibleBtnActividades}" />
+                    </h:panelGrid>
+                </p:dialog>
+
+                <!--DIALOG PARA ACTIVIDADES-->
+                <p:dialog id="dlgActividad" widgetVar="dlgActividad" header="1.1. Ingreso de actividades" visible="#{planGlobalBean.showActividad}"
+                          resizable="false" width="730" closable="true">
+                    <p:ajax event="close" listener="#{planGlobalBean.cerrarPopupActividad}"/>  
+
+                    <h:panelGrid columns="1">
+                        <h:panelGroup >
+                            <p:outputLabel value="1. Sub-componente seleccionado: " rendered="#{planGlobalBean.visibleComponentes}" />
+                            <p:outputLabel value="#{planGlobalBean.nombreComponente}" rendered="#{planGlobalBean.visibleComponentes}" style="font-weight: bold;"/>
+                        </h:panelGroup>
+                        <h:panelGroup>
+                            <p:outputLabel value="2. Meta seleccionada: " rendered="#{planGlobalBean.visibleMetas}"/>
+                            <p:outputLabel value="#{planGlobalBean.pgMeta.metaNombre}" rendered="#{planGlobalBean.visibleMetas}" style="font-weight: bold;"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="3. Ingrese las actividades relacionadas:"/>
+
+                        <p:dataTable id="tblActividades" value="#{planGlobalBean.lstActividades}" var="act" editMode="cell" editable="true"
+                                     widgetVar="tblActividades"  rowIndexVar="rowId" rowKey="#{act.actividad}"  style="width: 700px !important;" 
+                                     paginator="true" rows="3" paginatorPosition="top" selection="#{planGlobalBean.pgActividad}"
+                                     selectionMode="single" rowStyleClass="#{act.estadoDeEliminacion eq 1 ? 'filaEliminada':null}">
+                            <p:ajax event="rowSelect" listener="#{planGlobalBean.onSelectElemento}" update=":frmPrincipal:menuBtns"/>
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="2" headerText="Id"/>
+                                    <p:column rowspan="2" headerText="Código"/>
+                                    <p:column rowspan="2" headerText="Actividades"/>
+                                    <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="A. Monto asignado"/>
+                                    <p:column colspan="3" headerText="B. Ejecución prevista"/>
+                                    <p:column rowspan="2" headerText=""/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                    <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                    <p:column headerText="Total"/>
+                                    <p:column headerText="Año PAP"/>
+                                    <p:column headerText="Inicio"/>
+                                    <p:column headerText="Fin"/>
+                                </p:row>
+                            </p:columnGroup>
+
+                            <p:column headerText="Id">
+                                <p:outputLabel value="#{act.actividad}" />
+                            </p:column>
+
+                            <p:column headerText="Código">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{act.codigoActividad}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{act.codigoActividad}" size="8" disabled="#{act.eliminado}" onkeypress="numEntero(event);" required="true" requiredMessage="El código de la actividad es requerido"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Actividades" footerText="Sub-total" styleClass="wrap" style="width: 150px !important;">
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{act.actividadNombre}" />  
+                                    </f:facet>  
+                                    <f:facet name="input">  
+                                        <p:inputTextarea value="#{act.actividadNombre}" style="width:90%" disabled="#{act.eliminado}"/>  
+                                    </f:facet>  
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Fte. Ppal." rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                                <h:outputText value="#{act.financiamientoBanco}" >
+                                    <f:convertNumber pattern="#,##0.00"/>
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMontoBancoActividad}" id="totalBanco">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column headerText="Contrapartida" rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                                <h:outputText value="#{act.financiamientoGoes}">
+                                    <f:convertNumber pattern="#,##0.00"/>
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMontoGoesActividad}" id="totalGoes">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column headerText="Total">
+                                <h:outputText value="#{act.financiamientoBanco+act.financiamientoGoes}" id="totalActividad">
+                                    <f:convertNumber pattern="#,##0.00"  />
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalActividad}" id="total">
+                                        <f:convertNumber pattern="$ #,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column headerText="Año PAP" rendered="#{planGlobalBean.visibleAnhoPap}" id="anhoActividad" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel value="#{act.anhoPg}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu value="#{act.pgAnosPlanGlobal}" style="width: 100px;" disabled="#{act.eliminado}">
+                                            <f:selectItems value="#{planGlobalBean.lstAnhosPg}"/>
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Inicio" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{act.actividadInicioPrevisto}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:calendar id="fechaInicio" value="#{act.actividadInicioPrevisto}" pattern="dd/MM/yyyy" size="9" immediate="true" required="true" disabled="#{act.eliminado}">
+                                            <p:ajax event="dateSelect" update="tblActividades" />
+                                            <f:validator validatorId="validatorFechaActividad" />
+                                        </p:calendar>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Fin" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{act.actividadFinPrevisto}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:calendar id="calendario" value="#{act.actividadFinPrevisto}" pattern="dd/MM/yyyy" size="9" mode="popup" immediate="true" disabled="#{act.eliminado}">
+                                            <p:ajax event="dateSelect" update="tblActividades" listener="#{planGlobalBean.handleDateSelect}" /> 
+                                            <f:param value="#{rowId}" name="parametro"/>
+                                            <f:validator validatorId="validatorFechaActividad" />
+                                        </p:calendar>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width:30px;text-align: center;">
+                                <p:commandButton action="#{planGlobalBean.newRecurso}" disabled="#{act.eliminado}" icon="ui-icon-search">
+                                    <f:setPropertyActionListener value="#{act}" target="#{planGlobalBean.pgActividad}" /> 
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:dialog>
+
+                <!--DIALOG PARA RECURSOS-->
+                <p:dialog id="dlgRecurso" widgetVar="dlgRecurso" header="1.2. Ingreso de Recursos" visible="#{planGlobalBean.showRecurso}" 
+                          width="730" resizable="false">
+                    <p:ajax event="close" listener="#{planGlobalBean.cerrarPopupRecurso}"/>  
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Meta:" rendered="#{planGlobalBean.visibleMetas}"/>
+                        <p:outputLabel value="#{planGlobalBean.pgMeta.meta} - #{planGlobalBean.pgMeta.metaNombre}" style="font-weight: bold;" rendered="#{planGlobalBean.visibleMetas}"/>
+                        <p:outputLabel value="Actividad:" rendered="#{planGlobalBean.visibleActividades}"/>
+                        <p:outputLabel value="#{planGlobalBean.pgActividad.actividad} - #{planGlobalBean.pgActividad.actividadNombre}" style="font-weight: bold;" rendered="#{planGlobalBean.visibleActividades}"/>
+                        <p:outputLabel value="1. Categoria/Sub-categoria:"/>
+                        <p:selectOneMenu id="cbCategoria" value="#{planGlobalBean.currentRecurso.idCategoria}" disabled="#{planGlobalBean.deshabilitarRecurso}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstPgCategorias}" var="categoria" itemValue="#{categoria.idCategoria}" itemLabel="#{categoria.descripcion}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="2. Producto:"/>
+                        <p:selectOneMenu id="cbProducto" value="#{planGlobalBean.currentRecurso.producto}" disabled="#{planGlobalBean.deshabilitarRecurso}" style="width: 520px !important;">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstCatalogoProductos}" var="producto" itemValue="#{producto.producto}" itemLabel="#{producto.descripcion}"/>
+                            <p:ajax update="txtClasificador" listener="#{planGlobalBean.cargarClasificador}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="3. Cantidad:"/>
+                        <p:inputText id="txtCantidad" size="10" value="#{planGlobalBean.currentRecurso.cantidad}" style="text-align: right" disabled="#{planGlobalBean.deshabilitarRecurso}"/>
+
+                        <p:outputLabel value="4. Valor total:"/>
+                        <h:panelGrid columns="9">
+                            <p:inputText id="txtValor" size="10" value="#{planGlobalBean.currentRecurso.valor}" style="text-align: right" disabled="#{planGlobalBean.deshabilitarRecurso}">
+                                <p:ajax event="keyup" update="txtValorFtePpal txtContrapartida" listener="#{planGlobalBean.calcularMontos}" />
+                            </p:inputText>
+                            <p:spacer width="10" height="8"/>
+                            <p:outputLabel value="#{planGlobalBean.nombreFtePpal}"/>
+                            <p:spacer width="5" height="8"/>
+                            <p:inputText id="txtValorFtePpal" label="Keyword" rendered="#{planGlobalBean.contrapartida}" size="10"  style="text-align: right" value="#{planGlobalBean.recursoFtePpal.montoPreliminar}" disabled="#{planGlobalBean.deshabilitarRecurso}" readonly="true">
+                                <f:convertNumber pattern="#,##0.00"/>
+                            </p:inputText>
+                            <p:spacer width="10" height="8"/>
+                            <p:outputLabel value="#{planGlobalBean.nombreFteCont}"/>
+                            <p:spacer width="5" height="8"/>
+                            <p:inputText id="txtContrapartida" label="Keyword" rendered="#{planGlobalBean.contrapartida}" size="10" style="text-align: right" value="#{planGlobalBean.recursoFteCont.montoPreliminar}" disabled="#{planGlobalBean.deshabilitarRecurso}" readonly="true">
+                                <f:convertNumber pattern="#,##0.00"/>
+                            </p:inputText>
+                        </h:panelGrid>
+
+                        <p:outputLabel value="5. Clasificador Presupuestario:"/>
+                        <p:inputText id="txtClasificador" value="#{planGlobalBean.clasificadorPresupuestario}" disabled="#{planGlobalBean.deshabilitarRecurso}" readonly="true"/>
+                        <p:outputLabel value="6. Observaciones:"/>
+                        <p:inputTextarea id="txaObservaciones" cols="75" disabled="#{planGlobalBean.deshabilitarRecurso}" value="#{planGlobalBean.currentRecurso.observacion}"/>
+
+                        <p:outputLabel value="7. Tipo de ejecución:"/>
+                        <p:selectOneMenu id="cbTipoEjecucion" value="#{planGlobalBean.currentRecurso.trasferencia}" disabled="#{planGlobalBean.deshabilitarRecurso}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstTipoRecurso}" var="tipoRecurso" itemValue="#{tipoRecurso.trasferencia}" itemLabel="#{tipoRecurso.descripcionTipoRecurso}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="8. Fecha adquisición prevista:"/>
+                        <p:calendar id="cdlAdquisicion" pattern="dd/MM/yyyy" size="10" value="#{planGlobalBean.currentRecurso.fechaAdquisicion}" disabled="#{planGlobalBean.deshabilitarRecurso}">
+                            <p:ajax event="dateSelect" listener="#{planGlobalBean.validarFechaAdqRecurso}"/>
+                        </p:calendar>
+                    </h:panelGrid>
+
+                    <p:outputLabel value="9. Listado de Recursos"/>
+                    <p:dataTable id="tblRecursos" value="#{planGlobalBean.lstRecuros}" var="recurso" paginator="true" rows="3"
+                                 editable="true" editMode="cell" rowIndexVar="rowId" widgetVar="tblRecursos" paginatorPosition="top"
+                                 selection="#{planGlobalBean.currentRecurso}" rowKey="#{recurso.recurso}" selectionMode="single"
+                                 rowStyleClass="#{recurso.eliminado ? 'filaEliminada' : null}">
+                        <p:ajax event="rowSelect" listener="#{planGlobalBean.onSelectElemento}" update=":frmPrincipal:menuBtns :frmPrincipal:dlgRecurso"/>
+                        <p:column headerText="Recurso" width="50">
+                            <h:outputText value="#{recurso.recurso}"/>
+                        </p:column>
+
+                        <p:column headerText="Descripción">
+                            <p:outputLabel value="#{recurso.observacion}"/>
+                            
+                            <f:facet name="footer">  
+                                <h:outputText value="Total"/>
+                            </f:facet>
+                        </p:column>
+
+                        <p:column headerText="Valor" styleClass="numero" width="75">
+                            <h:outputText value="#{recurso.valor}">
+                                <f:convertNumber pattern="$ #,##0.00" />
+                            </h:outputText>
+
+                            <f:facet name="footer">  
+                                <h:outputText value="#{planGlobalBean.totalRecurso}" id="total">
+                                    <f:convertNumber pattern="$ #,##0.00"  />
+                                </h:outputText>
+                            </f:facet> 
+                        </p:column> 
+
+                        <p:column width="20">
+                            <p:commandLink action="#{planGlobalBean.selectRecurso}" disabled="#{recurso.eliminado}">
+                                <f:setPropertyActionListener value="#{recurso}" target="#{planGlobalBean.currentRecurso}" />  
+                                <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/edit.png"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </p:dialog>
+
+                <!--
+                VERIFICACION Y GENERACION DE LOS PAP INDIVIDUALES
+                -->
+                <p:dialog id="dlgVerificacionPap" widgetVar="dlgVerificacionPap" width="800" header="2. Verificación y generación de los PAP individuales" visible="#{planGlobalBean.showVerificacionPap}">
+                    <p:ajax event="close" listener="#{planGlobalBean.cerrarPopupVerificacionPap}"/>  
+                    <p:dataTable id="tblCategorias" value="#{planGlobalBean.lstCategorias}" var="cat">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column rowspan="2" headerText="Id"/>
+                                <p:column rowspan="2" headerText="Categorias"/>
+                                <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="A.Aprobado"/>
+                                <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="B. Programado"/>
+                                <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="Saldo"/>
+                            </p:row>
+
+                            <p:row>
+                                <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="Total"/>
+                                <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="Total"/>
+                                <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="Total"/>
+                            </p:row>
+                        </p:columnGroup>
+
+                        <p:column>
+                            #{cat.id_categoria}
+                        </p:column>
+                        <p:column styleClass="wrap" style="width: 180px !important; " >
+                            <h:outputText value="#{cat.descripcion}"/>
+                        </p:column>
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{cat.monto_apr_fte_ppal}" />
+                        </p:column>
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{cat.monto_apr_fte_cont}" />
+                        </p:column>
+                        <p:column styleClass="numero">
+                            <h:outputText value="#{cat.monto_apr_fte_ppal+cat.monto_apr_fte_cont}" />
+                        </p:column>
+
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{cat.monto_pre_fte_ppal}" />
+                        </p:column>
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{cat.monto_pre_fte_cont}" />
+                        </p:column>
+                        <p:column styleClass="numero">
+                            <h:outputText value="#{cat.monto_pre_fte_ppal+cat.monto_pre_fte_cont}" />
+                        </p:column>
+
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{cat.monto_apr_fte_ppal-cat.monto_pre_fte_ppal}" />
+                        </p:column>
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{cat.monto_apr_fte_cont-cat.monto_pre_fte_cont}" />
+                        </p:column>
+                        <p:column styleClass="numero">
+                            <h:outputText value="#{cat.monto_pre_fte_ppal+cat.monto_pre_fte_cont - cat.monto_pre_fte_ppal+cat.monto_pre_fte_cont}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:spacer width="20" height="20"/>
+
+                    <p:dataTable id="tblComponentes" value="#{planGlobalBean.lstComponentes}" var="compo">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column rowspan="2" headerText="Id"/>
+                                <p:column rowspan="2" headerText="Componente"/>
+                                <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="A.Aprobado"/>
+                                <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="B. Programado"/>
+                                <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="Saldo"/>
+                            </p:row>
+
+                            <p:row>
+                                <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="Total"/>
+                                <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="Total"/>
+                                <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="Total"/>
+                            </p:row>
+                        </p:columnGroup>
+
+                        <p:column>
+                            #{compo.componente}
+                        </p:column>
+                        <p:column styleClass="wrap" style="width: 180px !important; ">
+                            <h:outputText value="#{compo.componente_nombre}" />
+                        </p:column>
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{compo.monto_apr_fte_ppal}" >
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{compo.monto_apr_fte_cont}" >
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column styleClass="numero">
+                            <h:outputText value="#{compo.monto_apr_fte_ppal+cat.monto_apr_fte_cont}" >
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{compo.monto_pre_fte_ppal}" >
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{compo.monto_pre_fte_cont}" >
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column styleClass="numero">
+                            <h:outputText value="#{compo.monto_pre_fte_ppal+cat.monto_pre_fte_cont}" >
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{compo.monto_apr_fte_ppal-cat.monto_pre_fte_ppal}" >
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                            <h:outputText value="#{compo.monto_apr_fte_cont-cat.monto_pre_fte_cont}" >
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column styleClass="numero">
+                            <h:outputText value="#{cat.monto_pre_fte_ppal+cat.monto_pre_fte_cont - cat.monto_pre_fte_ppal+cat.monto_pre_fte_cont}" >
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:spacer width="20" height="20"/>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Estado:"/>
+                        <p:selectOneMenu id="cbEstado2" value="#{planGlobalBean.idEstadoEjeConvenio}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstEstadoEjecConvenio}" var="estadoEje" itemValue="#{estadoEje.idEstadoEjecProyecto}" itemLabel="#{estadoEje.descripciondeEstado}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:dialog>
+
+                <!--
+                EDICION DE PAP INDIVIDIALES
+                -->
+                <p:dialog id="dlgMontoPap" widgetVar="dlgMontoPap" header="3. Edición de PAP individuales" visible="#{planGlobalBean.showDlgMontoPap}">
+                    <p:ajax event="close" listener="#{planGlobalBean.cerrarPopupDlgMontoPap}"/>  
+                    <p:dataTable value="#{planGlobalBean.lstMontoPap}" var="monto">
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column rowspan="2" headerText="Pap Generados"/>
+                                <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="B. Programado"/>
+                                <p:column rowspan="2" headerText="Estado"/>
+                                <p:column rowspan="2" headerText=""/>
+                            </p:row>
+
+                            <p:row>
+                                <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                <p:column headerText="Total"/>
+                            </p:row>
+                        </p:columnGroup>
+
+                        <p:column>
+                            <p:outputLabel value="#{monto.descripcionAnho}"/>
+                        </p:column>
+
+                        <p:column styleClass="numero" rendered="#{planGlobalBean.contrapartida}" >
+                            <h:outputText value="#{monto.montoFtePpal}">
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column styleClass="numero" rendered="#{planGlobalBean.contrapartida}" >
+                            <h:outputText value="#{monto.montoFteCont}">
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column styleClass="numero" >
+                            <h:outputText value="#{monto.montoFtePpal+monto.montoFteCont}">
+                                <f:convertNumber pattern="#,#00.00"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Estado">
+                            <p:outputLabel value="#{monto.estadoPap}"/>
+                        </p:column>
+
+                        <p:column >
+                            <p:commandLink>
+                                <f:setPropertyActionListener value="#{monto.poa}" target="#{planGlobalBean.idPoa}" />  
+                                <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/add.png"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+                </p:dialog>
+
+                <p:confirmDialog id="confirmDialog" message="#{planGlobalBean.msjVtaConfirmacion}" severity="alert"  appendTo="@(body)"
+                                 header="Confirmación" widgetVar="confirmDialog" closable="false" visible="#{planGlobalBean.showMsjEliminar}" >  
+
+                    <p:commandButton id="confirm" value="Si" icon="aceptar" ajax="true" process="@this" actionListener="#{planGlobalBean.eliminarRegistro}" 
+                                     oncomplete="confirmDialog.hide();"/>  
+                    <p:commandButton id="decline" value="No" onclick="confirmDialog.hide();" type="button" icon="cancelar" process="@this"/>
+
+                </p:confirmDialog> 
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

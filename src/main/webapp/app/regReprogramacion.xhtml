@@ -1,0 +1,1064 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPrincipal">
+                <p:menubar id="menuBtns">
+                    <p:menuitem value="Nuevo" disabled="#{reprogramacionBean.disabledBoton}" icon="nuevo" action="#{reprogramacionBean.nuevo}" ajax="true" actionListener="#{planGlobalBean.nuevoDesdeReprogramacion}" update="menuBtns"/>
+                    <p:menuitem value="Modificar" disabled="#{reprogramacionBean.disabledBoton}" icon="modificar" action="#{reprogramacionBean.modificar}" update="menuBtns"/>
+                    <p:menuitem value="Guardar" disabled="#{reprogramacionBean.disabledBotonGuardar}" icon="guardar" ajax="true" action="#{reprogramacionBean.guardar}" actionListener="#{planGlobalBean.guardarDesdeReprogramacion}" />
+                    <p:menuitem value="Recuperar" icon="recuperar" />
+                    <p:menuitem value="Imprimir" icon="imprimir" />
+                    <f:facet name="options">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="ADMIN" style="font-weight: bold;"/>
+                        <p:spacer width="10" height="8"/>
+                        <p:commandButton value="Salir" icon="salir" />
+                    </f:facet>
+                </p:menubar>
+                
+                <div class="dvEstadoProceso">
+                    <div class="dvProyectos" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 50px; left: 410px; width: 80px; height: 24px; text-align: center; padding-top: 6px;">
+                        <p:outputLabel value="1.Proyectos" />
+                    </div>  
+                    <div class="dvPresupuestacion" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 50px; left: 510px; width: 100px; height: 24px; text-align: center; padding-top: 6px;">
+                        <p:outputLabel value="2.Presupuestacion" />
+                    </div>
+                    <div class="dvAdquisicion" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 50px; left: 630px; width: 80px; height: 24px; text-align: center; padding-top: 6px;">
+                        <p:outputLabel value="3.Adquisicion" />
+                    </div>
+                </div>
+
+                <div class="dvTitulo">
+                    <div class="dvTirulouno" style=" position: absolute; border: 0px solid #ccc; border-bottom:  10px; top: 100px; left: 10px; width: 800px; height: 24px; text-align: left; padding-top: 6px;font-size:175%">
+                        <p:outputLabel value="2. Reprogramaciones del PAP de más de una fuente de financiamiento"/>   
+                    </div>
+                </div>
+
+                <div class="dvProceso">
+                    <div style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 150px; left: 100px;">
+                        <p:spacer width="20" height="20"/>
+                    </div>
+                    <div style="position: absolute; border: 1px solid #ccc; left: 110px; height: 28px; top: 171px;"/>
+                    <p:commandLink action="#{reprogramacionBean.showFichaReprogramacion}">
+                        <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 200px; left: 45px; width: 140px; height: 24px; text-align: center; padding-top: 6px;" onclick="visibleFicha();">
+                            <p:outputLabel value="1. Ficha Reprogramación" />
+                        </div>
+                    </p:commandLink>
+                    <div style="position: absolute; border: 1px solid #ccc; left: 186px; width: 62px; top: 215px;"/>
+                    <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 195px; left: 250px; width: 150px; height: 35px; text-align: center; padding-top: 6px;" onclick="visibleDetRepro();">
+                        <p:outputLabel value="2. Detalle de la Reprogramación" />
+                    </div>
+                    <div style="position: absolute; border: 1px solid #ccc; left: 401px; width: 62px; top: 215px;" />
+                    <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 190px; left: 464px; width: 150px; height: 50px; text-align: center; padding-top: 6px; ">
+                        <p:outputLabel value="3. Afectaciones presupuesarias y administrativas" />
+                    </div>
+                    <div style="position: absolute; border: 1px solid #ccc; left: 616px; width: 62px; top: 215px;" />
+                    <div style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 205px; left: 680px;">
+                        <p:spacer width="20" height="20"/>
+                    </div>
+                </div>
+
+                <p:remoteCommand name="visibleFicha" action="#{reprogramacionBean.primerPaso}" />
+                <p:remoteCommand name="visibleDetRepro" action="#{reprogramacionBean.segundoPaso}" />
+                <p:remoteCommand name="visibleAfectPresupuestarias" action="#{reprogramacionBean.tercerPaso}" />
+
+                <!--
+                    CREACION DE FICHA DE REPROGRAMACION
+                -->
+                <p:dialog id="dlgFicha" widgetVar="dlgFicha" header="Fichas de Reprogramación" width="750" visible="#{reprogramacionBean.showFichaRepro}">
+                    <p:ajax event="close" listener="#{reprogramacionBean.cerrarFichaReprogramacion}"/>  
+                    <p:panel id="pnlDatosGenerales" header="Datos Generales">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="0. Num. interno reprogramación:"/>
+                            <p:inputText id="txtNumIntRepro" size="8" disabled="true"/>
+                            <h:outputText value="1. Fuente de recursos:"/>
+                            <p:selectOneMenu id="cbFuente" value="#{reprogramacionBean.idOrigen}" disabled="#{reprogramacionBean.deshabilitar}">
+                                <f:selectItem itemLabel="Seleccione una fuente"/>
+                                <f:selectItems value="#{reprogramacionBean.lstOrigenRecursos}" var="origen" itemValue="#{origen.idOrigenRecursos}" itemLabel="#{origen.descripcionDeLosRecursos}" />
+                                <p:ajax update="cbProyecto2"/>
+                            </p:selectOneMenu>
+                            <h:outputText value="2. Proyecto/Convenio:"/>
+                            <h:panelGrid columns="5">
+                                <p:selectOneMenu id="cbProyecto2" value="#{reprogramacionBean.idConvenio}" disabled="#{reprogramacionBean.deshabilitar}">
+                                    <f:selectItem itemLabel="Seleccione un convenio"/>
+                                    <f:selectItems value="#{reprogramacionBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}" />
+                                    <p:ajax update="txtPlantilla3 cbPoa" listener="#{reprogramacionBean.proyectoConMasFuetes}"/>
+                                </p:selectOneMenu>
+                                <p:spacer width="8" height="8"/>
+                                <h:outputText value="3. POA:"/>
+                                <p:selectOneMenu id="cbPoa" value="#{reprogramacionBean.poaReprogramacion.poa}" disabled="#{reprogramacionBean.deshabilitar}">
+                                    <f:selectItem itemLabel="Seleccione un año"/>
+                                    <f:selectItems value="#{reprogramacionBean.lstPoaAnhosPlanAccion}" var="anhoPoa" itemValue="#{anhoPoa.poa}" itemLabel="#{anhoPoa.ano} - #{anhoPoa.anoFiscal}"/>
+                                    <p:ajax update="cbPoa frmPrincipal:tblReprogramaciones" listener="#{reprogramacionBean.cargarReprogramaciones}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <h:outputText value="4. Plantilla de configuración:"/>
+                            <p:inputTextarea id="txtPlantilla3" readonly="trye" value="#{reprogramacionBean.detCompPlantilla.descripcionDeLaPlantilla}" cols="80" rows="3" disabled="#{reprogramacionBean.deshabilitar}"/>
+                            <h:outputText value="5. Fecha de reprogramación:"/>
+                            <h:panelGroup>
+                                <p:calendar id="cldFechaRepro" size="10" pattern="dd/MM/yyyy" value="#{reprogramacionBean.poaReprogramacion.fechaDeInsercion}" disabled="#{reprogramacionBean.deshabilitar}"/>
+                                <p:spacer width="15" height="8"/>
+                                <h:outputText value="6. Número de reprogramación:"/>
+                                <p:spacer width="5" height="8"/>
+                                <p:inputText id="txtNumRepro1" size="8" disabled="true" value="#{reprogramacionBean.poaReprogramacion.numeroReprogramacion}" />
+                            </h:panelGroup>
+                            <h:outputText value="7. Comentario de la reprogramación:"/>
+                            <p:inputTextarea id="txaComentarioRepro" cols="50" value="#{reprogramacionBean.poaReprogramacion.justificacion}" disabled="#{reprogramacionBean.deshabilitar}"/>
+                            <h:outputText value="8. Tipo de reprogramación:"/>
+                            <p:selectOneMenu id="cbTipoRepro1" value="#{reprogramacionBean.poaReprogramacion.tipoPoaReprog}" disabled="#{reprogramacionBean.deshabilitar}">
+                                <f:selectItem itemLabel="Seleccione una tipo"/>
+                                <f:selectItems value="#{reprogramacionBean.tiposPoaReprogramaciones}" var="tipoReprog" itemValue="#{tipoReprog.tipoPoaReprog}" itemLabel="#{tipoReprog.descripcionTipo}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                    </p:panel>
+                    <h:panelGrid columns="1">
+                        <h:outputText value="9. Reprogramaciones ingresadas:"/>
+                        <p:dataTable id="tblReprogramaciones" value="#{reprogramacionBean.lstReprogramaciones}" var="repro" emptyMessage="No hay reprogramaciones creadas"
+                                     paginator="true" paginatorPosition="top" rows="4">
+                            <p:column headerText="No">
+                                <h:outputText value="#{repro.reprogramacion}"/>
+                            </p:column>
+                            <p:column headerText="Fecha">
+                                <h:outputText value="#{repro.fechaDeInsercion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Comentario" width="590">
+                                <h:outputText value="#{repro.justificacion}"/>
+                            </p:column>
+                            <p:column headerText="Tipo">
+                                <h:outputText value="#{repro.descripcionTipo}"/>
+                            </p:column>
+                            <p:column >
+                                <p:commandLink action="#{reprogramacionBean.editReprogramacion}" update=":frmPrincipal:pnlDatosGenerales :frmPrincipal:menuBtns" disabled="#{reprogramacionBean.nivelEdicion == 1}" >
+                                    <f:setPropertyActionListener value="#{repro}" target="#{reprogramacionBean.poaReprogramacion}" />  
+                                    <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/add.png"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:dialog>
+
+                <!--
+                    DETALLE DE LA REPROGRAMACION
+                -->
+                <p:dialog id="dlgDetalle" widgetVar="dlgDetalle" header="#{reprogramacionBean.tituloDialog}" visible="#{reprogramacionBean.showEditReprogramacion}" >
+                    <p:ajax event="close" listener="#{reprogramacionBean.cerrarEditReprogramacion}"/>  
+                    <h:panelGrid columns="5">
+                        <p:outputLabel value="1. Proyecto/Donación:"/>
+                        <p:selectOneMenu id="cbProyecto1" value="#{reprogramacionBean.idConvenio}" disabled="true">
+                            <f:selectItems value="#{reprogramacionBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}" />
+                        </p:selectOneMenu>
+                        <p:spacer width="13" height="8"/>
+                        <p:outputLabel value="2. Número interno de reprogramación:"/>
+                        <p:inputText id="txtNumRepro" readonly="true" />
+
+                        <p:outputLabel value="3. Estado de Reprogramación:"/>
+                        <p:selectOneMenu id="cbEstadoRepro" value="#{reprogramacionBean.poaReprogramacion.estadoPoaReprogramaciones}" disabled="true">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{reprogramacionBean.estadoPoaReprogramacion}" var="estado" itemValue="#{estado.estadoPoaReprogramaciones}" itemLabel="#{estado.descripcionEstado}"/>
+                        </p:selectOneMenu>
+                        <p:spacer width="13" height="8"/>
+                        <p:outputLabel value="4. Tipo de Reprogramación:"/>
+                        <p:selectOneMenu id="cbTipoRepro" value="#{reprogramacionBean.poaReprogramacion.tipoPoaReprog}" disabled="true">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{reprogramacionBean.tiposPoaReprogramaciones}" var="tipo" itemValue="#{tipo.tipoPoaReprog}" itemLabel="#{tipo.descripcionTipo}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+
+                    <p:accordionPanel id="acordion">
+                        <p:tab title="A) Detalle de recursos asociados a la reprogramación">
+                            <p:tabView id="pnlDetalleReprogramacion">
+                                <p:ajax event="tabChange" listener="#{reprogramacionBean.onTabChange}" update=":frmPrincipal:acordion:pnlDetalleReprogramacion"/>
+
+                                <p:tab  rendered="#{reprogramacionBean.showDisminucion}">
+                                    <f:facet name="title" >
+                                        <h:panelGrid columns="3">
+                                            <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/delete.png" rendered="#{reprogramacionBean.tipoReprogramacion != 4}"/>
+                                            <h:outputText value="Disminución de Recurso"/>
+                                            <p:commandButton value="Agregar" action="#{reprogramacionBean.addDetalleDiminucion}" update="tblDisminuacion" disabled="#{reprogramacionBean.disBtnAddDism}" rendered="false"/>
+                                        </h:panelGrid>
+                                    </f:facet>
+
+                                    <!-- DISMINUCION DE RECURSO-->
+                                    <h:panelGrid columns="3" styleClass="alineadoTop" rendered="#{reprogramacionBean.showDisminucion}">
+                                        <p:dataTable id="tblDisminuacion" value="#{reprogramacionBean.lstDetalleReproDisminucion}" var="disminucion"
+                                                     widgetVar="tblDisminuacion" rowIndexVar="rowId" rowKey="#{disminucion.id}"
+                                                     paginator="true" paginatorPosition="top" rows="5">
+
+                                            <p:column headerText="Id" style="width:40px">
+                                                <h:outputText value="#{disminucion.id}" />
+                                            </p:column>
+
+                                            <p:column headerText="C/SC/M/A">
+                                                <p:outputLabel value="#{disminucion.actividad}" />
+                                            </p:column>
+
+                                            <p:column headerText="Recurso">
+                                                <p:outputLabel value="#{disminucion.recurso}" />
+                                            </p:column>
+
+                                            <p:column headerText="Descripción" styleClass="wrap" style="width: 200px !important; ">
+                                                <p:outputLabel value="#{disminucion.descripcion}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Cat.">
+                                                <p:outputLabel value="#{disminucion.idCategoria}"/>
+                                            </p:column>
+
+                                            <p:column headerText="OEG">
+                                                <p:outputLabel value="#{disminucion.clasificadorPresupuestario}"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{reprogramacionBean.nombreFtePpal}" rendered="#{reprogramacionBean.contrapartida}" styleClass="numero">
+                                                <h:outputText value="#{disminucion.montoPrograFtePpal}">
+                                                    <f:convertNumber pattern="$ #,##0.00"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="#{reprogramacionBean.nombreFteCont}" rendered="#{reprogramacionBean.contrapartida}" styleClass="numero">
+                                                <h:outputText value="#{disminucion.montoPrograFteCont}">
+                                                    <f:convertNumber pattern="$ #,##0.00"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="Total" styleClass="numero">
+                                                <h:outputText value="#{disminucion.montoPrograFtePpal+disminucion.montoPrograFteCont}">
+                                                    <f:convertNumber pattern="$ #,##0.00"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="Saldo" style="width:20px">
+                                                <p:rowToggler />
+                                            </p:column>
+
+                                            <p:column >
+                                                <p:commandLink action="#{reprogramacionBean.editDetReprogramacion}" >
+                                                    <f:setPropertyActionListener value="#{disminucion}" target="#{reprogramacionBean.detProgramacion}" />  
+                                                    <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/add.png"/>
+                                                </p:commandLink>
+                                            </p:column>
+
+                                            <p:rowExpansion>
+                                                <p:panelGrid id="tblDetRecursoReprogramadoDisminucion" >
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="#{reprogramacionBean.numColSpanFuentes}">Programado</p:column>
+                                                            <p:column colspan="#{reprogramacionBean.numColSpanFuentes}">Reprogramado</p:column>
+                                                            <p:column colspan="#{reprogramacionBean.numColSpanFuentes}">Saldo</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFtePpal}</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFteCont}</p:column>
+                                                            <p:column>Total</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFtePpal}</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFteCont}</p:column>
+                                                            <p:column>Total</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFtePpal}</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFteCont}</p:column>
+                                                            <p:column>Total</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+
+                                                    <p:row>
+                                                        <!--PROGRAMADO-->
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Ppal." styleClass="numero">
+                                                            <h:outputText value="#{disminucion.montoPrograFtePpal}"/>
+                                                        </p:column>
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Cont." styleClass="numero">
+                                                            <h:outputText value="#{disminucion.montoPrograFteCont}"/>
+                                                        </p:column>
+                                                        <p:column headerText="Total" styleClass="numero">
+                                                            <h:outputText value="#{disminucion.montoPrograFtePpal+disminucion.montoPrograFteCont}" style="font-weight: bold;"/>
+                                                        </p:column>
+                                                        <!--RE PROGRAMADO-->
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Ppal." styleClass="numero">
+                                                            <h:outputText value="#{disminucion.montoReproFtePpal}"/>
+                                                        </p:column>
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Cont." styleClass="numero">
+                                                            <h:outputText value="#{disminucion.montoReproFteCont}"/>
+                                                        </p:column>
+                                                        <p:column headerText="Total" styleClass="numero">
+                                                            <h:outputText value="#{disminucion.montoReproFtePpal+disminucion.montoReproFteCont}" style="font-weight: bold;"/>
+                                                        </p:column>
+                                                        <!--SALDO-->
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Ppal." styleClass="numero">
+                                                            <h:outputText value="#{disminucion.montoPrograFtePpal-disminucion.montoReproFtePpal}"/>
+                                                        </p:column>
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Cont." styleClass="numero">
+                                                            <h:outputText value="#{disminucion.montoPrograFteCont-disminucion.montoReproFteCont}"/>
+                                                        </p:column>
+                                                        <p:column headerText="Total" styleClass="numero">
+                                                            <h:outputText value="#{(disminucion.montoPrograFtePpal-disminucion.montoReproFtePpal)+(disminucion.montoPrograFteCont-disminucion.montoReproFteCont)}" style="font-weight: bold;"/>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>
+                                            </p:rowExpansion>
+                                            <p:columnGroup type="footer">
+                                                <p:row >
+                                                    <p:column colspan="6" footerText="Saldo de la operación: Disminuciones - Aumentos" styleClass="total"/>
+                                                    <p:column footerText="#{reprogramacionBean.totalDismSaldo}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                    <p:column footerText="#{reprogramacionBean.totalAumSaldo}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                    <p:column footerText="#{reprogramacionBean.totalDismSaldo}" styleClass="total"/>
+                                                    <p:column styleClass="total"/>
+                                                </p:row>
+                                            </p:columnGroup>
+                                        </p:dataTable>
+                                        <p:commandButton value="-" action="#{reprogramacionBean.openDialogMetas}" update="dlgMeta" rendered="#{reprogramacionBean.tipoReprogramacion == 4}"/>
+                                    </h:panelGrid>
+                                </p:tab>
+
+                                <p:tab title="Aumento de Recurso" rendered="#{reprogramacionBean.showAumento}" >
+                                    <f:facet name="title" >
+                                        <h:panelGrid columns="3">
+                                            <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/add_1.png" />
+                                            <h:outputText value="Aumento de Recursos"/>
+                                            <p:commandButton value="Agregar" action="#{reprogramacionBean.addDetalleAumento}" update="tblAumento" disabled="#{reprogramacionBean.disBtnAddAum}" rendered="false"/>
+                                        </h:panelGrid>
+                                    </f:facet>
+                                    <!-- AUMENTO DE RECURSO-->
+                                    <h:panelGrid columns="3" styleClass="alineadoTop" rendered="#{reprogramacionBean.showAumento}">
+                                        <p:dataTable id="tblAumento" value="#{reprogramacionBean.lstDetalleReproAumento}" var="aumento"
+                                                     widgetVar="tblAumento" rowIndexVar="rowId" rowKey="#{aumento.id}"
+                                                     paginator="true" paginatorPosition="top" rows="5">
+
+                                            <p:column headerText="Id" style="width:40px">
+                                                <h:outputText value="#{aumento.id}" />
+                                            </p:column>
+
+                                            <p:column headerText="C/SC/M/A">
+                                                <p:outputLabel value="#{aumento.actividad}" />
+                                            </p:column>
+
+                                            <p:column headerText="Recurso">
+                                                <p:outputLabel value="#{aumento.recurso}" />
+                                            </p:column>
+
+                                            <p:column headerText="Descripción" styleClass="wrap" style="width: 180px !important; ">
+                                                <p:outputLabel value="#{aumento.descripcion}"/>
+                                            </p:column>
+
+                                            <p:column headerText="Cat.">
+                                                <p:outputLabel value="#{aumento.idCategoria}"/>
+                                            </p:column>
+
+                                            <p:column headerText="OEG">
+                                                <p:outputLabel value="#{aumento.clasificadorPresupuestario}"/>
+                                            </p:column>
+
+                                            <p:column headerText="#{reprogramacionBean.nombreFtePpal}" rendered="#{reprogramacionBean.contrapartida}" styleClass="numero">
+                                                <h:outputText value="#{aumento.montoPrograFtePpal}">
+                                                    <f:convertNumber pattern="$ #,##0.00"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="#{reprogramacionBean.nombreFteCont}" rendered="#{reprogramacionBean.contrapartida}" styleClass="numero">
+                                                <h:outputText value="#{aumento.montoPrograFteCont}">
+                                                    <f:convertNumber pattern="$ #,##0.00"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="Total">
+                                                <h:outputText value="#{aumento.montoPrograFtePpal+aumento.montoPrograFteCont}">
+                                                    <f:convertNumber pattern="$ #,##0.00"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="Saldo" style="width:20px">
+                                                <p:rowToggler />
+                                            </p:column>
+
+                                            <p:column >
+                                                <p:commandLink action="#{reprogramacionBean.editDetReprogramacion}" >
+                                                    <f:setPropertyActionListener value="#{aumento}" target="#{reprogramacionBean.detProgramacion}" />  
+                                                    <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/add.png"/>
+                                                </p:commandLink>
+                                            </p:column>
+
+                                            <p:rowExpansion>
+                                                <p:panelGrid id="tblDetRecursoReprogramadoAumento" >
+                                                    <f:facet name="header">
+                                                        <p:row>
+                                                            <p:column colspan="#{reprogramacionBean.numColSpanFuentes}">Programado</p:column>
+                                                            <p:column colspan="#{reprogramacionBean.numColSpanFuentes}">Reprogramado</p:column>
+                                                            <p:column colspan="#{reprogramacionBean.numColSpanFuentes}">Saldo</p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFtePpal}</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFteCont}</p:column>
+                                                            <p:column>Total</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFtePpal}</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFteCont}</p:column>
+                                                            <p:column>Total</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFtePpal}</p:column>
+                                                            <p:column rendered="#{reprogramacionBean.contrapartida}">#{reprogramacionBean.nombreFteCont}</p:column>
+                                                            <p:column>Total</p:column>
+                                                        </p:row>
+                                                    </f:facet>
+
+                                                    <p:row>
+                                                        <!--PROGRAMADO-->
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Ppal." styleClass="numero">
+                                                            <h:outputText value="#{aumento.montoPrograFtePpal}"/>
+                                                        </p:column>
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Cont." styleClass="numero">
+                                                            <h:outputText value="#{aumento.montoPrograFteCont}"/>
+                                                        </p:column>
+                                                        <p:column headerText="Total" styleClass="numero">
+                                                            <h:outputText value="#{aumento.montoPrograFtePpal+aumento.montoPrograFteCont}" style="font-weight: bold;"/>
+                                                        </p:column>
+                                                        <!--RE PROGRAMADO-->
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Ppal." styleClass="numero">
+                                                            <h:outputText value="#{aumento.montoReproFtePpal}"/>
+                                                        </p:column>
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Cont." styleClass="numero">
+                                                            <h:outputText value="#{aumento.montoReproFteCont}"/>
+                                                        </p:column>
+                                                        <p:column headerText="Total" styleClass="numero">
+                                                            <h:outputText value="#{aumento.montoReproFtePpal+aumento.montoReproFteCont}" style="font-weight: bold;"/>
+                                                        </p:column>
+                                                        <!--SALDO-->
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Ppal." styleClass="numero">
+                                                            <h:outputText value="#{aumento.montoPrograFtePpal-aumento.montoReproFtePpal}"/>
+                                                        </p:column>
+                                                        <p:column rendered="#{planGlobalBean.contrapartida}" headerText="Fte. Cont." styleClass="numero">
+                                                            <h:outputText value="#{aumento.montoPrograFteCont-aumento.montoReproFteCont}"/>
+                                                        </p:column>
+                                                        <p:column headerText="Total" styleClass="numero">
+                                                            <h:outputText value="#{(aumento.montoPrograFtePpal-aumento.montoReproFtePpal)+(aumento.montoPrograFteCont-aumento.montoReproFteCont)}" style="font-weight: bold;"/>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>
+                                            </p:rowExpansion>
+
+                                            <p:columnGroup type="footer">
+                                                <p:row >
+                                                    <p:column colspan="6" footerText="Saldo de la operación: Disminuciones - Aumentos" styleClass="total"/>
+                                                    <p:column footerText="#{reprogramacionBean.totalAumFtePpal}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                    <p:column footerText="#{reprogramacionBean.totalAumFteCont}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                    <p:column footerText="#{reprogramacionBean.totalAumSaldo}" styleClass="total"/>
+                                                    <p:column styleClass="total"/>
+                                                </p:row>
+                                            </p:columnGroup>
+                                        </p:dataTable>                                
+                                        <p:commandButton value="+" actionListener="#{reprogramacionBean.openDialogMetas}" action="#{planGlobalBean.cargarIdConvenio}" update=":frmPrincipal:dlgMeta" rendered="#{reprogramacionBean.tipoReprogramacion == 3}"/>
+                                    </h:panelGrid>
+                                </p:tab>
+                            </p:tabView>
+                        </p:tab>
+
+                        <p:tab title="B) Detalle de saldos por diferentes niveles">
+                            <h:panelGrid columns="3">
+                                <p:commandButton value="I. Categorias" update="tbvSaldos"/>
+                                <p:commandButton value="II. Componentes" update="tbvSaldos"/>
+                            </h:panelGrid>
+
+                            <p:tabView id="tbvSaldos">
+                                <p:tab title="1) Proyecto/Donación">
+                                    <p:dataTable >
+                                        <p:columnGroup  type="header">
+                                            <p:row>
+                                                <p:column rowspan="2" headerText="Id"/>
+                                                <p:column rowspan="2" headerText="Sub-componente"/>
+                                                <p:column colspan="#{reprogramacionBean.numColSpanFuentes}" headerText="A) APROBADO"/>
+                                                <p:column colspan="#{reprogramacionBean.numColSpanFuentes}" headerText="B) AUTORIZADO"/>
+                                                <p:column colspan="#{reprogramacionBean.numColSpanFuentes}" headerText="C) SALDO (A-B)"/>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Total" />
+
+                                                <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Total" />
+
+                                                <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Total" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                        <p:column headerText="Id">
+                                        </p:column>
+                                        <p:column headerText="Sub-componente">
+                                        </p:column>
+                                        <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Total">
+                                        </p:column>
+                                        <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Total">
+                                        </p:column>
+                                        <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Total">
+                                        </p:column>
+
+                                        <p:columnGroup type="footer">
+                                            <p:row >
+                                                <p:column colspan="2" footerText="Sub-Total" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalDisminuciones}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalAumentos}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.total}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalDisminuciones}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalAumentos}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.total}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalDisminuciones}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalAumentos}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.total}" styleClass="total"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                    </p:dataTable>
+                                </p:tab>
+
+                                <p:tab title="2) PAP">                                
+                                    <p:dataTable>
+                                        <p:columnGroup  type="header">
+                                            <p:row>
+                                                <p:column rowspan="2" headerText="Id"/>
+                                                <p:column rowspan="2" headerText="Sub-componente"/>
+                                                <p:column colspan="#{reprogramacionBean.numColSpanFuentes}" headerText="A) APROBADO"/>
+                                                <p:column colspan="#{reprogramacionBean.numColSpanFuentes}" headerText="B) AUTORIZADO"/>
+                                                <p:column colspan="#{reprogramacionBean.numColSpanFuentes}" headerText="C) SALDO (A-B)"/>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Total" />
+
+                                                <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Total" />
+
+                                                <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}"/>
+                                                <p:column headerText="Total" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                        <p:column headerText="Id">
+                                        </p:column>
+                                        <p:column headerText="Sub-componente">
+                                        </p:column>
+                                        <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Total">
+                                        </p:column>
+                                        <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Total">
+                                        </p:column>
+                                        <p:column headerText="Fte. Ppal." rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Contrapartida" rendered="#{reprogramacionBean.contrapartida}">
+                                        </p:column>
+                                        <p:column headerText="Total">
+                                        </p:column>
+
+                                        <p:columnGroup type="footer">
+                                            <p:row >
+                                                <p:column colspan="2" footerText="Sub-Total" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalDisminuciones}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalAumentos}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.total}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalDisminuciones}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalAumentos}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.total}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalDisminuciones}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.totalAumentos}" rendered="#{reprogramacionBean.contrapartida}" styleClass="total"/>
+                                                <p:column footerText="#{reprogramacionBean.total}" styleClass="total"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                    </p:dataTable>
+                                </p:tab>
+                            </p:tabView>
+                        </p:tab>
+                    </p:accordionPanel>
+                </p:dialog>
+
+
+                <p:remoteCommand name="varIdConvenio" action="#{planGlobalBean.cargarIdConvenio}"  />
+
+                <!-- DIALOGOS PARA AGREGAR NUEVOS RECURSOS -->
+                <p:dialog id="dlgMeta" widgetVar="dlgMeta" header="1. Digitacion del Plan Global" visible="#{planGlobalBean.showMeta}" width="730" 
+                          resizable="false">
+                    <p:ajax event="close" listener="#{planGlobalBean.cerrarPopupMeta}"/>  
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="1. Origen de los recursos:"/>
+                        <p:selectOneMenu id="cbOrigenRe" value="#{planGlobalBean.idOrigen}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstOrigenRecursos}" var="origen" itemValue="#{origen.idOrigenRecursos}" itemLabel="#{origen.descripcionDeLosRecursos}"/>
+                            <p:ajax update=":frmPrincipal:dlgMeta cbEstado" listener="#{planGlobalBean.limpiarDesdeOrigen}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="2. Proyecto/Convenio:"/>
+                        <p:selectOneMenu id="cbProyecto" value="#{planGlobalBean.idConvenio}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
+                            <p:ajax update=":frmPrincipal:dlgMeta cbEstado" listener="#{planGlobalBean.armarTreeComponentes}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="3. Estado:"/>
+                        <p:selectOneMenu id="cbEstado" value="#{planGlobalBean.idEstadoEjeConvenio}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstEstadoEjecConvenio}" var="estadoEje" itemValue="#{estadoEje.idEstadoEjecProyecto}" itemLabel="#{estadoEje.descripciondeEstado}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="4. Plantilla de configuración"/>
+                        <p:inputTextarea id="txtPlantilla" readonly="true" value="#{planGlobalBean.detCompPlanilla.descripcionDeLaPlantilla}" cols="85" rows="3"/>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="1">
+                        <p:outputLabel value="5. Seleccione el componente/sub-componente:" rendered="#{planGlobalBean.visibleComponentes}"/>
+                        <p:tree id="trComponentes" style="width: 700px; height: 100px;" value="#{planGlobalBean.nodoComponentes}" var="comp" cache="false" selectionMode="single" rendered="#{planGlobalBean.visibleComponentes}" >
+                            <p:ajax event="select" update=":frmPrincipal:tblMetas :frmPrincipal:lblComponente" listener="#{planGlobalBean.onNodeSelect}" />  
+
+                            <p:treeNode id="treeNode" >  
+                                <h:outputText value="#{comp}" id="lblNode"/>  
+                            </p:treeNode>  
+                        </p:tree>
+
+                        <h:panelGroup >
+                            <p:outputLabel id="lblComponente" value="5. Sub-componente seleccionado:" rendered="#{planGlobalBean.visibleComponentes}" />
+                            <p:outputLabel value=" #{planGlobalBean.nombreComponente}" rendered="#{planGlobalBean.visibleComponentes}" style="font-weight: bold;"/>
+                        </h:panelGroup>
+
+                        <p:dataTable id="tblMetas" value="#{planGlobalBean.lstMetas}" var="meta" editMode="cell" rowIndexVar="rowId"
+                                     editable="true" rowKey="#{meta.meta}" widgetVar="tblMetas"  style="width: 700px !important;" 
+                                     paginator="true" rows="3" paginatorPosition="top" rendered="#{planGlobalBean.visibleMetas}"
+                                     selectionMode="single"  selection="#{planGlobalBean.pgMeta}" rowStyleClass="#{meta.estadoDeEliminacion eq 1 ? 'filaEliminada': null}">
+                            <p:ajax event="rowSelect" listener="#{planGlobalBean.onSelectElemento}" update=":frmPrincipal:menuBtns"/>
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="2" headerText="Id"/>
+                                    <p:column rowspan="2" headerText="Código"/>
+                                    <p:column rowspan="2" headerText="Meta"/>
+                                    <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="A. Monto asignado"/>
+                                    <p:column rowspan="2" headerText="Tipo Meta"/>
+                                    <p:column rowspan="2" headerText=""/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                    <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                    <p:column headerText="Total"/>
+                                </p:row>
+                            </p:columnGroup>
+
+                            <p:column headerText="Id" >
+                                <h:outputText value="#{meta.meta}"/>
+                            </p:column>
+
+                            <p:column headerText="Código" style="width: 50px; text-align: right;">
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{meta.codigoMeta}"/>
+                                    </f:facet>
+                                    <f:facet name="input">  
+                                        <p:inputText value="#{meta.codigoMeta}" size="8" disabled="#{meta.eliminado}" />
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Meta" footerText="Sub-total" styleClass="wrap" width="50" >
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{meta.metaNombre}" />  
+                                    </f:facet>  
+                                    <f:facet name="input">  
+                                        <p:inputTextarea value="#{meta.metaNombre}" style="width:90%" disabled="#{meta.eliminado}"/>  
+                                    </f:facet>  
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column rendered="#{planGlobalBean.contrapartida}" width="125" styleClass="numero">
+                                <h:outputText value="#{meta.montoBanco}">
+                                    <f:convertNumber pattern="#,##0.00" />
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMontoBancoMeta}" id="totalBanco">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column rendered="#{planGlobalBean.contrapartida}" width="125" styleClass="numero">
+                                <h:outputText value="#{meta.montoGoes}">
+                                    <f:convertNumber pattern="#,##0.00"  />
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMontoGoesMeta}" id="totalGoes">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column styleClass="numero" width="125">
+                                <h:outputText value="#{meta.montoBanco+meta.montoGoes}" id="totalMeta">
+                                    <f:convertNumber pattern="#,##0.00"  />
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMeta}" id="total">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column>
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <p:outputLabel id="cbTipoMeta" value="#{meta.desTipoDeMeta}" />
+                                    </f:facet>
+
+                                    <f:facet name="input">  
+                                        <p:selectOneMenu value="#{meta.tipoDeMetas}" style="width: 100px;" disabled="#{meta.eliminado}">
+                                            <f:selectItems value="#{planGlobalBean.lstTipoMeta}" />
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width:30px;text-align: center;">
+                                <p:commandButton actionListener="#{planGlobalBean.newActividad}" disabled="#{meta.eliminado}"  icon="ui-icon-search" >
+                                    <f:attribute name="meta" value="#{meta}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton value="Agregar Actividades" action="#{planGlobalBean.newActividad}" rendered="#{planGlobalBean.visibleBtnActividades}" />
+                    </h:panelGrid>
+                </p:dialog>
+
+                <!--DIALOG PARA ACTIVIDADES-->
+                <p:dialog id="dlgActividad" widgetVar="dlgActividad" header="1.1. Ingreso de actividades" visible="#{planGlobalBean.showActividad}"
+                          resizable="false" width="730" closable="true">
+                    <p:ajax event="close" listener="#{planGlobalBean.cerrarPopupActividad}"/>  
+
+                    <h:panelGrid columns="1">
+                        <h:panelGroup >
+                            <p:outputLabel value="1. Sub-componente seleccionado: " rendered="#{planGlobalBean.visibleComponentes}" />
+                            <p:outputLabel value="#{planGlobalBean.nombreComponente}" rendered="#{planGlobalBean.visibleComponentes}" style="font-weight: bold;"/>
+                        </h:panelGroup>
+                        <h:panelGroup>
+                            <p:outputLabel value="2. Meta seleccionada: " rendered="#{planGlobalBean.visibleMetas}"/>
+                            <p:outputLabel value="#{planGlobalBean.pgMeta.metaNombre}" rendered="#{planGlobalBean.visibleMetas}" style="font-weight: bold;"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="3. Ingrese las actividades relacionadas:"/>
+
+                        <p:dataTable id="tblActividades" value="#{planGlobalBean.lstActividades}" var="act" editMode="cell" editable="true"
+                                     widgetVar="tblActividades"  rowIndexVar="rowId" rowKey="#{act.actividad}"  style="width: 700px !important;" 
+                                     paginator="true" rows="3" paginatorPosition="top" selection="#{planGlobalBean.pgActividad}"
+                                     selectionMode="single" rowStyleClass="#{act.estadoDeEliminacion eq 1 ? 'filaEliminada':null}">
+                            <p:ajax event="rowSelect" listener="#{planGlobalBean.onSelectElemento}" update=":frmPrincipal:menuBtns"/>
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="2" headerText="Id"/>
+                                    <p:column rowspan="2" headerText="Código"/>
+                                    <p:column rowspan="2" headerText="Actividades"/>
+                                    <p:column colspan="#{planGlobalBean.numColSpanFuentes}" headerText="A. Monto asignado"/>
+                                    <p:column colspan="3" headerText="B. Ejecución prevista"/>
+                                    <p:column rowspan="2" headerText=""/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column headerText="#{planGlobalBean.nombreFtePpal}" rendered="#{planGlobalBean.contrapartida}"/>
+                                    <p:column headerText="#{planGlobalBean.nombreFteCont}" rendered="#{planGlobalBean.contrapartida}"/>
+                                    <p:column headerText="Total"/>
+                                    <p:column headerText="Año PAP"/>
+                                    <p:column headerText="Inicio"/>
+                                    <p:column headerText="Fin"/>
+                                </p:row>
+                            </p:columnGroup>
+
+                            <p:column headerText="Id">
+                                <p:outputLabel value="#{act.actividad}" />
+                            </p:column>
+
+                            <p:column headerText="Código">
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{act.codigoActividad}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{act.codigoActividad}" size="8" disabled="#{act.eliminado}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Actividades" footerText="Sub-total" styleClass="wrap" style="width: 150px !important;">
+                                <p:cellEditor>  
+                                    <f:facet name="output">  
+                                        <h:outputText value="#{act.actividadNombre}" />  
+                                    </f:facet>  
+                                    <f:facet name="input">  
+                                        <p:inputTextarea value="#{act.actividadNombre}" style="width:90%" disabled="#{act.eliminado}"/>  
+                                    </f:facet>  
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Fte. Ppal." rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                                <h:outputText value="#{act.financiamientoBanco}" >
+                                    <f:convertNumber pattern="#,##0.00"/>
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMontoBancoActividad}" id="totalBanco">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column headerText="Contrapartida" rendered="#{planGlobalBean.contrapartida}" styleClass="numero">
+                                <h:outputText value="#{act.financiamientoGoes}">
+                                    <f:convertNumber pattern="#,##0.00"/>
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalMontoGoesActividad}" id="totalGoes">
+                                        <f:convertNumber pattern="#,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column headerText="Total">
+                                <h:outputText value="#{act.financiamientoBanco+actividad.financiamientoGoes}" id="totalActividad">
+                                    <f:convertNumber pattern="#,##0.00"  />
+                                </h:outputText>
+
+                                <f:facet name="footer">  
+                                    <h:outputText value="#{planGlobalBean.totalActividad}" id="total">
+                                        <f:convertNumber pattern="$ #,##0.00"  />
+                                    </h:outputText>
+                                </f:facet> 
+                            </p:column>
+
+                            <p:column headerText="Año PAP" rendered="#{planGlobalBean.visibleAnhoPap}" id="anhoActividad" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <p:outputLabel value="#{act.anhoPg}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:selectOneMenu value="#{act.pgAnosPlanGlobal}" style="width: 100px;" disabled="#{act.eliminado}">
+                                            <f:selectItems value="#{planGlobalBean.lstAnhosPg}"/>
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Inicio" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{act.actividadInicioPrevisto}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:calendar id="fechaInicio" value="#{act.actividadInicioPrevisto}" pattern="dd/MM/yyyy" size="9" immediate="true" required="true" disabled="#{act.eliminado}">
+                                            <p:ajax event="dateSelect" update="tblActividades" />
+                                            <f:validator validatorId="validatorFechaActividad" />
+                                        </p:calendar>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Fin" >
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{act.actividadFinPrevisto}" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:calendar id="calendario" value="#{act.actividadFinPrevisto}" pattern="dd/MM/yyyy" size="9" mode="popup" immediate="true" disabled="#{act.eliminado}">
+                                            <p:ajax event="dateSelect" update="tblActividades" listener="#{planGlobalBean.handleDateSelect}" /> 
+                                            <f:param value="#{rowId}" name="parametro"/>
+                                            <f:validator validatorId="validatorFechaActividad" />
+                                        </p:calendar>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column style="width:30px;text-align: center;">
+                                <p:commandButton action="#{planGlobalBean.newRecurso}" disabled="#{act.eliminado}" icon="ui-icon-search">
+                                    <f:setPropertyActionListener value="#{act}" target="#{planGlobalBean.pgActividad}" /> 
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+                </p:dialog>
+
+                <!--DIALOG PARA RECURSOS-->
+                <p:dialog id="dlgRecurso" widgetVar="dlgRecurso" header="1.2. Ingreso de Recursos" visible="#{planGlobalBean.showRecurso}" 
+                          width="730" resizable="false">
+                    <p:ajax event="close" listener="#{planGlobalBean.cerrarPopupRecurso}"/>  
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Meta:" rendered="#{planGlobalBean.visibleMetas}"/>
+                        <p:outputLabel value="#{planGlobalBean.pgMeta.meta} - #{planGlobalBean.pgMeta.metaNombre}" style="font-weight: bold;" rendered="#{planGlobalBean.visibleMetas}"/>
+                        <p:outputLabel value="Actividad:" rendered="#{planGlobalBean.visibleActividades}"/>
+                        <p:outputLabel value="#{planGlobalBean.pgActividad.actividad} - #{planGlobalBean.pgActividad.actividadNombre}" style="font-weight: bold;" rendered="#{planGlobalBean.visibleActividades}"/>
+                        <p:outputLabel value="1. Categoria/Sub-categoria:"/>
+                        <p:selectOneMenu id="cbCategoria" value="#{planGlobalBean.currentRecurso.idCategoria}" disabled="#{planGlobalBean.deshabilitarRecurso}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstPgCategorias}" var="categoria" itemValue="#{categoria.idCategoria}" itemLabel="#{categoria.descripcion}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="2. Producto:"/>
+                        <p:selectOneMenu id="cbProducto" value="#{planGlobalBean.currentRecurso.producto}" disabled="#{planGlobalBean.deshabilitarRecurso}" style="width: 520px !important;">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstCatalogoProductos}" var="producto" itemValue="#{producto.producto}" itemLabel="#{producto.descripcion}"/>
+                            <p:ajax update="txtClasificador" listener="#{planGlobalBean.cargarClasificador}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="3. Cantidad:"/>
+                        <p:inputText id="txtCantidad" size="10" value="#{planGlobalBean.currentRecurso.cantidad}" style="text-align: right" disabled="#{planGlobalBean.deshabilitarRecurso}"/>
+
+                        <p:outputLabel value="4. Valor total:"/>
+                        <h:panelGrid columns="9">
+                            <p:inputText id="txtValor" size="10" value="#{planGlobalBean.currentRecurso.valor}" style="text-align: right" disabled="#{planGlobalBean.deshabilitarRecurso}">
+                                <p:ajax event="keyup" update="txtValorFtePpal txtContrapartida" listener="#{planGlobalBean.calcularMontos}" />
+                            </p:inputText>
+                            <p:spacer width="10" height="8"/>
+                            <p:outputLabel value="#{planGlobalBean.nombreFtePpal}"/>
+                            <p:spacer width="5" height="8"/>
+                            <p:inputText id="txtValorFtePpal" label="Keyword" rendered="#{planGlobalBean.contrapartida}" size="10"  style="text-align: right" value="#{planGlobalBean.recursoFtePpal.montoPreliminar}" disabled="#{planGlobalBean.deshabilitarRecurso}" readonly="true">
+                                <f:convertNumber pattern="#,##0.00"/>
+                            </p:inputText>
+                            <p:spacer width="10" height="8"/>
+                            <p:outputLabel value="#{planGlobalBean.nombreFteCont}"/>
+                            <p:spacer width="5" height="8"/>
+                            <p:inputText id="txtContrapartida" label="Keyword" rendered="#{planGlobalBean.contrapartida}" size="10" style="text-align: right" value="#{planGlobalBean.recursoFteCont.montoPreliminar}" disabled="#{planGlobalBean.deshabilitarRecurso}" readonly="true">
+                                <f:convertNumber pattern="#,##0.00"/>
+                            </p:inputText>
+                        </h:panelGrid>
+
+                        <p:outputLabel value="5. Clasificador Presupuestario:"/>
+                        <p:inputText id="txtClasificador" value="#{planGlobalBean.clasificadorPresupuestario}" disabled="#{planGlobalBean.deshabilitarRecurso}" readonly="true"/>
+                        <p:outputLabel value="6. Observaciones:"/>
+                        <p:inputTextarea id="txaObservaciones" cols="75" disabled="#{planGlobalBean.deshabilitarRecurso}" value="#{planGlobalBean.currentRecurso.observacion}"/>
+
+                        <p:outputLabel value="7. Tipo de ejecución:"/>
+                        <p:selectOneMenu id="cbTipoEjecucion" value="#{planGlobalBean.currentRecurso.trasferencia}" disabled="#{planGlobalBean.deshabilitarRecurso}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{planGlobalBean.lstTipoRecurso}" var="tipoRecurso" itemValue="#{tipoRecurso.trasferencia}" itemLabel="#{tipoRecurso.descripcionTipoRecurso}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="8. Fecha adquisición prevista:"/>
+                        <p:calendar id="cdlAdquisicion" pattern="dd/MM/yyyy" size="10" value="#{planGlobalBean.currentRecurso.fechaAdquisicion}" disabled="#{planGlobalBean.deshabilitarRecurso}">
+                            <p:ajax event="dateSelect" listener="#{planGlobalBean.validarFechaAdqRecurso}"/>
+                        </p:calendar>
+                    </h:panelGrid>
+
+                    <p:outputLabel value="9. Listado de Recursos"/>
+                    <p:dataTable id="tblRecursos" value="#{planGlobalBean.lstRecuros}" var="recurso" paginator="true" rows="5"
+                                 editable="true" editMode="cell" rowIndexVar="rowId" widgetVar="tblRecursos" paginatorPosition="top"
+                                 selection="#{planGlobalBean.currentRecurso}" rowKey="#{recurso.recurso}" selectionMode="single"
+                                 rowStyleClass="#{recurso.eliminado ? 'filaEliminada' : null}">
+                        <p:ajax event="rowSelect" listener="#{planGlobalBean.onSelectElemento}" update=":frmPrincipal:menuBtns :frmPrincipal:dlgRecurso"/>
+                        <p:column headerText="Recurso" width="50">
+                            <h:outputText value="#{recurso.recurso}"/>
+                        </p:column>
+
+                        <p:column headerText="Descripción">
+                            <p:outputLabel value="#{recurso.observacion}"/>
+                        </p:column>
+
+                        <p:column headerText="Valor" styleClass="numero" width="75">
+                            <h:outputText value="#{recurso.valor}">
+                                <f:convertNumber pattern="$ #,##0.00" />
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column width="20">
+                            <p:commandLink action="#{planGlobalBean.selectRecurso}" disabled="#{recurso.eliminado}">
+                                <f:setPropertyActionListener value="#{recurso}" target="#{planGlobalBean.currentRecurso}" />  
+                                <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/edit.png"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </p:dialog>
+
+
+                <!-- EDICION DEL DETALLE DE REPROGRAMACION-->
+                <p:dialog id="dlgEditDetRepro" widgetVar="dlgEditDetRepro" visible="#{reprogramacionBean.showEditReprogramacion}" header="Edición del Detalle de Reprogramación" 
+                          closable="false">
+                    <h:panelGrid columns="2" styleClass="alineadoTop" id="pngEditDetRepro">
+                        <p:outputLabel value="1. C/SC/M/A: "/>
+                        <p:selectOneMenu value="#{reprogramacionBean.detProgramacion.actividad}">
+                            <f:selectItem itemValue="0" itemLabel="---"/>
+                            <f:selectItems value="#{reprogramacionBean.lstElementoReprog}" var="ele" itemValue="#{ele.actividad}" itemLabel="#{ele.descripcion}"/>
+                            <p:ajax update="cbRecursos" listener="#{reprogramacionBean.findRecursosByActividad}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="2. Recurso: "/>
+                        <h:panelGrid columns="3" >
+                            <p:selectOneMenu id="cbRecursos" value="#{reprogramacionBean.detProgramacion.recurso}" style="width: 100px;">
+                                <f:selectItem itemValue="0" itemLabel="---"/>
+                                <f:selectItems value="#{reprogramacionBean.lstRecursos}" var="recurso" itemValue="#{recurso.recurso}" itemLabel="#{recurso.recurso}"/>
+                                <p:ajax update="pngEditDetRepro txaDescripcionRec" listener="#{reprogramacionBean.findDetRecurso}"/>
+                            </p:selectOneMenu>
+                            <p:inputTextarea id="txaDescripcionRec" cols="60" rows="3" value="#{reprogramacionBean.poaRecurso.observacion}"/>
+                        </h:panelGrid>
+                        <p:outputLabel value="3. Categoria: "/>
+                        <p:inputTextarea cols="69" rows="3" value="#{reprogramacionBean.pgCategoria}"/>
+                        <p:outputLabel value="4. OEG: "/>
+                        <p:inputText size="8" value="#{reprogramacionBean.oeg}"/>
+                        <p:outputLabel value="5. Monto a #{reprogramacionBean.tipoOperacion eq 1? 'Disminuir':(reprogramacionBean.tipoOperacion eq 2?'Aumentar':'')}: "/>
+                        <p:inputText size="8" value="#{reprogramacionBean.montoReprogramar}" style="text-align: right;">
+                            <p:ajax event="keyup" update="txtMontoFte txtMontoCont txtMontoTotal" listener="#{reprogramacionBean.calcularMontos}" />
+                        </p:inputText>
+                        <p:outputLabel value="6. Detalle de Saldos: "/>
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Saldo Actual: "/>
+                            <p:outputLabel value="Nuevo Saldo: "/>
+                            <h:panelGrid columns="2">    
+                                <p:outputLabel value="A. Fte. Ppal: " rendered="#{reprogramacionBean.contrapartida}"/>
+                                <p:inputText size="8" value="#{reprogramacionBean.ftePpal.montoPreliminar}" style="text-align: right;" readonly="true" rendered="#{reprogramacionBean.contrapartida}" />
+                                <p:outputLabel value="B. Contrapartida: " rendered="#{reprogramacionBean.contrapartida}" />
+                                <p:inputText size="8" value="#{reprogramacionBean.fteCont.montoPreliminar}" style="text-align: right;" readonly="true" rendered="#{reprogramacionBean.contrapartida}"/>
+                                <p:outputLabel value="C. Saldo: "/>
+                                <p:inputText size="8" value="#{reprogramacionBean.totalRecursoPreliminar}" style="text-align: right;" readonly="true"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2">    
+                                <p:outputLabel value="A. Fte. Ppal: "/>
+                                <p:inputText id="txtMontoFte" size="8" value="#{reprogramacionBean.newMontoFtePpal}" style="text-align: right;" readonly="true" rendered="#{reprogramacionBean.contrapartida}"/>
+                                <p:outputLabel value="B. Contrapartida: " rendered="#{reprogramacionBean.contrapartida}"/>
+                                <p:inputText id="txtMontoCont" size="8" value="#{reprogramacionBean.newMontoFteCont}" style="text-align: right;" readonly="true" rendered="#{reprogramacionBean.contrapartida}"/>
+                                <p:outputLabel value="C. Saldo: " rendered="#{reprogramacionBean.contrapartida}"/>
+                                <p:inputText id="txtMontoTotal" size="8" value="#{reprogramacionBean.newMontoTotal}" style="text-align: right;" readonly="true"/>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                        <p:spacer width="8" height="8"/>
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Aceptar" icon="aceptar" action="#{reprogramacionBean.aceptarEditDetRepro}" 
+                                             update=":frmPrincipal:acordion:pnlDetalleReprogramacion dlgEditDetRepro" />
+                            <p:commandButton value="Cancelar" icon="cancelar" action="#{reprogramacionBean.cancelEditDetRepro}" update="dlgEditDetRepro"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </p:dialog>
+                
+                <p:dialog>
+                    
+                </p:dialog>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
+        <ui:define name ="auxiliar">
+            <p:dialog header="Confirmar" widgetVar="dlg2" modal="true" resizable="false" closable="false" height="70" focus="no" >
+                <h:outputText value="¿Desea eliminar este registro?" /> <br/><br/> <hr/>
+                <center>
+                    <p:commandButton id="si" value="Si" type="submit" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" action="#{bancoProveedoresBean.eliminarGarantia}" update="frmPrincipal" onclick="PF('dlg2').hide();"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <p:commandButton id="no" value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" onclick="PF('dlg2').hide();"/>
+                </center>
+            </p:dialog>
+        </ui:define>
+        <ui:define name="content">
+            <h:form id="frmPrincipal">
+                <p:menubar>
+                    <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaGarantia}" update="frmPrincipal pnlGrupos tblGarantias tblGrupos" icon="nuevo" ajax="true"/>
+                    <p:menuitem value="Modificar" icon="modificar" action="#{bancoProveedoresBean.nuevaGarantia}" update="pnlGrupos tblGarantias tblGrupos frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
+                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
+                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    <p:menuitem value="Recuperar" icon="recuperar" action="#{bancoProveedoresBean.nuevaGarantia}" update="pnlGrupos tblGarantias tblGrupos frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
+                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
+                    <f:facet name="options">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
+                        <p:spacer width="10" height="8"/>
+                        <p:growl id="message" showDetail="true" />
+
+                        <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
+                            <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
+                        </p:confirmDialog>    
+                    </f:facet>
+                </p:menubar>
+                <p:panel id="pnlGrupos" styleClass="panelSinBorder">
+                    <f:facet name="header" >
+                        <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                        <p:spacer width="10" height="10"/>
+                        <h:outputText value="Registro de Garantías por proceso"/>
+                    </f:facet>
+                    <p:panelGrid columns="4" columnClasses="col3_label,col4,col2_label,col3" style="width: 100%; border:0px none; background-color:transparent;"
+                                 styleClass="form-group ui-panelgrid-blank">
+                        <p:outputLabel value="1. Clasificación Grupos:"/>
+                        <p:selectOneRadio id="tipoGrupo" value="#{consultasSiapBean.tipoGrupo}">
+                            <f:selectItem itemLabel="Activos" itemValue="1" />
+                            <f:selectItem itemLabel="Historico" itemValue="2" />
+                        </p:selectOneRadio>
+                        <p:outputLabel value="2. Tipo de Garantia:"/>
+                        <p:selectOneMenu id="cbTipoGarantia" value="#{consultasSiapBean.tipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}">
+                            <p:ajax event="change" update="outPanel"/>
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{bancoProveedoresBean.lstTipoGarantias}" var="gar" itemValue="#{gar.idTipoGarantia}" itemLabel="#{gar.descripcionTipoGarantia}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:dataTable id="tblGrupos" value="#{consultasSiapBean.lstGrupos}" var="grupos" selectionMode="single" rowKey="#{grupos.grupo}" rows="4"  paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
+                        <p:ajax event="rowSelect" listener="#{consultasSiapBean.onRowSelectGrupos}" update="frmPrincipal:tblContratos frmPrincipal:tblOfertas"/>  
+                        <p:column headerText="Grupo" width="40" style="text-align: center">
+                            <p:outputLabel value="#{grupos.grupo}"/>
+                        </p:column>
+
+                        <p:column headerText="No. Proceso" width="60" style="text-align: center">
+                            <p:outputLabel value="#{grupos.no_licitacion}"/>
+                        </p:column>
+
+                        <p:column headerText="Convenio" width="80">
+                            <p:outputLabel value="#{grupos.convenio}"/>
+                        </p:column>
+
+                        <p:column headerText="Concepto">
+                            <p:outputLabel value="#{grupos.concepto}"/>
+                        </p:column>
+                    </p:dataTable>  
+                </p:panel>
+                <p:outputPanel id="outPanel">
+                    <p:panel id="pnlOfertas" styleClass="panelSinBorder" visible="#{consultasSiapBean.tipoGarantia eq 1}">
+                        <p:dataTable id="tblOfertas" value="#{consultasSiapBean.lstOfertasGrupo}" var="ofertas" selectionMode="single" rowKey="#{ofertas.grupo}" rows="4"  paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
+                            <p:ajax event="rowSelect" listener="#{consultasSiapBean.onRowSelectGrupos}"/>  
+                            <p:column headerText="Oferente">
+                                <p:outputLabel value="#{ofertas.razonSocial}"/>
+                            </p:column>
+                            <p:column headerText="F. Recepción" width="70">
+                                <h:outputText value="#{ofertas.fechaRecepcion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="F. Vencimiento" width="70">
+                                <h:outputText value="#{ofertas.fechaVencimiento}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Entrega (dias)" width="70">
+                                <p:outputLabel value="#{ofertas.plazoEntrega}"/>
+                            </p:column>
+                        </p:dataTable>                      
+                    </p:panel>
+                    <p:panel id="pnlContratos" styleClass="panelSinBorder" visible="#{consultasSiapBean.tipoGarantia ne 1}">
+                        <p:dataTable id="tblContratos" value="#{consultasSiapBean.lstContratosGrupo}" var="contratos" selectionMode="single" rowKey="#{contratos.idContrato}" rows="4"  paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
+                            <p:ajax event="rowSelect" listener="#{consultasSiapBean.onRowSelectGrupos}"/>  
+                            <p:column headerText="ID" width="15">
+                                <p:outputLabel value="#{contratos.idContrato}"/>
+                            </p:column>
+                            <p:column headerText="No. Contrato" width="60">
+                                <p:outputLabel value="#{contratos.numeroContrato}"/>
+                            </p:column>
+                            <p:column headerText="Razón Social">
+                                <p:outputLabel value="#{contratos.razonSocial}"/>
+                            </p:column>
+                            <p:column headerText="Fecha Emisión" width="70">
+                                <h:outputText value="#{contratos.fechaEmision}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Fecha Inicio" width="60">
+                                <h:outputText value="#{contratos.fechaInicioVigencia}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Fecha Fin" width="60">
+                                <h:outputText value="#{contratos.fechaFinVigencia}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>                      
+                    </p:panel>
+                </p:outputPanel>
+                
+                
+                <p:dataTable id="tblGarantias" value="#{bancoProveedoresBean.lstGarantias}" var="garantia" selectionMode="single" rowKey="#{garantia.identificadorGarantia}">
+                    <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowSelectGarantias}"   
+                            update=":frmPrincipal :frmPrincipal:pnlGrupos :frmPrincipal:pnlContratos" />  
+                    <p:column headerText="Id" width="40">
+                        <p:outputLabel value="#{garantia.identificadorGarantia}"/>
+                    </p:column>
+                    <p:column headerText="Contratista">
+                        <p:outputLabel value="#{garantia.razonSocial}"/>
+                    </p:column>
+                    <p:column headerText="Tipo" width="150">
+                        <p:outputLabel value="#{garantia.descripcionTipoGarantia}"/>
+                    </p:column>
+                    <p:column headerText="Monto" style="text-align: right;" width="80">
+                        <h:outputText value="#{garantia.montoGarantia}">
+                            <f:convertNumber pattern="$ #,##0.00" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Vencimiento" width="63">
+                        <h:outputText value="#{garantia.fechaVencimiento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

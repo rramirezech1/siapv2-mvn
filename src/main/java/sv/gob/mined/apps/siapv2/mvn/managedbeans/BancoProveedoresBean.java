@@ -95,6 +95,8 @@ public class BancoProveedoresBean {
     private Boolean deshabilitado = true;
     private Boolean deshabilitadoEliminar = true;
     private Boolean deshabilitadoEfectiva = true;
+    private Boolean habilitadoContratos = false;
+    private Boolean habilitadoOfertas = false;
 
     public BancoProveedoresBean() {
     }
@@ -457,6 +459,16 @@ public class BancoProveedoresBean {
         } else {
             this.deshabilitadoEfectiva = true;
             this.currentGarantiaOferente.setFechaEmision(null);
+        }
+    }
+    
+    public void tipoGarantiaChange() {
+        if (this.currentGarantiaOferente.getIdTipoGarantia() == 1) {
+            this.habilitadoContratos = false;
+            this.habilitadoOfertas = true;
+        } else {
+            this.habilitadoContratos = true;
+            this.habilitadoOfertas = false;
         }
     }
 
@@ -921,6 +933,22 @@ public class BancoProveedoresBean {
 
     public void setRepresentante(String representante) {
         this.representante = representante;
+    }
+
+    public Boolean getHabilitadoContratos() {
+        return habilitadoContratos;
+    }
+
+    public void setHabilitadoContratos(Boolean habilitadoContratos) {
+        this.habilitadoContratos = habilitadoContratos;
+    }
+
+    public Boolean getHabilitadoOfertas() {
+        return habilitadoOfertas;
+    }
+
+    public void setHabilitadoOfertas(Boolean habilitadoOfertas) {
+        this.habilitadoOfertas = habilitadoOfertas;
     }
 
     public void buscarEmpresa() {

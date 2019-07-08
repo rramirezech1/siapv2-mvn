@@ -55,8 +55,8 @@
                             <f:selectItem itemLabel="Historico" itemValue="2" />
                         </p:selectOneRadio>
                         <p:outputLabel value="2. Tipo de Garantia:"/>
-                        <p:selectOneMenu id="cbTipoGarantia" value="#{consultasSiapBean.tipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}">
-                            <p:ajax event="change" update="outPanel"/>
+                        <p:selectOneMenu id="cbTipoGarantia" value="#{bancoProveedoresBean.currentGarantiaOferente.idTipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}">
+                            <p:ajax event="change"  listener="#{bancoProveedoresBean.tipoGarantiaChange}" update="outPanel"/>
                             <f:selectItem itemLabel="Seleccione un valor"/>
                             <f:selectItems value="#{bancoProveedoresBean.lstTipoGarantias}" var="gar" itemValue="#{gar.idTipoGarantia}" itemLabel="#{gar.descripcionTipoGarantia}"/>
                         </p:selectOneMenu>
@@ -81,8 +81,8 @@
                         </p:column>
                     </p:dataTable>  
                 </p:panel>
-                <p:outputPanel id="outPanel">
-                    <p:panel id="pnlOfertas" styleClass="panelSinBorder" visible="#{consultasSiapBean.tipoGarantia eq 1}">
+                <p:outputPanel id="outPanel" >
+                    <p:panel id="pnlOfertas" styleClass="panelSinBorder" visible="#{bancoProveedoresBean.habilitadoOfertas}">
                         <p:dataTable id="tblOfertas" value="#{consultasSiapBean.lstOfertasGrupo}" var="ofertas" selectionMode="single" rowKey="#{ofertas.grupo}" rows="4"  paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
                             <p:ajax event="rowSelect" listener="#{consultasSiapBean.onRowSelectGrupos}"/>  
@@ -104,7 +104,7 @@
                             </p:column>
                         </p:dataTable>                      
                     </p:panel>
-                    <p:panel id="pnlContratos" styleClass="panelSinBorder" visible="#{consultasSiapBean.tipoGarantia ne 1}">
+                    <p:panel id="pnlContratos" styleClass="panelSinBorder" visible="#{bancoProveedoresBean.habilitadoContratos}">
                         <p:dataTable id="tblContratos" value="#{consultasSiapBean.lstContratosGrupo}" var="contratos" selectionMode="single" rowKey="#{contratos.idContrato}" rows="4"  paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
                             <p:ajax event="rowSelect" listener="#{consultasSiapBean.onRowSelectGrupos}"/>  

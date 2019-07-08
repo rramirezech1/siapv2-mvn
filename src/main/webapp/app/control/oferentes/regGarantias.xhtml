@@ -108,7 +108,7 @@
                     <p:panel id="pnlContratos" styleClass="panelSinBorder" visible="#{consultasSiapBean.habilitadoContratos}">
                         <p:dataTable id="tblContratos" value="#{consultasSiapBean.lstContratosGrupo}" var="contratos" selectionMode="single" rowKey="#{contratos.idContrato}" rows="4"  paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
-                            <p:ajax event="rowSelect" listener="#{consultasSiapBean.onRowSelectGrupos}"/>  
+                            <p:ajax event="rowSelect"  rendered="PF('dlgBuscarEmp').show();"/>  
                             <p:column headerText="ID" width="15">
                                 <p:outputLabel value="#{contratos.idContrato}"/>
                             </p:column>
@@ -180,11 +180,7 @@
                             <p:commandButton value="Seleccionar" icon="buscar" onclick="PF('dlgBuscarEmp').show();" disabled="#{bancoProveedoresBean.deshabilitado}"/>
                         </h:panelGroup>
                         <p:outputLabel value="3. Contratista:"/>
-                        <h:panelGroup>
-                            <p:inputText id="txtContratista"  value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" disabled="true" converterMessage="Necesita seleccionar un contratista"/>
-                            <p:spacer width="15"/>
-                            <p:commandButton value="Empresa" icon="buscar" onclick="PF('dlgBuscarEmp').show();" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                        </h:panelGroup>
+                        <p:inputText id="txtContratista"  value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" disabled="true" converterMessage="Necesita seleccionar un contratista"/>
                         <p:outputLabel value="3. Contrato:"/>
                         <p:inputText id="txtNumContrato" disabled="#{bancoProveedoresBean.deshabilitado}" value="#{bancoProveedoresBean.currentGarantiaOferente.numeroContrato}" />
                         <p:outputLabel value="4. Tipo Garantía:"/>

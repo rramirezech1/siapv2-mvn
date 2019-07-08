@@ -34,8 +34,8 @@ public class ConsultasSiapBoImpl implements ConsultasSiapBo {
     private OfertasDao ofertas;
     
     @Override
-    public List<VwGrupos> getLstGrupos(String usuarioSession) {
-        return grupos.findGruposByUser(usuarioSession);
+    public List<VwGrupos> getLstGrupos(String usuarioSession, Integer tipoGrupo) {
+        return grupos.findGruposByUser(usuarioSession, tipoGrupo);
     }
     
     @Override

@@ -22,7 +22,7 @@
                     <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaGarantia}" update="frmPrincipal pnlGrupos tblGarantias tblGrupos" icon="nuevo" ajax="true"/>
                     <p:menuitem value="Modificar" icon="modificar" action="#{bancoProveedoresBean.nuevaGarantia}" update="pnlGrupos tblGarantias tblGrupos frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
                     <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
-                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia()}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
                     <p:menuitem value="Recuperar" icon="recuperar" action="#{bancoProveedoresBean.nuevaGarantia}" update="pnlGrupos tblGarantias tblGrupos frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
                     <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
                     <f:facet name="options">
@@ -51,12 +51,13 @@
                                  styleClass="form-group ui-panelgrid-blank">
                         <p:outputLabel value="1. Clasificación Grupos:"/>
                         <p:selectOneRadio id="tipoGrupo" value="#{consultasSiapBean.tipoGrupo}">
+                            <p:ajax event="change" listener="#{consultasSiapBean.getLstGruposByTipo}" update="outPanel tblGrupos"/>
                             <f:selectItem itemLabel="Activos" itemValue="1" />
                             <f:selectItem itemLabel="Historico" itemValue="2" />
                         </p:selectOneRadio>
                         <p:outputLabel value="2. Tipo de Garantia:"/>
-                        <p:selectOneMenu id="cbTipoGarantia" value="#{bancoProveedoresBean.currentGarantiaOferente.idTipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}">
-                            <p:ajax event="change"  listener="#{bancoProveedoresBean.tipoGarantiaChange}" update="outPanel"/>
+                        <p:selectOneMenu id="cbTipoGarantia" value="#{consultasSiapBean.tipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}">
+                            <p:ajax event="change"  listener="#{consultasSiapBean.tipoGarantiaChange}" update="outPanel"/>
                             <f:selectItem itemLabel="Seleccione un valor"/>
                             <f:selectItems value="#{bancoProveedoresBean.lstTipoGarantias}" var="gar" itemValue="#{gar.idTipoGarantia}" itemLabel="#{gar.descripcionTipoGarantia}"/>
                         </p:selectOneMenu>
@@ -82,7 +83,7 @@
                     </p:dataTable>  
                 </p:panel>
                 <p:outputPanel id="outPanel" >
-                    <p:panel id="pnlOfertas" styleClass="panelSinBorder" visible="#{bancoProveedoresBean.habilitadoOfertas}">
+                    <p:panel id="pnlOfertas" styleClass="panelSinBorder" visible="#{consultasSiapBean.habilitadoOfertas}">
                         <p:dataTable id="tblOfertas" value="#{consultasSiapBean.lstOfertasGrupo}" var="ofertas" selectionMode="single" rowKey="#{ofertas.grupo}" rows="4"  paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
                             <p:ajax event="rowSelect" listener="#{consultasSiapBean.onRowSelectGrupos}"/>  
@@ -104,7 +105,7 @@
                             </p:column>
                         </p:dataTable>                      
                     </p:panel>
-                    <p:panel id="pnlContratos" styleClass="panelSinBorder" visible="#{bancoProveedoresBean.habilitadoContratos}">
+                    <p:panel id="pnlContratos" styleClass="panelSinBorder" visible="#{consultasSiapBean.habilitadoContratos}">
                         <p:dataTable id="tblContratos" value="#{consultasSiapBean.lstContratosGrupo}" var="contratos" selectionMode="single" rowKey="#{contratos.idContrato}" rows="4"  paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
                             <p:ajax event="rowSelect" listener="#{consultasSiapBean.onRowSelectGrupos}"/>  
@@ -160,6 +161,58 @@
                         </h:outputText>
                     </p:column>
                 </p:dataTable>
+                
+                <p:dialog id="dlgRegGarantia" widgetVar="dlgRegGarantia" header="Registro de Garantia" width="600" height="400">
+                    <f:facet name="header">
+                        <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                        <p:spacer width="10"/>
+                        <h:outputText value="Registro de Garantías"/>
+                    </f:facet>
+
+                    <p:panelGrid columns="4" columnClasses="col3_label,col1,col3_label,col5" style="width: 100%; border:0px none; background-color:transparent;"
+                                 styleClass="form-group ui-panelgrid-blank">
+                        <p:outputLabel value="1. Id:"/>
+                        <p:inputText disabled="true" value="#{bancoProveedoresBean.currentGarantiaOferente.identificadorGarantia}"/>
+                        <p:outputLabel value="2. grupo de Compra:"/>
+                        <h:panelGroup>
+                            <p:inputText id="txtGrupoCompra"  value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" disabled="true" converterMessage="Necesita seleccionar un grupo de compra"/>
+                            <p:spacer width="15"/>
+                            <p:commandButton value="Seleccionar" icon="buscar" onclick="PF('dlgBuscarEmp').show();" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="3. Contratista:"/>
+                        <h:panelGroup>
+                            <p:inputText id="txtContratista"  value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" disabled="true" converterMessage="Necesita seleccionar un contratista"/>
+                            <p:spacer width="15"/>
+                            <p:commandButton value="Empresa" icon="buscar" onclick="PF('dlgBuscarEmp').show();" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="3. Contrato:"/>
+                        <p:inputText id="txtNumContrato" disabled="#{bancoProveedoresBean.deshabilitado}" value="#{bancoProveedoresBean.currentGarantiaOferente.numeroContrato}" />
+                        <p:outputLabel value="4. Tipo Garantía:"/>
+                        <h:panelGrid columns="4">
+                            <p:selectOneMenu id="cbTipoGarantia2" value="#{bancoProveedoresBean.currentGarantiaOferente.idTipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}">
+                                <f:selectItem itemLabel="Seleccione un valor"/>
+                                <f:selectItems value="#{bancoProveedoresBean.lstTipoGarantias}" var="gar" itemValue="#{gar.idTipoGarantia}" itemLabel="#{gar.descripcionTipoGarantia}"/>
+                            </p:selectOneMenu>
+                            <p:spacer width="30"/>
+                            <p:outputLabel value="5. Monto:" for="txtMonto"/>
+                            <p:inputText id="txtMonto" size="10" style="text-align: right;" value="#{bancoProveedoresBean.currentGarantiaOferente.montoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}" converterMessage="Necesita ingresar un número valido"/>
+                        </h:panelGrid>
+                        <p:outputLabel value="6. Vencimiento:"/>
+                        <p:calendar id="cdlVencimiento" pattern="dd/MM/yyyy" size="9" value="#{bancoProveedoresBean.currentGarantiaOferente.fechaVencimiento}" disabled="#{bancoProveedoresBean.deshabilitado}" converterMessage="Necesita ingresar una fecha valida"/> 
+                        <p:outputLabel value="7. Efectiva:"/>
+                        <h:panelGrid columns="4">
+                            <p:selectBooleanCheckbox id="chbEfectiva" value="#{bancoProveedoresBean.currentGarantiaOferente.efectiva}" disabled="#{bancoProveedoresBean.deshabilitado}" onchange="" >
+                                <p:ajax update="cdlEfectiva" listener="#{bancoProveedoresBean.efectivaChange}" /> 
+                            </p:selectBooleanCheckbox>
+                            <p:spacer width="30"/>
+                            <p:outputLabel value="8. Fecha:" />
+                            <p:calendar id="cdlEfectiva" pattern="dd/MM/yyyy" size="9" value="#{bancoProveedoresBean.currentGarantiaOferente.fechaEmision}" disabled="#{bancoProveedoresBean.deshabilitadoEfectiva}" converterMessage="Necesita ingresar una fecha valida"/> 
+                        </h:panelGrid>
+                        <p:outputLabel value="9. Descripción:"/>
+                        <p:inputTextarea id="txaDescripcion" cols="50" value="#{bancoProveedoresBean.currentGarantiaOferente.descripcionGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    </p:panelGrid>
+               </p:dialog>
+                
             </h:form>
         </ui:define>
     </ui:composition>

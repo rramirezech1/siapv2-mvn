@@ -95,8 +95,6 @@ public class BancoProveedoresBean {
     private Boolean deshabilitado = true;
     private Boolean deshabilitadoEliminar = true;
     private Boolean deshabilitadoEfectiva = true;
-    private Boolean habilitadoContratos = false;
-    private Boolean habilitadoOfertas = false;
 
     public BancoProveedoresBean() {
     }
@@ -414,14 +412,14 @@ public class BancoProveedoresBean {
         }
     }
 
-    public void guardarGarantia() {
+    public void guardarGarantia(Integer idTipoGarantia) {
         Boolean valido;
 
         if (currentEmpresa != null) {
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, currentEmpresa.getRazonSocial());
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtNumContrato", InputText.class, currentGarantiaOferente.getNumeroContrato()) && valido;
 
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbTipoGarantia", SelectOneMenu.class, currentGarantiaOferente.getIdTipoGarantia()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbTipoGarantia", SelectOneMenu.class, idTipoGarantia) && valido;
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtMonto", InputText.class, currentGarantiaOferente.getMontoGarantia()) && valido;
             valido = JsfUtil.addErrorStyle("frmPrincipal", "cdlVencimiento", Calendar.class, currentGarantiaOferente.getFechaVencimiento()) && valido;
 
@@ -462,16 +460,6 @@ public class BancoProveedoresBean {
         }
     }
     
-    public void tipoGarantiaChange() {
-        if (this.currentGarantiaOferente.getIdTipoGarantia() == 1) {
-            this.habilitadoContratos = false;
-            this.habilitadoOfertas = true;
-        } else {
-            this.habilitadoContratos = true;
-            this.habilitadoOfertas = false;
-        }
-    }
-
     public void guardarRescision() {
         Boolean valido;
 
@@ -935,22 +923,7 @@ public class BancoProveedoresBean {
         this.representante = representante;
     }
 
-    public Boolean getHabilitadoContratos() {
-        return habilitadoContratos;
-    }
-
-    public void setHabilitadoContratos(Boolean habilitadoContratos) {
-        this.habilitadoContratos = habilitadoContratos;
-    }
-
-    public Boolean getHabilitadoOfertas() {
-        return habilitadoOfertas;
-    }
-
-    public void setHabilitadoOfertas(Boolean habilitadoOfertas) {
-        this.habilitadoOfertas = habilitadoOfertas;
-    }
-
+   
     public void buscarEmpresa() {
         deshabilitado = false;
         if (razonSocial != null && !razonSocial.isEmpty()) {

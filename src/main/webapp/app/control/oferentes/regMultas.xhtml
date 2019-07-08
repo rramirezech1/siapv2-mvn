@@ -75,7 +75,7 @@
                 </p:panel>
                 <p:dataTable id="tblMultas" value="#{bancoProveedoresBean.lstMultas}" var="multa" selectionMode="single" rowKey="#{multa.identificadorMulta}">
                     <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowSelectMultas}"   
-                            update=":frmPrincipal :frmPrincipupdateal:pnlEmpresas" /> 
+                            update=":frmPrincipal :frmPrincipal:pnlEmpresas" /> 
                     <p:column headerText="Contratista">
                         <p:outputLabel value="#{multa.razonSocial}"/>
                     </p:column>

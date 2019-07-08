@@ -22,13 +22,24 @@ public class GruposDaoImpl extends XJdbcTemplate2 implements GruposDao {
     }
 
     @Override
-    public List<VwGrupos> findGruposByUser(String usuarioSession) {
+    public List<VwGrupos> findGruposByUser(String usuarioSession, Integer tipoGrupo) {
+        
+        String condision;
+        condision = "(grupos.estado IN ('I'))";
+        
+        if(tipoGrupo == 1){
+            condision= "(grupos.estado IN ('I'))";
+        }
+        else{
+           condision= "(grupos.estado IN ('F', 'C'))";
+        }
+        
         String sql = " SELECT grupos.grupo, grupos.no_licitacion, pg_convenio.numero_convenio as convenio, grupos.concepto\n" +
                      " FROM grupos INNER JOIN\n" +
                      " pg_convenio ON grupos.convenio = pg_convenio.convenio INNER JOIN\n" +
                      " g_personal ON grupos.personal_id = g_personal.personal_id INNER JOIN\n" +
                      " security_users ON g_personal.personal_id = security_users.personal_id\n" +
-                     " WHERE (grupos.estado NOT IN ('A', 'S', 'E', 'P')) AND (grupos.estado IN ('F', 'C')) AND (security_users.name = '" + usuarioSession +"')";
+                     " WHERE (grupos.estado NOT IN ('A', 'S', 'E', 'P')) AND "+condision+ " AND (security_users.name = '" + usuarioSession +"')";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwGrupos.class));
     }
     

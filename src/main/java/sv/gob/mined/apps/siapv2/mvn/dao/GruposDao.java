@@ -13,7 +13,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGrupos;
  */
 public interface GruposDao {
 
-    public List<VwGrupos> findGruposByUser(String usuarioSession);
+    public List<VwGrupos> findGruposByUser(String usuarioSession, Integer tipoGrupo);
     
     public VwGrupos findById(Integer idGrupo);
 }

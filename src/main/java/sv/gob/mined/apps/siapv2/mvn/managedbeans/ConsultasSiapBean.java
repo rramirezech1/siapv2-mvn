@@ -19,7 +19,6 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGrupos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwContratosGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwOfertasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
-import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 
 
 @Component(value = "consultasSiapBean")
@@ -32,12 +31,10 @@ public class ConsultasSiapBean {
     private VwGrupos currentGrupo;
     private VwOfertasGrupo currentOferta;
     private VwContratosGrupo currentContrato;
-    
-    private Boolean deshabilitado = true;
-    private Boolean deshabilitadoEliminar = true;
-    private Boolean deshabilitadoEfectiva = true;
     private int tipoGrupo;
     private int tipoGarantia;
+    private Boolean habilitadoContratos = false;
+    private Boolean habilitadoOfertas = false;
     
     public ConsultasSiapBean() {
     }
@@ -58,7 +55,7 @@ public class ConsultasSiapBean {
 
       
     public List<VwGrupos> getLstGrupos() {
-        lstGrupos = consultasSiap.getLstGrupos(variablesSession.getUsuario());
+        lstGrupos = consultasSiap.getLstGrupos(variablesSession.getUsuario(), tipoGrupo);
         return lstGrupos;
     }
 
@@ -77,6 +74,11 @@ public class ConsultasSiapBean {
                 this.lstContratosGrupo = consultasSiap.getLstContratosByGrupo(currentGrupo.getGrupo());
             }
         }
+    }
+    
+    public List<VwGrupos> getLstGruposByTipo() {
+        lstGrupos = consultasSiap.getLstGrupos(variablesSession.getUsuario(), tipoGrupo);
+        return lstGrupos;
     }
     
     public List<VwOfertasGrupo> getLstOfertasByGrupo(Integer grupo) {
@@ -124,5 +126,29 @@ public class ConsultasSiapBean {
         this.tipoGarantia = tipoGarantia;
     }
     
-    
+     public void tipoGarantiaChange() {
+        if (this.tipoGarantia == 1) {
+            this.habilitadoContratos = false;
+            this.habilitadoOfertas = true;
+        } else {
+            this.habilitadoContratos = true;
+            this.habilitadoOfertas = false;
+        }
+    }
+
+     public Boolean getHabilitadoContratos() {
+        return habilitadoContratos;
+    }
+
+    public void setHabilitadoContratos(Boolean habilitadoContratos) {
+        this.habilitadoContratos = habilitadoContratos;
+    }
+
+    public Boolean getHabilitadoOfertas() {
+        return habilitadoOfertas;
+    }
+
+    public void setHabilitadoOfertas(Boolean habilitadoOfertas) {
+        this.habilitadoOfertas = habilitadoOfertas;
+    }
 }

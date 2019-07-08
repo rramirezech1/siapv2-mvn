@@ -11,7 +11,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwOfertasGrupo;
 
 public interface ConsultasSiapBo {
           
-   public List<VwGrupos> getLstGrupos(String usuarioSession);
+   public List<VwGrupos> getLstGrupos(String usuarioSession, Integer tipoGrupo);
     
    public VwGrupos getGrupoById(Integer id);
    

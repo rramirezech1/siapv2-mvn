@@ -18,13 +18,9 @@
         </ui:define>
         <ui:define name="content">
             <h:form id="frmPrincipal">
-                <p:menubar>
+               <p:menubar>
                     <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaGarantia}" update="frmPrincipal pnlGrupos tblGarantias tblGrupos" icon="nuevo" ajax="true"/>
-                    <p:menuitem value="Modificar" icon="modificar" action="#{bancoProveedoresBean.nuevaGarantia}" update="pnlGrupos tblGarantias tblGrupos frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
-                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
-                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia()}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                    <p:menuitem value="Recuperar" icon="recuperar" action="#{bancoProveedoresBean.nuevaGarantia}" update="pnlGrupos tblGarantias tblGrupos frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
-                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
+                    
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>
                         <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
@@ -33,14 +29,13 @@
 
                         <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
                             <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
-                        </p:commandButton>
-
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
-                        </p:confirmDialog>    
+                        </p:commandButton>                         
                     </f:facet>
                 </p:menubar>
+                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
+                </p:confirmDialog>   
                 <p:panel id="pnlGrupos" styleClass="panelSinBorder">
                     <f:facet name="header" >
                         <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
@@ -108,7 +103,7 @@
                     <p:panel id="pnlContratos" styleClass="panelSinBorder" visible="#{consultasSiapBean.habilitadoContratos}">
                         <p:dataTable id="tblContratos" value="#{consultasSiapBean.lstContratosGrupo}" var="contratos" selectionMode="single" rowKey="#{contratos.idContrato}" rows="4"  paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
-                            <p:ajax event="rowSelect"  rendered="PF('dlgBuscarEmp').show();"/>  
+                            <p:ajax event="rowSelect" oncomplete="PF('dlgRegGarantia').show()" update="frmPrincipal:dlgRegGarantia"/>
                             <p:column headerText="ID" width="15">
                                 <p:outputLabel value="#{contratos.idContrato}"/>
                             </p:column>
@@ -139,8 +134,7 @@
                 
                 
                 <p:dataTable id="tblGarantias" value="#{bancoProveedoresBean.lstGarantias}" var="garantia" selectionMode="single" rowKey="#{garantia.identificadorGarantia}">
-                    <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowSelectGarantias}"   
-                            update=":frmPrincipal :frmPrincipal:pnlGrupos :frmPrincipal:pnlContratos" />  
+                    <p:ajax event="rowSelect" oncomplete="PF('dlgRegGarantia').show()" update="frmPrincipal:dlgRegGarantia"/>  
                     <p:column headerText="Id" width="40">
                         <p:outputLabel value="#{garantia.identificadorGarantia}"/>
                     </p:column>
@@ -162,53 +156,72 @@
                     </p:column>
                 </p:dataTable>
                 
-                <p:dialog id="dlgRegGarantia" widgetVar="dlgRegGarantia" header="Registro de Garantia" width="600" height="400">
+                 <p:dialog id="dlgRegGarantia" widgetVar="dlgRegGarantia" header="Registro de Garantia" width="625" height="325" >
+                    <p:menubar>
+                        <p:menuitem value="Modificar" icon="modificar" action="#{bancoProveedoresBean.nuevaGarantia}" update="pnlGrupos tblGarantias tblGrupos frmPrincipal" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
+                        <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
+                        <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia()}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                        <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
+                        
+                        <f:facet name="options">
+                           <p:spacer width="15"/>
+                           <p:commandButton value="Cancelar" icon="salir" oncomplete="PF('dlgRegGarantia').hide()">
+                                <p:confirm header="Confirmación" message="¿Esta Seguro que desea cancelar el registro?" icon="pi pi-exclamation-triangle" />
+                           </p:commandButton>                    
+                        </f:facet>
+                    </p:menubar>           
                     <f:facet name="header">
                         <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
                         <p:spacer width="10"/>
-                        <h:outputText value="Registro de Garantías"/>
-                    </f:facet>
-
-                    <p:panelGrid columns="4" columnClasses="col3_label,col1,col3_label,col5" style="width: 100%; border:0px none; background-color:transparent;"
+                        <h:outputText value="Registro de Garantías"/>             
+                    </f:facet>  
+                    <p:panelGrid columns="4" columnClasses="col3_label,col2,col3_label,col2" style="width: 100%; border:0px none; background-color:transparent;"
                                  styleClass="form-group ui-panelgrid-blank">
                         <p:outputLabel value="1. Id:"/>
                         <p:inputText disabled="true" value="#{bancoProveedoresBean.currentGarantiaOferente.identificadorGarantia}"/>
-                        <p:outputLabel value="2. grupo de Compra:"/>
-                        <h:panelGroup>
-                            <p:inputText id="txtGrupoCompra"  value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" disabled="true" converterMessage="Necesita seleccionar un grupo de compra"/>
-                            <p:spacer width="15"/>
-                            <p:commandButton value="Seleccionar" icon="buscar" onclick="PF('dlgBuscarEmp').show();" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                        </h:panelGroup>
-                        <p:outputLabel value="3. Contratista:"/>
-                        <p:inputText id="txtContratista"  value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" disabled="true" converterMessage="Necesita seleccionar un contratista"/>
-                        <p:outputLabel value="3. Contrato:"/>
-                        <p:inputText id="txtNumContrato" disabled="#{bancoProveedoresBean.deshabilitado}" value="#{bancoProveedoresBean.currentGarantiaOferente.numeroContrato}" />
-                        <p:outputLabel value="4. Tipo Garantía:"/>
-                        <h:panelGrid columns="4">
-                            <p:selectOneMenu id="cbTipoGarantia2" value="#{bancoProveedoresBean.currentGarantiaOferente.idTipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}">
-                                <f:selectItem itemLabel="Seleccione un valor"/>
-                                <f:selectItems value="#{bancoProveedoresBean.lstTipoGarantias}" var="gar" itemValue="#{gar.idTipoGarantia}" itemLabel="#{gar.descripcionTipoGarantia}"/>
-                            </p:selectOneMenu>
-                            <p:spacer width="30"/>
-                            <p:outputLabel value="5. Monto:" for="txtMonto"/>
-                            <p:inputText id="txtMonto" size="10" style="text-align: right;" value="#{bancoProveedoresBean.currentGarantiaOferente.montoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}" converterMessage="Necesita ingresar un número valido"/>
-                        </h:panelGrid>
-                        <p:outputLabel value="6. Vencimiento:"/>
-                        <p:calendar id="cdlVencimiento" pattern="dd/MM/yyyy" size="9" value="#{bancoProveedoresBean.currentGarantiaOferente.fechaVencimiento}" disabled="#{bancoProveedoresBean.deshabilitado}" converterMessage="Necesita ingresar una fecha valida"/> 
-                        <p:outputLabel value="7. Efectiva:"/>
-                        <h:panelGrid columns="4">
-                            <p:selectBooleanCheckbox id="chbEfectiva" value="#{bancoProveedoresBean.currentGarantiaOferente.efectiva}" disabled="#{bancoProveedoresBean.deshabilitado}" onchange="" >
-                                <p:ajax update="cdlEfectiva" listener="#{bancoProveedoresBean.efectivaChange}" /> 
-                            </p:selectBooleanCheckbox>
-                            <p:spacer width="30"/>
-                            <p:outputLabel value="8. Fecha:" />
-                            <p:calendar id="cdlEfectiva" pattern="dd/MM/yyyy" size="9" value="#{bancoProveedoresBean.currentGarantiaOferente.fechaEmision}" disabled="#{bancoProveedoresBean.deshabilitadoEfectiva}" converterMessage="Necesita ingresar una fecha valida"/> 
-                        </h:panelGrid>
-                        <p:outputLabel value="9. Descripción:"/>
-                        <p:inputTextarea id="txaDescripcion" cols="50" value="#{bancoProveedoresBean.currentGarantiaOferente.descripcionGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                        <p:outputLabel value="2. Grupo:"/>
+                        <p:inputText id="txtGrupoCompra"  value="#{bancoProveedoresBean.currentGarantiaOferente.identificadorGarantia}" disabled="true" converterMessage="Necesita seleccionar un grupo de compra"/>
+                        <p:outputLabel value="3. Proceso:"/>
+                        <p:inputText id="txtProcesoCompra"  value="#{bancoProveedoresBean.currentGarantiaOferente.identificadorGarantia}" disabled="true" converterMessage="Necesita seleccionar un contratista"/>
+                        <p:outputLabel value="4. Contrato:"/>
+                        <p:inputText id="txtNumContrato" disabled="true" value="#{bancoProveedoresBean.currentGarantiaOferente.numeroContrato}" />
+                        <p:outputLabel value="5. Tipo Garantía:"/>
+                        <p:inputText id="txtTipoGarantia" value="#{bancoProveedoresBean.currentGarantiaOferente.idTipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}" />
+                        <p:outputLabel value="6. Numero Garantía:"/>
+                        <p:inputText id="txtNoGrarantia" value="#{bancoProveedoresBean.currentGarantiaOferente.idTipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}" />                         
                     </p:panelGrid>
-               </p:dialog>
-                
+                    <p:panelGrid columns="2" columnClasses="col2_label,col7" style="width: 100%; border:0px none; background-color:transparent;"
+                                 styleClass="form-group ui-panelgrid-blank">
+                      <p:outputLabel value="7. Contratista:"/>
+                      <p:inputText id="txtContratista"  value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" disabled="true" style="width: 450px"/>   
+                    </p:panelGrid>
+                    <p:panelGrid columns="4" columnClasses="col3_label,col2,col3_label,col2" style="width: 100%; border:0px none; background-color:transparent;"
+                                 styleClass="form-group ui-panelgrid-blank">
+                        <p:outputLabel value="8. Monto:" for="txtMonto"/>
+                        <p:inputText id="txtMonto" style="text-align: right;" value="#{bancoProveedoresBean.currentGarantiaOferente.montoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}" converterMessage="Necesita ingresar un número valido"/>
+                        <p:outputLabel value="9. Fecha Inicio:"/>
+                        <p:calendar id="cdFechaInicio" pattern="dd/MM/yyyy"  value="#{bancoProveedoresBean.currentGarantiaOferente.fechaVencimiento}" disabled="#{bancoProveedoresBean.deshabilitado}" converterMessage="Necesita ingresar una fecha valida"/> 
+                        <p:outputLabel value="9. Fecha Fin:"/>
+                        <p:calendar id="cdFechaFin" pattern="dd/MM/yyyy"  value="#{bancoProveedoresBean.currentGarantiaOferente.fechaVencimiento}" disabled="#{bancoProveedoresBean.deshabilitado}" converterMessage="Necesita ingresar una fecha valida"/> 
+                        <p:outputLabel value="9. Fecha Recepcion:"/>
+                        <p:calendar id="cdFechaRecepcion" pattern="dd/MM/yyyy"  value="#{bancoProveedoresBean.currentGarantiaOferente.fechaVencimiento}" disabled="#{bancoProveedoresBean.deshabilitado}" converterMessage="Necesita ingresar una fecha valida"/> 
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" columnClasses="col3_label,col7" style="width: 100%; border:0px none; background-color:transparent;"
+                                 styleClass="form-group ui-panelgrid-blank">                    
+                        <p:outputLabel value="8. Observaciones:"/>
+                        <p:inputTextarea id="txaDescripcion" cols="71" value="#{bancoProveedoresBean.currentGarantiaOferente.descripcionGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    </p:panelGrid>
+                    <h:panelGrid columns="5" columnClasses="col3_label,col1,col1,col2_label,col1" style="width: 60%; border:0px none; background-color:transparent;"
+                                 styleClass="form-group ui-panelgrid-blank">  
+                        <p:outputLabel value="9. Efectiva:"/>
+                        <p:spacer width="1"/>
+                        <p:selectBooleanCheckbox id="chbEfectiva" value="#{bancoProveedoresBean.currentGarantiaOferente.efectiva}" disabled="#{bancoProveedoresBean.deshabilitado}" onchange="" >
+                                <p:ajax update="cdlEfectiva" listener="#{bancoProveedoresBean.efectivaChange}" /> 
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel value="10. Fecha:" />
+                        <p:calendar id="cdlEfectiva" pattern="dd/MM/yyyy" size="9" value="#{bancoProveedoresBean.currentGarantiaOferente.fechaEmision}" disabled="#{bancoProveedoresBean.deshabilitadoEfectiva}" converterMessage="Necesita ingresar una fecha valida"/> 
+                    </h:panelGrid>
+               </p:dialog>                
             </h:form>
         </ui:define>
     </ui:composition>

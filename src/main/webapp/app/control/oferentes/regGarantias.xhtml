@@ -103,7 +103,7 @@
                     <p:panel id="pnlContratos" styleClass="panelSinBorder" visible="#{consultasSiapBean.habilitadoContratos}">
                         <p:dataTable id="tblContratos" value="#{consultasSiapBean.lstContratosGrupo}" var="contratos" selectionMode="single" rowKey="#{contratos.idContrato}" rows="4"  paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" paginatorPosition="bottom">
-                            <p:ajax event="rowSelect" oncomplete="PF('dlgRegGarantia').show()" update="frmPrincipal:dlgRegGarantia"/>
+                            <p:ajax event="rowSelect" listener="#{consultasSiapBean.onRowSelectGrupos}" oncomplete="PF('dlgRegGarantia').show()" update="frmPrincipal:dlgRegGarantia"/>
                             <p:column headerText="ID" width="15">
                                 <p:outputLabel value="#{contratos.idContrato}"/>
                             </p:column>

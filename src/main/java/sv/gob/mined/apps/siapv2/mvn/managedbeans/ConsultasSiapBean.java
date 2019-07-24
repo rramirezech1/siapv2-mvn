@@ -35,7 +35,7 @@ public class ConsultasSiapBean {
     private int tipoGarantia;
     private Boolean habilitadoContratos = false;
     private Boolean habilitadoOfertas = false;
-    
+        
     public ConsultasSiapBean() {
     }
     
@@ -67,6 +67,7 @@ public class ConsultasSiapBean {
         VwGrupos grupo = consultasSiap.getGrupoById(((VwGrupos) event.getObject()).getGrupo());
         if (grupo != null) {
             currentGrupo = grupo;
+            
             if(tipoGarantia==1){
                 this.lstOfertasGrupo = consultasSiap.getLstOfertasByGrupo(currentGrupo.getGrupo());
             }

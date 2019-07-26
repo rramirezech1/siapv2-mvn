@@ -97,6 +97,38 @@ public class ValidacionUsuarioBean {
         this.dui = dui;
     }
 
+    public String encriptaPassword(String pass){
+        String str1 = "CGI";
+        String str2 = "";
+    
+        int m = 0;
+        int n = 0;
+
+        int j = 0;
+        int k = str1.length() - 1;
+
+        for (int i = 0; i < pass.length(); i++)
+        {
+          m = pass.charAt(i);
+          n = str1.charAt(j);
+
+          m += n;
+
+
+          while (m > 255) {
+            m -= 255;
+          }
+          char c = (char)m;
+
+          str2 = str2 + c;
+
+          j++;
+          if (j > k)
+            j = 0;
+        }
+        return str2;
+    }
+    
     /*public void buscarUsuarioPreguntas() {
         mostrarRecuperarCont = Boolean.TRUE;
         if (dui.replace("_", "").length() >= 9) {
@@ -188,6 +220,7 @@ public class ValidacionUsuarioBean {
 
     public void setClaveDeAcceso(String claveDeAcceso) {
         this.claveDeAcceso = claveDeAcceso;
+        //this.claveDeAcceso = encriptaPassword(claveDeAcceso);
     }
 
     public String getPerfil() {

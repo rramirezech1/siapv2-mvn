@@ -20,6 +20,7 @@ public class GarantiasOferente implements PersistenciaDao {
     private Integer idFormaGarantia;
     private Integer idDocumento;
     private Integer grupoSiap;
+    private String noLicitacion;
     private String descripcionGarantia;
     private Date fechaPresentacion;
     private Date fechaEmision;
@@ -205,6 +206,15 @@ public class GarantiasOferente implements PersistenciaDao {
         this.grupoSiap = grupoSiap;
     }
 
+    public String getNoLicitacion() {
+        return noLicitacion;
+    }
+
+    public void setNoLicitacion(String noLicitacion) {
+        this.noLicitacion = noLicitacion;
+    }
+
+    
     public Date getFechaPresentacion() {
         return fechaPresentacion;
     }

@@ -24,7 +24,7 @@ public class OfertasDaoImpl extends XJdbcTemplate2 implements OfertasDao {
     @Override
     public List<VwOfertasGrupo> findOfertasByGrupo(Integer grupo) {
         String sql = " SELECT recepcion_ofertas.grupo, recepcion_ofertas.id_proveedor as idProveedor, proveedores.razon_social as razonSocial, proveedores.identificadorPrimarioOferente, recepcion_ofertas.fecha_recepcion as fechaRecepcion, \n" +
-                     " recepcion_ofertas.plazo_entrega as plazoEntrega, recepcion_ofertas.vence_oferta as fechaVencimiento \n" +
+                     " recepcion_ofertas.plazo_entrega as plazoEntrega, recepcion_ofertas.vence_oferta as fechaVencimiento, recepcion_ofertas.idOferta \n" +
                      " FROM recepcion_ofertas INNER JOIN\n" +
                      " proveedores ON recepcion_ofertas.id_proveedor = proveedores.id_proveedor WHERE(recepcion_ofertas.grupo = " + grupo +")";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwOfertasGrupo.class));
@@ -33,7 +33,7 @@ public class OfertasDaoImpl extends XJdbcTemplate2 implements OfertasDao {
     @Override
     public VwOfertasGrupo findByGrupoIdProveedor(Integer grupo, Integer idProveedor){
         String sql = " SELECT recepcion_ofertas.grupo, recepcion_ofertas.id_proveedor AS idProveedor, proveedores.razon_social AS razonSocial, recepcion_ofertas.fecha_recepcion AS fechaRecepcion, recepcion_ofertas.plazo_entrega AS plazoEntrega, \n" +
-                     " recepcion_ofertas.vence_oferta AS fechaVencimiento, proveedores.identificadorPrimarioOferente\n" +
+                     " recepcion_ofertas.vence_oferta AS fechaVencimiento, proveedores.identificadorPrimarioOferente, recepcion_ofertas.idOferta\n" +
                      " FROM recepcion_ofertas INNER JOIN\n" +
                      " proveedores ON recepcion_ofertas.id_proveedor = proveedores.id_proveedor\n" +
                      " WHERE (recepcion_ofertas.grupo = "+grupo+") AND (recepcion_ofertas.id_proveedor = " +idProveedor+")";

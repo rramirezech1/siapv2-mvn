@@ -82,6 +82,7 @@ public class ConsultasSiapBean {
         VwOfertasGrupo oferta = consultasSiap.getOfertaByGrupoOferente(((VwOfertasGrupo) event.getObject()).getGrupo(), ((VwOfertasGrupo) event.getObject()).getIdProveedor());
         if (oferta != null) {
             currentOferta = oferta;
+            trasladoAtribBean();
         }
     }
     
@@ -89,6 +90,7 @@ public class ConsultasSiapBean {
         VwContratosGrupo contrato = consultasSiap.getContratoByIdContrato(((VwContratosGrupo) event.getObject()).getIdContrato());
         if (contrato != null) {
             currentContrato = contrato;
+            trasladoAtribBean();
         }
     }
     
@@ -96,8 +98,15 @@ public class ConsultasSiapBean {
         FacesContext context = FacesContext.getCurrentInstance();
         BancoProveedoresBean bp = context.getApplication().evaluateExpressionGet(context, "#{bancoProveedoresBean}", BancoProveedoresBean.class);
         bp.getCurrentGarantiaOferente().setIdTipoGarantia(this.tipoGarantia);
-                
+        bp.getCurrentGarantiaOferente().setGrupoSiap(currentGrupo.getGrupo());
+        bp.getCurrentGarantiaOferente().setNoLicitacion(currentGrupo.getNo_licitacion());
         
+        if(tipoGarantia==1){
+            bp.getCurrentGarantiaOferente().setIdDocumento(currentOferta.getIdOferta());
+        }else{
+            bp.getCurrentGarantiaOferente().setIdDocumento(currentContrato.getIdContrato());
+        }
+         
     }
     
     public List<VwGrupos> getLstGruposByTipo() {

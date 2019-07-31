@@ -14,6 +14,7 @@ public class VwOfertasGrupo {
 
     private Integer grupo;
     private Integer idProveedor;
+    private Integer idOferta;
     private String razonSocial;
     private Date fechaRecepcion;
     private Integer plazoEntrega;
@@ -71,7 +72,14 @@ public class VwOfertasGrupo {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    
+    public Integer getIdOferta() {
+        return idOferta;
+    }
+
+    public void setIdOferta(Integer idOferta) {
+        this.idOferta = idOferta;
+    }
+
     public Integer getIdentificadorPrimarioOferente() {
         return identificadorPrimarioOferente;
     }

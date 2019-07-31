@@ -15,8 +15,12 @@ public interface ConsultasSiapBo {
     
    public VwGrupos getGrupoById(Integer id);
    
-   public List<VwOfertasGrupo> getLstOfertasByGrupo (Integer grupo);
+   public VwOfertasGrupo getOfertaByGrupoOferente (Integer grupo, Integer idProveedor);
    
+   public VwContratosGrupo getContratoByIdContrato (Integer idContrato);
+   
+   public List<VwOfertasGrupo> getLstOfertasByGrupo (Integer grupo);
+      
    public List<VwContratosGrupo> getLstContratosByGrupo (Integer grupo);
    
 }

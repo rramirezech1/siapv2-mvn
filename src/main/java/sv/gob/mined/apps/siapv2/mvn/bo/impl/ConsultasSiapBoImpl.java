@@ -43,6 +43,16 @@ public class ConsultasSiapBoImpl implements ConsultasSiapBo {
         return grupos.findById(id);
     }
     
+    @Override
+    public VwOfertasGrupo getOfertaByGrupoOferente(Integer grupo, Integer idProveedor) {
+        return ofertas.findByGrupoIdProveedor(grupo, idProveedor);
+    }
+    
+    @Override
+    public VwContratosGrupo getContratoByIdContrato(Integer id) {
+        return contratos.findById(id);
+    }
+    
      @Override
     public List<VwOfertasGrupo> getLstOfertasByGrupo(Integer grupo) {
         return ofertas.findOfertasByGrupo(grupo);

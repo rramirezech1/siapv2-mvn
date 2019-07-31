@@ -15,5 +15,6 @@ public interface OfertasDao {
 
     public List<VwOfertasGrupo> findOfertasByGrupo(Integer grupo);
     
-    public VwOfertasGrupo findById(Integer idOferta);
+    public VwOfertasGrupo findByGrupoIdProveedor(Integer grupo, Integer idProveedor);
+    
 }

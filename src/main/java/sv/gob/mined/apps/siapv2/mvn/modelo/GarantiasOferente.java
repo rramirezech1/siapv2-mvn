@@ -17,11 +17,15 @@ public class GarantiasOferente implements PersistenciaDao {
     private Integer identificadorGarantia;
     private Integer identificadorPrimarioOferente;
     private Integer idTipoGarantia;
-    private String numeroContrato;
+    private Integer idFormaGarantia;
+    private Integer idDocumento;
+    private Integer grupoSiap;
     private String descripcionGarantia;
+    private Date fechaPresentacion;
     private Date fechaEmision;
     private Date fechaVencimiento;
     private BigDecimal montoGarantia;
+    private Date fechaDevolucion;
     private Integer estadoGarantia;
     private Date fechaDeInsercion;
     private Date fechaDeModificacion;
@@ -160,14 +164,6 @@ public class GarantiasOferente implements PersistenciaDao {
         return "sv.gob.mined.apps.siapv2.mvn.modelo.GarantiasOferente[ identificadorGarantia=" + identificadorGarantia + " ]";
     }
 
-    public String getNumeroContrato() {
-        return numeroContrato;
-    }
-
-    public void setNumeroContrato(String numeroContrato) {
-        this.numeroContrato = numeroContrato;
-    }
-
     @Override
     public Integer getEstadoDeEliminacion() {
         return estadoDeEliminacion;
@@ -185,6 +181,46 @@ public class GarantiasOferente implements PersistenciaDao {
         this.descripcionGarantia = descripcionGarantia;
     }
 
+    public Integer getIdFormaGarantia() {
+        return idFormaGarantia;
+    }
+
+    public void setIdFormaGarantia(Integer idFormaGarantia) {
+        this.idFormaGarantia = idFormaGarantia;
+    }
+
+    public Integer getIdDocumento() {
+        return idDocumento;
+    }
+
+    public void setIdDocumento(Integer idDocumento) {
+        this.idDocumento = idDocumento;
+    }
+
+    public Integer getGrupoSiap() {
+        return grupoSiap;
+    }
+
+    public void setGrupoSiap(Integer grupoSiap) {
+        this.grupoSiap = grupoSiap;
+    }
+
+    public Date getFechaPresentacion() {
+        return fechaPresentacion;
+    }
+
+    public void setFechaPresentacion(Date fechaPresentacion) {
+        this.fechaPresentacion = fechaPresentacion;
+    }
+
+    public Date getFechaDevolucion() {
+        return fechaDevolucion;
+    }
+
+    public void setFechaDevolucion(Date fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
+    }
+    
     public Boolean getEfectiva() {
         return efectiva;
     }
@@ -206,7 +242,7 @@ public class GarantiasOferente implements PersistenciaDao {
 
     @Override
     public Object[] getDatosInsert() {
-        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, numeroContrato, fechaEmision, fechaVencimiento, montoGarantia, estadoGarantia, descripcionGarantia, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name};
+        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name};
     }
 
     @Override
@@ -217,6 +253,6 @@ public class GarantiasOferente implements PersistenciaDao {
 
     @Override
     public Object[] getDatosUpdate() {
-        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, numeroContrato, fechaEmision, fechaVencimiento, montoGarantia, estadoGarantia, descripcionGarantia, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name, identificadorGarantia};
+        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name, identificadorGarantia};
     }
 }

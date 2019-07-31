@@ -34,7 +34,13 @@ public class ContratosDaoImpl extends XJdbcTemplate2 implements ContratosDao {
     
     @Override
     public VwContratosGrupo findById(Integer idContrato) {
-        String sql = "SELECT grupos.grupo, grupos.no_licitacion, pg_convenio.numero_convenio, grupos.concepto FROM Grupos WHERE grupo = " + idContrato;
+        String sql = " SELECT contratos_ordenes_compras.id_contrato AS idContrato, contratos_ordenes_compras.numero_contrato AS numeroContrato, proveedores.razon_social AS razonSocial, \n" +
+                     " contratos_ordenes_compras.fecha_emision AS fechaEmision, contratos_ordenes_compras.inicio_vigencia AS fechaInicioVigencia, contratos_ordenes_compras.fin_vigencia AS fechaFinVigencia, \n" +
+                     " contratos_ordenes_compras.valor AS montoContrato, proveedores.identificadorPrimarioOferente\n" +
+                     " FROM contratos_ordenes_compras INNER JOIN\n" +
+                     " proveedores ON contratos_ordenes_compras.id_proveedor = proveedores.id_proveedor\n" +
+                     " WHERE contratos_ordenes_compras.id_contrato = " + idContrato;
+        
         List<VwContratosGrupo> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwContratosGrupo.class));
         if (lst.isEmpty()) {
             return null;

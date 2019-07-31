@@ -31,9 +31,13 @@ public class OfertasDaoImpl extends XJdbcTemplate2 implements OfertasDao {
     }
     
     @Override
-    public VwOfertasGrupo findById(Integer idOferta) {
-        // No funciona
-        String sql = "SELECT grupos.grupo, grupos.no_licitacion, pg_convenio.numero_convenio, grupos.concepto FROM Grupos WHERE grupo = " + idOferta;
+    public VwOfertasGrupo findByGrupoIdProveedor(Integer grupo, Integer idProveedor){
+        String sql = " SELECT recepcion_ofertas.grupo, recepcion_ofertas.id_proveedor AS idProveedor, proveedores.razon_social AS razonSocial, recepcion_ofertas.fecha_recepcion AS fechaRecepcion, recepcion_ofertas.plazo_entrega AS plazoEntrega, \n" +
+                     " recepcion_ofertas.vence_oferta AS fechaVencimiento, proveedores.identificadorPrimarioOferente\n" +
+                     " FROM recepcion_ofertas INNER JOIN\n" +
+                     " proveedores ON recepcion_ofertas.id_proveedor = proveedores.id_proveedor\n" +
+                     " WHERE (recepcion_ofertas.grupo = "+grupo+") AND (recepcion_ofertas.id_proveedor = " +idProveedor+")";
+        
         List<VwOfertasGrupo> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwOfertasGrupo.class));
         if (lst.isEmpty()) {
             return null;

@@ -417,7 +417,7 @@ public class BancoProveedoresBean {
 
         if (currentEmpresa != null) {
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, currentEmpresa.getRazonSocial());
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtNumContrato", InputText.class, currentGarantiaOferente.getNumeroContrato()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtDocumento", InputText.class, currentGarantiaOferente.getIdDocumento()) && valido;
 
             valido = JsfUtil.addErrorStyle("frmPrincipal", "cbTipoGarantia", SelectOneMenu.class, idTipoGarantia) && valido;
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtMonto", InputText.class, currentGarantiaOferente.getMontoGarantia()) && valido;
@@ -451,6 +451,7 @@ public class BancoProveedoresBean {
         }
     }
 
+        
     public void efectivaChange() {
         if (this.currentGarantiaOferente.getEfectiva() == Boolean.TRUE) {
             this.deshabilitadoEfectiva = false;

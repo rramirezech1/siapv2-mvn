@@ -8,6 +8,7 @@ package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,28 @@ public class ConsultasSiapBean {
                 this.lstContratosGrupo = consultasSiap.getLstContratosByGrupo(currentGrupo.getGrupo());
             }
         }
+    }
+    
+    public void onRowSelectOferta(SelectEvent event) {
+        VwOfertasGrupo oferta = consultasSiap.getOfertaByGrupoOferente(((VwOfertasGrupo) event.getObject()).getGrupo(), ((VwOfertasGrupo) event.getObject()).getIdProveedor());
+        if (oferta != null) {
+            currentOferta = oferta;
+        }
+    }
+    
+     public void onRowSelectContrato(SelectEvent event) {
+        VwContratosGrupo contrato = consultasSiap.getContratoByIdContrato(((VwContratosGrupo) event.getObject()).getIdContrato());
+        if (contrato != null) {
+            currentContrato = contrato;
+        }
+    }
+    
+    public void trasladoAtribBean(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        BancoProveedoresBean bp = context.getApplication().evaluateExpressionGet(context, "#{bancoProveedoresBean}", BancoProveedoresBean.class);
+        bp.getCurrentGarantiaOferente().setIdTipoGarantia(this.tipoGarantia);
+                
+        
     }
     
     public List<VwGrupos> getLstGruposByTipo() {

@@ -103,8 +103,12 @@ public class ConsultasSiapBean {
         
         if(tipoGarantia==1){
             bp.getCurrentGarantiaOferente().setIdDocumento(currentOferta.getIdOferta());
+            bp.getCurrentGarantiaOferente().setIdentificadorPrimarioOferente(currentOferta.getIdentificadorPrimarioOferente());
+            bp.getCurrentEmpresa().setRazonSocial(currentOferta.getRazonSocial());
         }else{
             bp.getCurrentGarantiaOferente().setIdDocumento(currentContrato.getIdContrato());
+            bp.getCurrentGarantiaOferente().setIdentificadorPrimarioOferente(currentContrato.getIdentificadorPrimarioOferente());
+            bp.getCurrentGarantiaOferente().setRazonSocial(currentContrato.getRazonSocial());
         }
          
     }

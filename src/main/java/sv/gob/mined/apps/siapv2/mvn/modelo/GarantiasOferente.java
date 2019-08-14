@@ -34,6 +34,7 @@ public class GarantiasOferente implements PersistenciaDao {
     private Integer estadoDeEliminacion;
     private String name;
     private Boolean efectiva = false;
+    private String razonSocial;
 
     public GarantiasOferente() {
     }
@@ -243,6 +244,16 @@ public class GarantiasOferente implements PersistenciaDao {
             estadoGarantia = 0;
         }
     }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+    
+    
 
     @Override
     public String generarInsertSQL() {

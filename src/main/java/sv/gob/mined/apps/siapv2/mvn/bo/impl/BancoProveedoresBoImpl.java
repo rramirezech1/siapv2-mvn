@@ -13,6 +13,8 @@ import sv.gob.mined.apps.siapv2.mvn.dao.CalificacionContratoDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.EmpresaDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.CatalogoFaltasDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.GarantiasOferenteDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.TipoGarantiasDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.FormaGarantiaDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.MultasOferenteDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.PersonaDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.RescisionesOferenteDao;
@@ -32,6 +34,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.RescisionesOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SectorEconomico;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoCalificacionContratista;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoGarantias;
+import sv.gob.mined.apps.siapv2.mvn.modelo.FormaGarantia;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
@@ -54,6 +57,10 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     private EmpresaDao empresa;
     @Autowired
     private CatalogoFaltasDao tipoFaltas;
+    @Autowired
+    private TipoGarantiasDao tipoGarantia;
+    @Autowired
+    private FormaGarantiaDao formaGarantia;    
     @Autowired
     private CalificacionContratoDao calificacionContrato;
     @Autowired
@@ -224,9 +231,14 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
 
     @Override
     public List<TipoGarantias> getLstTipoGarantias() {
-        return tipoFaltas.findTipoGarantias();
+        return tipoGarantia.findTipoGarantias();
     }
 
+    @Override
+    public List<FormaGarantia> getLstFormaGarantia() {
+        return formaGarantia.findFormaGarantia();
+    }
+    
     @Override
     public List<TipoRescision> getLstTipoRescisiones() {
         return tipoFaltas.findTipoRescision();

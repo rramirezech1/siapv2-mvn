@@ -44,7 +44,7 @@
                     <p:graphicImage url="/resources/images/desconectado.png"  /> 
                 </h:panelGrid>
 
-                <p:commandButton id="confirmBackToLogin" type="button" value="Iniciar sesión" action="inicio.xhtml"/>
+                <p:commandButton id="confirmBackToLogin" type="button" value="Iniciar sesión" onclick="window.location = '#{request.contextPath}/index.jsp';"/>
             </h:panelGrid>
         </p:dialog>
 

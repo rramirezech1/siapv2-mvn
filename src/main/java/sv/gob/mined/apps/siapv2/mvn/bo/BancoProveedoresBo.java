@@ -13,6 +13,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.Persona;
 import sv.gob.mined.apps.siapv2.mvn.modelo.RescisionesOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoCalificacionContratista;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoGarantias;
+import sv.gob.mined.apps.siapv2.mvn.modelo.FormaGarantia;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
@@ -48,6 +49,8 @@ public interface BancoProveedoresBo {
     public List<TipoMultas> getLstTipoMultas();
     
     public List<TipoGarantias> getLstTipoGarantias();
+    
+    public List<FormaGarantia> getLstFormaGarantia();
 
     public List<TipoRescision> getLstTipoRescisiones();
     

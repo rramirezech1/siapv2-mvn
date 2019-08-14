@@ -40,6 +40,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.RescisionesOferente;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SectorEconomico;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoCalificacionContratista;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoGarantias;
+import sv.gob.mined.apps.siapv2.mvn.modelo.FormaGarantia;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
@@ -92,6 +93,7 @@ public class BancoProveedoresBean {
     private List<VwTrasladoEmpresa> lstTrasladoEmpresa;
     private List<SectorEconomico> lstSectorEconomico;
     private List<SectorEconomico> lstSubSector;
+    private List<FormaGarantia> lstFormaGarantia;
     private Boolean deshabilitado = true;
     private Boolean deshabilitadoEliminar = true;
     private Boolean deshabilitadoEfectiva = true;
@@ -115,6 +117,10 @@ public class BancoProveedoresBean {
 
     public List<TipoGarantias> getLstTipoGarantias() {
         return bancoProv.getLstTipoGarantias();
+    }
+    
+    public List<FormaGarantia> getLstFormaGarantia() {
+        return bancoProv.getLstFormaGarantia();
     }
 
     public List<TipoRescision> getLstTipoRescisiones() {
@@ -219,7 +225,7 @@ public class BancoProveedoresBean {
 
     public List<Empresa> getLstEmpresa() {
         if (lstEmpresa == null) {
-            lstEmpresa = new ArrayList<Empresa>();
+            lstEmpresa = new ArrayList<>();
         }
         return lstEmpresa;
     }
@@ -412,17 +418,17 @@ public class BancoProveedoresBean {
         }
     }
 
-    public void guardarGarantia(Integer idTipoGarantia) {
+    public void guardarGarantia() {
         Boolean valido;
 
-        if (currentEmpresa != null) {
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, currentEmpresa.getRazonSocial());
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtDocumento", InputText.class, currentGarantiaOferente.getIdDocumento()) && valido;
-
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbTipoGarantia", SelectOneMenu.class, idTipoGarantia) && valido;
+        if (currentGarantiaOferente != null) {
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtIdDocumento", InputText.class, currentGarantiaOferente.getIdDocumento());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbShowTipoGarantia", SelectOneMenu.class, currentGarantiaOferente.getIdTipoGarantia()) && valido;
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtMonto", InputText.class, currentGarantiaOferente.getMontoGarantia()) && valido;
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "cdlVencimiento", Calendar.class, currentGarantiaOferente.getFechaVencimiento()) && valido;
-
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cdFechaInicio", Calendar.class, currentGarantiaOferente.getFechaEmision()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cdFechaFin", Calendar.class, currentGarantiaOferente.getFechaVencimiento()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cdFechaRecepcion", Calendar.class, currentGarantiaOferente.getFechaPresentacion()) && valido;
+            
             if (currentGarantiaOferente.getEfectiva() == Boolean.TRUE) {
                 valido = JsfUtil.addErrorStyle("frmPrincipal", "cdlEfectiva", Calendar.class, currentGarantiaOferente.getFechaEmision()) && valido;
             }

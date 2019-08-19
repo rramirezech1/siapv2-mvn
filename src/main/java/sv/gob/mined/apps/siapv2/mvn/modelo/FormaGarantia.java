@@ -11,43 +11,46 @@ package sv.gob.mined.apps.siapv2.mvn.modelo;
  */
 public class FormaGarantia {
     
-    private Integer id_forma_garantia;
-    private String codigo_forma_garantia;
-    private String descripcion_forma_garantia;
-    private Integer estado_forma_garantia;
+    private Integer idFormaGarantia;
+    private String codigoFormaGarantia;
+    private String descripcionFormaGarantia;
+    private Integer estadoFormaGarantia;
     
     public FormaGarantia(){
     }
 
-    public Integer getId_forma_garantia() {
-        return id_forma_garantia;
+    public Integer getIdFormaGarantia() {
+        return idFormaGarantia;
     }
 
-    public void setId_forma_garantia(Integer id_forma_garantia) {
-        this.id_forma_garantia = id_forma_garantia;
+    public void setIdFormaGarantia(Integer idFormaGarantia) {
+        this.idFormaGarantia = idFormaGarantia;
     }
 
-    public String getCodigo_forma_garantia() {
-        return codigo_forma_garantia;
+    public String getCodigoFormaGarantia() {
+        return codigoFormaGarantia;
     }
 
-    public void setCodigo_forma_garantia(String codigo_forma_garantia) {
-        this.codigo_forma_garantia = codigo_forma_garantia;
+    public void setCodigoFormaGarantia(String codigoFormaGarantia) {
+        this.codigoFormaGarantia = codigoFormaGarantia;
     }
 
-    public String getDescripcion_forma_garantia() {
-        return descripcion_forma_garantia;
+    public String getDescripcionFormaGarantia() {
+        return descripcionFormaGarantia;
     }
 
-    public void setDescripcion_forma_garantia(String descripcion_forma_garantia) {
-        this.descripcion_forma_garantia = descripcion_forma_garantia;
+    public void setDescripcionFormaGarantia(String descripcionFormaGarantia) {
+        this.descripcionFormaGarantia = descripcionFormaGarantia;
     }
 
-    public Integer getEstado_forma_garantia() {
-        return estado_forma_garantia;
+   
+    public Integer getEstadoFormaGarantia() {
+        return estadoFormaGarantia;
     }
 
-    public void setEstado_forma_garantia(Integer estado_forma_garantia) {
-        this.estado_forma_garantia = estado_forma_garantia;
-    }    
+    public void setEstadoFormaGarantia(Integer estadoFormaGarantia) {
+        this.estadoFormaGarantia = estadoFormaGarantia;
+    }
+
+    
 }

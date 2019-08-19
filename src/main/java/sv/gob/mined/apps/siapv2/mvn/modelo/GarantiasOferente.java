@@ -257,8 +257,8 @@ public class GarantiasOferente implements PersistenciaDao {
 
     @Override
     public String generarInsertSQL() {
-        return "INSERT INTO dbo.GarantiasOferente (identificadorPrimarioOferente, idTipoGarantia, numeroContrato, fechaEmision, fechaVencimiento, montoGarantia, estadoGarantia, descripcionGarantia, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO dbo.GarantiasOferente (identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name) "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     @Override
@@ -268,7 +268,7 @@ public class GarantiasOferente implements PersistenciaDao {
 
     @Override
     public String generarUpdateSQL() {
-        return "UPDATE dbo.GarantiasOferente SET identificadorPrimarioOferente=?, idTipoGarantia=?, numeroContrato=?, fechaEmision=?, fechaVencimiento=?, montoGarantia=?, estadoGarantia=?, descripcionGarantia=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=?  "
+        return "UPDATE dbo.GarantiasOferente SET identificadorPrimarioOferente=?, idTipoGarantia=?, idFormaGarantia=?, idDocumento=?, grupoSiap=?, descripcionGarantia=?, fechaPresentacion=?, fechaEmision=?, fechaVencimiento=?, montoGarantia=?, fechaDevolucion=?, estadoGarantia=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=?  "
                 + " WHERE identificadorGarantia=?";
     }
 

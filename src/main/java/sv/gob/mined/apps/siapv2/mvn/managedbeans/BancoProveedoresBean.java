@@ -422,27 +422,28 @@ public class BancoProveedoresBean {
         Boolean valido;
 
         if (currentGarantiaOferente != null) {
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtIdDocumento", InputText.class, currentGarantiaOferente.getIdDocumento());
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbShowTipoGarantia", SelectOneMenu.class, currentGarantiaOferente.getIdTipoGarantia()) && valido;
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtMonto", InputText.class, currentGarantiaOferente.getMontoGarantia()) && valido;
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "cdFechaInicio", Calendar.class, currentGarantiaOferente.getFechaEmision()) && valido;
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "cdFechaFin", Calendar.class, currentGarantiaOferente.getFechaVencimiento()) && valido;
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "cdFechaRecepcion", Calendar.class, currentGarantiaOferente.getFechaPresentacion()) && valido;
+            valido = JsfUtil.addErrorStyle("frmDialog", "txtIdDocumento", InputText.class, currentGarantiaOferente.getIdDocumento());
+            valido = JsfUtil.addErrorStyle("frmDialog", "cbFormaGarantia", SelectOneMenu.class, currentGarantiaOferente.getIdFormaGarantia()) && valido;
+            valido = JsfUtil.addErrorStyle("frmDialog", "txtMonto", InputText.class, currentGarantiaOferente.getMontoGarantia()) && valido;
+            valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaInicio", Calendar.class, currentGarantiaOferente.getFechaEmision()) && valido;
+            valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaFin", Calendar.class, currentGarantiaOferente.getFechaVencimiento()) && valido;
+            valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaRecepcion", Calendar.class, currentGarantiaOferente.getFechaPresentacion()) && valido;
             
             if (currentGarantiaOferente.getEfectiva() == Boolean.TRUE) {
-                valido = JsfUtil.addErrorStyle("frmPrincipal", "cdlEfectiva", Calendar.class, currentGarantiaOferente.getFechaEmision()) && valido;
+                valido = JsfUtil.addErrorStyle("frmDialog", "cdlEfectiva", Calendar.class, currentGarantiaOferente.getFechaEmision()) && valido;
             }
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txaDescripcion", InputTextarea.class, currentGarantiaOferente.getDescripcionGarantia()) && valido;
+            //valido = JsfUtil.addErrorStyle("frmDialog", "txaDescripcion", InputTextarea.class, currentGarantiaOferente.getDescripcionGarantia()) && valido;
         } else {
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtContratista", InputText.class, null);
+            valido = JsfUtil.addErrorStyle("frmDialog", "txtContratista", InputText.class, null);
         }
 
-        if (currentEmpresa != null && valido == true) {
-            currentGarantiaOferente.setIdentificadorPrimarioOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-            currentGarantiaOferente.setFechaDeInsercion(new Date());
+        if (valido == true) {
+            // currentGarantiaOferente.setFechaDeInsercion(new Date());
             currentGarantiaOferente.setEstadoDeEliminacion(0);
+            currentGarantiaOferente.setName(variablesSession.getUsuario());
+            
             bancoProv.saveGarantiaOferente(currentGarantiaOferente);
-            lstGarantias = bancoProv.getLstGarantiasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            lstGarantias = bancoProv.getLstGarantiasOferente(currentGarantiaOferente.getIdentificadorPrimarioOferente());
 
             if (currentGarantiaOferente.getIdentificadorGarantia() == null) {
                 currentGarantiaOferente = new GarantiasOferente();

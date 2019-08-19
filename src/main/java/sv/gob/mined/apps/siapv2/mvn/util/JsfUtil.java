@@ -85,13 +85,6 @@ public class JsfUtil {
         FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);
     }
 
-    public static String getUsuarioSession() {
-        //FacesContext session = FacesContext.getCurrentInstance();
-        //return session.getExternalContext().getSessionMap().get("sUsuario").toString();
-        /*String usuarioSesion=JsfUtil.getVarSesion(JsfUtil.sUsuario).toString();*/
-        return "ADMIN";
-    }
-
     public static Boolean addErrorStyle(String frm, String idComponente, Class tipoComponente, Object valor) {
         Boolean valido = true;
         if (valor != null) {

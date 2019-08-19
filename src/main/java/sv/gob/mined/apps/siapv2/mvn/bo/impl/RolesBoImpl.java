@@ -302,7 +302,7 @@ public class RolesBoImpl implements RolesBo {
         } else {
             detplan.setEstadoDeEliminacion(0);
             detplan.setFechaDeInsercion(new Date());
-            detplan.setName(JsfUtil.getUsuarioSession());
+            detplan.setName(JsfUtil.sUsuario);
             detalleaccesoplantillaDao.setDetPlantillaSeg(detplan);
             id = detalleaccesoplantillaDao.create();            
         }

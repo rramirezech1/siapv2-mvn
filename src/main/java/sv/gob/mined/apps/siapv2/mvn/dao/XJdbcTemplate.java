@@ -17,6 +17,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 
+
 /**
  *
  * @author Infosoft
@@ -29,7 +30,7 @@ public class XJdbcTemplate {
     JdbcTemplate jdbcTemplate;
 
     public XJdbcTemplate() {
-        sUsuario = JsfUtil.getUsuarioSession();
+       //sUsuario = JsfUtil.sUsuario;
     }
 
     public JdbcTemplate getJdbcTemplate() {
@@ -46,14 +47,13 @@ public class XJdbcTemplate {
         } else {
             getObjeto().setFechaDeEliminacion(new Date());
         }
-        getObjeto().setName(sUsuario);
         return getJdbcTemplate().update(getObjeto().generarUpdateSQL(), getObjeto().getDatosUpdate());
     }
 
     public int create() {
         getObjeto().setEstadoDeEliminacion(0);
         getObjeto().setFechaDeInsercion(new Date());
-        getObjeto().setName(sUsuario);
+        
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int valor = getJdbcTemplate().update(new PreparedStatementCreator() {
             @Override

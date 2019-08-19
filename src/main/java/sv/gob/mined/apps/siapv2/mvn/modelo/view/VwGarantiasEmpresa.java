@@ -15,7 +15,7 @@ public class VwGarantiasEmpresa {
 
     private Integer identificadorGarantia;
     private String razonSocial;
-    private String numeroContrato;
+    private String idDocumento;
     private String descripcionTipoGarantia;
     private BigDecimal montoGarantia;
     private Date fechaVencimiento;
@@ -43,12 +43,12 @@ public class VwGarantiasEmpresa {
         this.razonSocial = razonSocial;
     }
 
-    public String getNumeroContrato() {
-        return numeroContrato;
+    public String getIdDocumento() {
+        return idDocumento;
     }
 
-    public void setNumeroContrato(String numeroContrato) {
-        this.numeroContrato = numeroContrato;
+    public void setIdDocumento(String idDocumento) {
+        this.idDocumento = idDocumento;
     }
 
     public String getDescripcionTipoGarantia() {

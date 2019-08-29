@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import sv.gob.mined.apps.siapv2.mvn.dao.GarantiasOferenteDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.XJdbcTemplate;
 import sv.gob.mined.apps.siapv2.mvn.modelo.GarantiasOferente;
-import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasEmpresa;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
 
 /**
  *
@@ -36,15 +36,15 @@ public class GarantiasOferenteDaoImpl extends XJdbcTemplate implements Garantias
     public void setGarantiaOferente(GarantiasOferente garantia) {
         super.setObjeto(garantia);
     }
-
+  
     @Override
-    public List<VwGarantiasEmpresa> findAllByOferente(Integer identificadorPrimarioOferente) {
+    public List<VwGarantiasGrupo> findAllByGrupo(Integer grupo) {
         String sql = "SELECT * "
-                + "  FROM vw_garantias_empresa "
-                + " WHERE identificadorPrimarioOferente = " + identificadorPrimarioOferente
+                + "  FROM vw_garantias_grupo "
+                + " WHERE grupoSiap = " + grupo
                 + "   AND estadodeeliminacion = 0 "
                 + "   ORDER BY identificadorGarantia desc";
-        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwGarantiasEmpresa.class));
+        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwGarantiasGrupo.class));
     }
 
     @Override

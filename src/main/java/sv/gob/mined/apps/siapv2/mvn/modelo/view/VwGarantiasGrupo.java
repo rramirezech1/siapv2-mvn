@@ -11,11 +11,12 @@ import java.util.Date;
  *
  * @author Infosoft
  */
-public class VwGarantiasEmpresa {
+public class VwGarantiasGrupo {
 
     private Integer identificadorGarantia;
     private String razonSocial;
     private String idDocumento;
+    private String noLicitacion;
     private String descripcionTipoGarantia;
     private BigDecimal montoGarantia;
     private Date fechaVencimiento;
@@ -24,7 +25,7 @@ public class VwGarantiasEmpresa {
     private Integer estadoDeEliminacion;
     private Integer identificadorPrimarioOferente;
 
-    public VwGarantiasEmpresa() {
+    public VwGarantiasGrupo() {
     }
 
     public Integer getIdentificadorGarantia() {
@@ -106,4 +107,13 @@ public class VwGarantiasEmpresa {
     public void setIdentificadorPrimarioOferente(Integer identificadorPrimarioOferente) {
         this.identificadorPrimarioOferente = identificadorPrimarioOferente;
     }
+
+    public String getNoLicitacion() {
+        return noLicitacion;
+    }
+
+    public void setNoLicitacion(String noLicitacion) {
+        this.noLicitacion = noLicitacion;
+    }
+    
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 import sv.gob.mined.apps.siapv2.mvn.dao.UsuarioDao;
-import sv.gob.mined.apps.siapv2.mvn.dao.XJdbcTemplate2;
+import sv.gob.mined.apps.siapv2.mvn.dao.XJdbcTemplate;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 
 /**
@@ -16,7 +16,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
  * @author Infosoft
  */
 @Repository
-public class UsuarioDaoImpl extends XJdbcTemplate2 implements UsuarioDao {
+public class UsuarioDaoImpl extends XJdbcTemplate implements UsuarioDao {
 
     public UsuarioDaoImpl() {
     }

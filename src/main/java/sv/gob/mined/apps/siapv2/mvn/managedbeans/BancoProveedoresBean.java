@@ -45,7 +45,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwCalificacionContratos;
-import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasEmpresa;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwMultasEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwRescisionesEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTrasladoEmpresa;
@@ -88,7 +88,7 @@ public class BancoProveedoresBean {
     private List<Usuario> lstUsuario;
     private List<VwCalificacionContratos> lstCalificaciones;
     private List<VwMultasEmpresa> lstMultas;
-    private List<VwGarantiasEmpresa> lstGarantias;
+    private List<VwGarantiasGrupo> lstGarantias;
     private List<VwRescisionesEmpresa> lstRescision;
     private List<VwTrasladoEmpresa> lstTrasladoEmpresa;
     private List<SectorEconomico> lstSectorEconomico;
@@ -166,9 +166,11 @@ public class BancoProveedoresBean {
                 lstCalificaciones = bancoProv.getLstFaltasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
             } else if (currentMultaOferente != null) {
                 lstMultas = bancoProv.getLstMultasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-            } else if (currentGarantiaOferente != null) {
-                lstGarantias = bancoProv.getLstGarantiasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-            } else if (currentRescisionesOferente != null) {
+            } 
+            else if (currentGarantiaOferente != null) {
+                lstGarantias = bancoProv.getLstGarantiasGrupo(currentGarantiaOferente.getGrupoSiap());
+            }
+            else if (currentRescisionesOferente != null) {
                 lstRescision = bancoProv.getLstRescisionesOferente(currentEmpresa.getIdentificadorPrimarioOferente());
             }
         }
@@ -305,7 +307,7 @@ public class BancoProveedoresBean {
         descripcion = null;
         lstMultas = null;
         lstCalificaciones = null;
-        lstGarantias = null;
+        //lstGarantias = null;
         lstRescision = null;
     }
 
@@ -443,7 +445,7 @@ public class BancoProveedoresBean {
             currentGarantiaOferente.setName(variablesSession.getUsuario());
             
             bancoProv.saveGarantiaOferente(currentGarantiaOferente);
-            lstGarantias = bancoProv.getLstGarantiasOferente(currentGarantiaOferente.getIdentificadorPrimarioOferente());
+           // lstGarantias = bancoProv.getLstGarantiasGrupo(currentGarantiaOferente.getGrupoSiap());
 
             if (currentGarantiaOferente.getIdentificadorGarantia() == null) {
                 currentGarantiaOferente = new GarantiasOferente();
@@ -464,7 +466,6 @@ public class BancoProveedoresBean {
             this.deshabilitadoEfectiva = false;
         } else {
             this.deshabilitadoEfectiva = true;
-            this.currentGarantiaOferente.setFechaEmision(null);
         }
     }
     
@@ -568,14 +569,19 @@ public class BancoProveedoresBean {
         this.lstMultas = lstMultas;
     }
 
-    public List<VwGarantiasEmpresa> getLstGarantias() {
+    public List<VwGarantiasGrupo> getLstGarantias() {
         if (lstGarantias == null) {
-            lstGarantias = new ArrayList<VwGarantiasEmpresa>();
+            lstGarantias = new ArrayList<VwGarantiasGrupo>();
         }
         return lstGarantias;
     }
+    
+    public List<VwGarantiasGrupo> getLstGarantias(int grupo){
+        lstGarantias = bancoProv.getLstGarantiasGrupo(grupo);
+        return lstGarantias;    
+    }
 
-    public void setLstGarantias(List<VwGarantiasEmpresa> lstGarantias) {
+    public void setLstGarantias(List<VwGarantiasGrupo> lstGarantias) {
         this.lstGarantias = lstGarantias;
     }
 
@@ -627,10 +633,14 @@ public class BancoProveedoresBean {
     }
 
     public void onRowSelectGarantias(SelectEvent event) {
-        GarantiasOferente garantia = bancoProv.getGarantiaById(((VwGarantiasEmpresa) event.getObject()).getIdentificadorGarantia());
+        deshabilitado = false;
+        GarantiasOferente garantia = bancoProv.getGarantiaById(((VwGarantiasGrupo) event.getObject()).getIdentificadorGarantia());
+                
         if (garantia != null) {
             currentGarantiaOferente = garantia;
+            currentGarantiaOferente.setRazonSocial(((VwGarantiasGrupo) event.getObject()).getRazonSocial());
             deshabilitadoEliminar = false;
+            deshabilitado = false;
             this.efectivaChange();
         }
     }
@@ -669,7 +679,7 @@ public class BancoProveedoresBean {
             currentGarantiaOferente.setEstadoDeEliminacion(1);
             currentGarantiaOferente.setFechaDeEliminacion(new Date());
             bancoProv.saveGarantiaOferente(currentGarantiaOferente);
-            lstGarantias = bancoProv.getLstGarantiasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            lstGarantias = bancoProv.getLstGarantiasGrupo(currentGarantiaOferente.getGrupoSiap());
 
             currentGarantiaOferente = new GarantiasOferente();
             deshabilitadoEliminar = true;

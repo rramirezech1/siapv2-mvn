@@ -27,6 +27,7 @@ public class GarantiasOferente implements PersistenciaDao {
     private Date fechaVencimiento;
     private BigDecimal montoGarantia;
     private Date fechaDevolucion;
+    private Date fechaGarEfectiva;
     private Integer estadoGarantia;
     private Date fechaDeInsercion;
     private Date fechaDeModificacion;
@@ -252,28 +253,35 @@ public class GarantiasOferente implements PersistenciaDao {
     public void setRazonSocial(String razonSocial) {
         this.razonSocial = razonSocial;
     }
-    
-    
 
+    public Date getFechaGarEfectiva() {
+        return fechaGarEfectiva;
+    }
+
+    public void setFechaGarEfectiva(Date fechaGarEfectiva) {
+        this.fechaGarEfectiva = fechaGarEfectiva;
+    }
+    
+    
     @Override
     public String generarInsertSQL() {
-        return "INSERT INTO dbo.GarantiasOferente (identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO dbo.GarantiasOferente (identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, noLicitacion, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, fechaGarEfectiva, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name) "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     @Override
     public Object[] getDatosInsert() {
-        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name};
+        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, noLicitacion, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, fechaGarEfectiva, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name};
     }
 
     @Override
     public String generarUpdateSQL() {
-        return "UPDATE dbo.GarantiasOferente SET identificadorPrimarioOferente=?, idTipoGarantia=?, idFormaGarantia=?, idDocumento=?, grupoSiap=?, descripcionGarantia=?, fechaPresentacion=?, fechaEmision=?, fechaVencimiento=?, montoGarantia=?, fechaDevolucion=?, estadoGarantia=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=?  "
+        return "UPDATE dbo.GarantiasOferente SET identificadorPrimarioOferente=?, idTipoGarantia=?, idFormaGarantia=?, idDocumento=?, grupoSiap=?, noLicitacion=?, descripcionGarantia=?, fechaPresentacion=?, fechaEmision=?, fechaVencimiento=?, montoGarantia=?, fechaDevolucion=?, fechaGarEfectiva=?, estadoGarantia=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=?  "
                 + " WHERE identificadorGarantia=?";
     }
 
     @Override
     public Object[] getDatosUpdate() {
-        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name, identificadorGarantia};
+        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, noLicitacion, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, fechaGarEfectiva, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name, identificadorGarantia};
     }
 }

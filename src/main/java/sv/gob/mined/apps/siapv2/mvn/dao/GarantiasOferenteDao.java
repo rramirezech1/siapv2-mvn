@@ -6,7 +6,7 @@ package sv.gob.mined.apps.siapv2.mvn.dao;
 
 import java.util.List;
 import sv.gob.mined.apps.siapv2.mvn.modelo.GarantiasOferente;
-import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasEmpresa;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
 
 /**
  *
@@ -14,7 +14,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasEmpresa;
  */
 public interface GarantiasOferenteDao {
 
-    public List<VwGarantiasEmpresa> findAllByOferente(Integer identificadorPrimarioOferente);
+    public List<VwGarantiasGrupo> findAllByGrupo(Integer grupo);
 
     public GarantiasOferente findById(Integer idGarantia);
 

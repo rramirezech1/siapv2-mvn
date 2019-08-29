@@ -39,7 +39,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwCalificacionContratos;
-import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasEmpresa;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwMultasEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwRescisionesEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTrasladoEmpresa;
@@ -220,8 +220,8 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     }
 
     @Override
-    public List<VwGarantiasEmpresa> getLstGarantiasOferente(Integer idOferente) {
-        return garantiasOferente.findAllByOferente(idOferente);
+    public List<VwGarantiasGrupo> getLstGarantiasGrupo(Integer grupo) {
+        return garantiasOferente.findAllByGrupo(grupo);
     }
 
     @Override

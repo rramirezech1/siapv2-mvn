@@ -21,7 +21,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.Departamento;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Municipio;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SectorEconomico;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwCalificacionContratos;
-import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasEmpresa;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwMultasEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwRescisionesEmpresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTrasladoEmpresa;
@@ -60,7 +60,7 @@ public interface BancoProveedoresBo {
 
     public List<VwMultasEmpresa> getLstMultasOferente(Integer idOferente);
 
-    public List<VwGarantiasEmpresa> getLstGarantiasOferente(Integer idOferente);
+    public List<VwGarantiasGrupo> getLstGarantiasGrupo(Integer grupo);
 
     public List<VwRescisionesEmpresa> getLstRescisionesOferente(Integer idOferente);
 

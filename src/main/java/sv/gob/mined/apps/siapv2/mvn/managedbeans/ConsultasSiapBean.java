@@ -42,8 +42,7 @@ public class ConsultasSiapBean {
     
     @PostConstruct
     public void init() {
-        tipoGrupo = 1;
-        
+           tipoGrupo = 1;
     }
     
     @Autowired
@@ -53,8 +52,7 @@ public class ConsultasSiapBean {
     
     @Inject
     private VariablesSession variablesSession;
-
-      
+          
     public List<VwGrupos> getLstGrupos() {
         lstGrupos = consultasSiap.getLstGrupos(variablesSession.getUsuario(), tipoGrupo);
         return lstGrupos;
@@ -68,13 +66,10 @@ public class ConsultasSiapBean {
         VwGrupos grupo = consultasSiap.getGrupoById(((VwGrupos) event.getObject()).getGrupo());
         if (grupo != null) {
             currentGrupo = grupo;
-            
-            if(tipoGarantia==1){
-                this.lstOfertasGrupo = consultasSiap.getLstOfertasByGrupo(currentGrupo.getGrupo());
-            }
-            else{
-                this.lstContratosGrupo = consultasSiap.getLstContratosByGrupo(currentGrupo.getGrupo());
-            }
+                        
+            this.lstOfertasGrupo = consultasSiap.getLstOfertasByGrupo(currentGrupo.getGrupo());
+            this.lstContratosGrupo = consultasSiap.getLstContratosByGrupo(currentGrupo.getGrupo());
+            trasladoAtribBean();
         }
     }
     
@@ -93,22 +88,32 @@ public class ConsultasSiapBean {
             trasladoAtribBean();
         }
     }
-    
+         
     public void trasladoAtribBean(){
         FacesContext context = FacesContext.getCurrentInstance();
         BancoProveedoresBean bp = context.getApplication().evaluateExpressionGet(context, "#{bancoProveedoresBean}", BancoProveedoresBean.class);
         bp.getCurrentGarantiaOferente().setIdTipoGarantia(this.tipoGarantia);
-        bp.getCurrentGarantiaOferente().setGrupoSiap(currentGrupo.getGrupo());
+        bp.getCurrentGarantiaOferente().setGrupoSiap(currentGrupo.getGrupo()); 
+        bp.setDeshabilitado(false);
+        bp.setDeshabilitadoEliminar(true);
+        
+        bp.getLstGarantias(currentGrupo.getGrupo());
+        
         bp.getCurrentGarantiaOferente().setNoLicitacion(currentGrupo.getNo_licitacion());
         
         if(tipoGarantia==1){
-            bp.getCurrentGarantiaOferente().setIdDocumento(currentOferta.getIdOferta());
-            bp.getCurrentGarantiaOferente().setIdentificadorPrimarioOferente(currentOferta.getIdentificadorPrimarioOferente());
-            bp.getCurrentEmpresa().setRazonSocial(currentOferta.getRazonSocial());
+            if (currentOferta != null){
+                bp.getCurrentGarantiaOferente().setIdDocumento(currentOferta.getIdOferta());
+                bp.getCurrentGarantiaOferente().setIdentificadorPrimarioOferente(currentOferta.getIdentificadorPrimarioOferente());
+                bp.getCurrentGarantiaOferente().setRazonSocial(currentOferta.getRazonSocial());
+            }
         }else{
-            bp.getCurrentGarantiaOferente().setIdDocumento(currentContrato.getIdContrato());
-            bp.getCurrentGarantiaOferente().setIdentificadorPrimarioOferente(currentContrato.getIdentificadorPrimarioOferente());
-            bp.getCurrentGarantiaOferente().setRazonSocial(currentContrato.getRazonSocial());
+            if (currentContrato != null){
+                bp.getCurrentGarantiaOferente().setIdDocumento(currentContrato.getIdContrato());
+                bp.getCurrentGarantiaOferente().setIdentificadorPrimarioOferente(currentContrato.getIdentificadorPrimarioOferente());
+                bp.getCurrentGarantiaOferente().setRazonSocial(currentContrato.getRazonSocial());
+            }
+            
         }
          
     }
@@ -167,6 +172,7 @@ public class ConsultasSiapBean {
         if (this.tipoGarantia == 1) {
             this.habilitadoContratos = false;
             this.habilitadoOfertas = true;
+            
         } else {
             this.habilitadoContratos = true;
             this.habilitadoOfertas = false;

@@ -335,5 +335,10 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     public List<VwTrasladoEmpresa> getLstTrasladoEmpresa() {
         return trasladoOferente.findAllEmpresa();
     }
+    
+    @Override
+    public int generaCorrelativo(Integer tipoDocumento, Integer ejercicioFiscal){
+        return garantiasOferente.generaCorrelativo(tipoDocumento, ejercicioFiscal);
+    }
 
 }

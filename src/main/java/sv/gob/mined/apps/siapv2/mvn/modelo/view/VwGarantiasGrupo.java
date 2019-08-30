@@ -17,6 +17,7 @@ public class VwGarantiasGrupo {
     private String razonSocial;
     private String idDocumento;
     private String noLicitacion;
+    private String noGarantia;
     private String descripcionTipoGarantia;
     private BigDecimal montoGarantia;
     private Date fechaVencimiento;
@@ -114,6 +115,14 @@ public class VwGarantiasGrupo {
 
     public void setNoLicitacion(String noLicitacion) {
         this.noLicitacion = noLicitacion;
+    }
+
+    public String getNoGarantia() {
+        return noGarantia;
+    }
+
+    public void setNoGarantia(String noGarantia) {
+        this.noGarantia = noGarantia;
     }
     
 }

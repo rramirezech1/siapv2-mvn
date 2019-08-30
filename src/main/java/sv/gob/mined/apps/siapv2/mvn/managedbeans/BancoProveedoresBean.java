@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+//import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -443,9 +444,10 @@ public class BancoProveedoresBean {
             // currentGarantiaOferente.setFechaDeInsercion(new Date());
             currentGarantiaOferente.setEstadoDeEliminacion(0);
             currentGarantiaOferente.setName(variablesSession.getUsuario());
+            generaCorrelativo(currentGarantiaOferente.getIdTipoGarantia());
             
             bancoProv.saveGarantiaOferente(currentGarantiaOferente);
-           // lstGarantias = bancoProv.getLstGarantiasGrupo(currentGarantiaOferente.getGrupoSiap());
+            lstGarantias = bancoProv.getLstGarantiasGrupo(currentGarantiaOferente.getGrupoSiap());
 
             if (currentGarantiaOferente.getIdentificadorGarantia() == null) {
                 currentGarantiaOferente = new GarantiasOferente();
@@ -741,6 +743,22 @@ public class BancoProveedoresBean {
         } else {
             JsfUtil.addWarningMessage("No ha seleccionado ningun registro");
         }
+    }
+    
+    public void generaCorrelativo( int tipoDocumento) {
+            
+            /*
+            java.util.Calendar fecha;
+            fecha = java.util.Calendar.getInstance();
+            fecha = currentGarantiaOferente.getFechaEmision();
+            int ejercicioFiscal = fecha.get(java.util.Calendar.YEAR);
+            */
+            
+            if ((currentGarantiaOferente.getNoGarantia()).equals("") || currentGarantiaOferente.getNoGarantia()==null){
+                int ejercicioFiscal = 2019;
+                int corr = bancoProv.generaCorrelativo(tipoDocumento, ejercicioFiscal);
+                currentGarantiaOferente.setNoGarantia(String.valueOf(corr)+'/'+String.valueOf(ejercicioFiscal));
+            }
     }
 
     public void habilitaOferente() {

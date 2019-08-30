@@ -21,6 +21,7 @@ public class GarantiasOferente implements PersistenciaDao {
     private Integer idDocumento;
     private Integer grupoSiap;
     private String noLicitacion;
+    private String noGarantia;
     private String descripcionGarantia;
     private Date fechaPresentacion;
     private Date fechaEmision;
@@ -67,7 +68,111 @@ public class GarantiasOferente implements PersistenciaDao {
     public void setIdTipoGarantia(Integer idTipoGarantia) {
         this.idTipoGarantia = idTipoGarantia;
     }
+    
+     @Override
+    public Integer getEstadoDeEliminacion() {
+        return estadoDeEliminacion;
+    }
 
+    public void setEstadoDeEliminacion(Integer estadoDeEliminacion) {
+        this.estadoDeEliminacion = estadoDeEliminacion;
+    }
+
+    public String getNoGarantia() {
+        return noGarantia;
+    }
+
+    public void setNoGarantia(String noGarantia) {
+        this.noGarantia = noGarantia;
+    }
+
+    
+    public String getDescripcionGarantia() {
+        return descripcionGarantia;
+    }
+
+    public void setDescripcionGarantia(String descripcionGarantia) {
+        this.descripcionGarantia = descripcionGarantia;
+    }
+
+    public Integer getIdFormaGarantia() {
+        return idFormaGarantia;
+    }
+
+    public void setIdFormaGarantia(Integer idFormaGarantia) {
+        this.idFormaGarantia = idFormaGarantia;
+    }
+
+    public Integer getIdDocumento() {
+        return idDocumento;
+    }
+
+    public void setIdDocumento(Integer idDocumento) {
+        this.idDocumento = idDocumento;
+    }
+
+    public Integer getGrupoSiap() {
+        return grupoSiap;
+    }
+
+    public void setGrupoSiap(Integer grupoSiap) {
+        this.grupoSiap = grupoSiap;
+    }
+
+    public String getNoLicitacion() {
+        return noLicitacion;
+    }
+
+    public void setNoLicitacion(String noLicitacion) {
+        this.noLicitacion = noLicitacion;
+    }
+
+    
+    public Date getFechaPresentacion() {
+        return fechaPresentacion;
+    }
+
+    public void setFechaPresentacion(Date fechaPresentacion) {
+        this.fechaPresentacion = fechaPresentacion;
+    }
+
+    public Date getFechaDevolucion() {
+        return fechaDevolucion;
+    }
+
+    public void setFechaDevolucion(Date fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
+    }
+    
+    public Boolean getEfectiva() {
+        return efectiva;
+    }
+
+    public void setEfectiva(Boolean efectiva) {
+        this.efectiva = efectiva;
+        if (efectiva) {
+            estadoGarantia = 1;
+        } else {
+            estadoGarantia = 0;
+        }
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public Date getFechaGarEfectiva() {
+        return fechaGarEfectiva;
+    }
+
+    public void setFechaGarEfectiva(Date fechaGarEfectiva) {
+        this.fechaGarEfectiva = fechaGarEfectiva;
+    }
+   
     public Date getFechaEmision() {
         return fechaEmision;
     }
@@ -165,123 +270,27 @@ public class GarantiasOferente implements PersistenciaDao {
     @Override
     public String toString() {
         return "sv.gob.mined.apps.siapv2.mvn.modelo.GarantiasOferente[ identificadorGarantia=" + identificadorGarantia + " ]";
-    }
-
-    @Override
-    public Integer getEstadoDeEliminacion() {
-        return estadoDeEliminacion;
-    }
-
-    public void setEstadoDeEliminacion(Integer estadoDeEliminacion) {
-        this.estadoDeEliminacion = estadoDeEliminacion;
-    }
-
-    public String getDescripcionGarantia() {
-        return descripcionGarantia;
-    }
-
-    public void setDescripcionGarantia(String descripcionGarantia) {
-        this.descripcionGarantia = descripcionGarantia;
-    }
-
-    public Integer getIdFormaGarantia() {
-        return idFormaGarantia;
-    }
-
-    public void setIdFormaGarantia(Integer idFormaGarantia) {
-        this.idFormaGarantia = idFormaGarantia;
-    }
-
-    public Integer getIdDocumento() {
-        return idDocumento;
-    }
-
-    public void setIdDocumento(Integer idDocumento) {
-        this.idDocumento = idDocumento;
-    }
-
-    public Integer getGrupoSiap() {
-        return grupoSiap;
-    }
-
-    public void setGrupoSiap(Integer grupoSiap) {
-        this.grupoSiap = grupoSiap;
-    }
-
-    public String getNoLicitacion() {
-        return noLicitacion;
-    }
-
-    public void setNoLicitacion(String noLicitacion) {
-        this.noLicitacion = noLicitacion;
-    }
-
-    
-    public Date getFechaPresentacion() {
-        return fechaPresentacion;
-    }
-
-    public void setFechaPresentacion(Date fechaPresentacion) {
-        this.fechaPresentacion = fechaPresentacion;
-    }
-
-    public Date getFechaDevolucion() {
-        return fechaDevolucion;
-    }
-
-    public void setFechaDevolucion(Date fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
-    }
-    
-    public Boolean getEfectiva() {
-        return efectiva;
-    }
-
-    public void setEfectiva(Boolean efectiva) {
-        this.efectiva = efectiva;
-        if (efectiva) {
-            estadoGarantia = 1;
-        } else {
-            estadoGarantia = 0;
-        }
-    }
-
-    public String getRazonSocial() {
-        return razonSocial;
-    }
-
-    public void setRazonSocial(String razonSocial) {
-        this.razonSocial = razonSocial;
-    }
-
-    public Date getFechaGarEfectiva() {
-        return fechaGarEfectiva;
-    }
-
-    public void setFechaGarEfectiva(Date fechaGarEfectiva) {
-        this.fechaGarEfectiva = fechaGarEfectiva;
-    }
-    
+    } 
     
     @Override
     public String generarInsertSQL() {
-        return "INSERT INTO dbo.GarantiasOferente (identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, noLicitacion, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, fechaGarEfectiva, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        return "INSERT INTO dbo.GarantiasOferente (identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, noLicitacion, noGarantia, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, fechaGarEfectiva, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name) "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     }
 
     @Override
     public Object[] getDatosInsert() {
-        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, noLicitacion, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, fechaGarEfectiva, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name};
+        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, noLicitacion, noGarantia, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, fechaGarEfectiva, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name};
     }
 
     @Override
     public String generarUpdateSQL() {
-        return "UPDATE dbo.GarantiasOferente SET identificadorPrimarioOferente=?, idTipoGarantia=?, idFormaGarantia=?, idDocumento=?, grupoSiap=?, noLicitacion=?, descripcionGarantia=?, fechaPresentacion=?, fechaEmision=?, fechaVencimiento=?, montoGarantia=?, fechaDevolucion=?, fechaGarEfectiva=?, estadoGarantia=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=?  "
+        return "UPDATE dbo.GarantiasOferente SET identificadorPrimarioOferente=?, idTipoGarantia=?, idFormaGarantia=?, idDocumento=?, grupoSiap=?, noLicitacion=?, noGarantia=?, descripcionGarantia=?, fechaPresentacion=?, fechaEmision=?, fechaVencimiento=?, montoGarantia=?, fechaDevolucion=?, fechaGarEfectiva=?, estadoGarantia=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=?  "
                 + " WHERE identificadorGarantia=?";
     }
 
     @Override
     public Object[] getDatosUpdate() {
-        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, noLicitacion, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, fechaGarEfectiva, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name, identificadorGarantia};
+        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idDocumento, grupoSiap, noLicitacion, noGarantia, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaDevolucion, fechaGarEfectiva, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name, identificadorGarantia};
     }
 }

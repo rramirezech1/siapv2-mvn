@@ -136,6 +136,9 @@
                     <p:column headerText="Id" width="40">
                         <p:outputLabel value="#{garantia.identificadorGarantia}"/>
                     </p:column>
+                    <p:column headerText="No. Garantia" width="40">
+                        <p:outputLabel value="#{garantia.noGarantia}"/>
+                    </p:column>
                     <p:column headerText="Contratista">
                         <p:outputLabel value="#{garantia.razonSocial}"/>
                     </p:column>
@@ -189,7 +192,7 @@
                             <f:selectItems value="#{bancoProveedoresBean.lstTipoGarantias}" var="gar" itemValue="#{gar.idTipoGarantia}" itemLabel="#{gar.descripcionTipoGarantia}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="6. Numero :" for="txtNoGarantia"/>
-                        <p:inputText id="txtNoGarantia" value="#{bancoProveedoresBean.currentGarantiaOferente.idTipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}" required="true"/>                         
+                        <p:inputText id="txtNoGarantia" value="#{bancoProveedoresBean.currentGarantiaOferente.noGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}"/>                         
                     </p:panelGrid>
                     <p:panelGrid columns="2" columnClasses="col2_label,col10" style="width: 100%; border:0px none; background-color:transparent;"
                                  styleClass="form-group ui-panelgrid-blank">

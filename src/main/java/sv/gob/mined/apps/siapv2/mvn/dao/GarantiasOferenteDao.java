@@ -23,4 +23,6 @@ public interface GarantiasOferenteDao {
     public int update();
 
     public void setGarantiaOferente(GarantiasOferente garantia);
+    
+    public int generaCorrelativo(Integer tipoDocumento, Integer ejercicioFiscal);
 }

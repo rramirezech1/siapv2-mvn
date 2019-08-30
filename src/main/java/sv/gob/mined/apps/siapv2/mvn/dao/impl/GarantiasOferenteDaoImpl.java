@@ -5,7 +5,10 @@
 package sv.gob.mined.apps.siapv2.mvn.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 import sv.gob.mined.apps.siapv2.mvn.dao.GarantiasOferenteDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.XJdbcTemplate;
@@ -56,5 +59,23 @@ public class GarantiasOferenteDaoImpl extends XJdbcTemplate implements Garantias
         } else {
             return lst.get(0);
         }
+    }
+    
+    @Override
+    public synchronized int generaCorrelativo(Integer tipoDocumento, Integer ejercicioFiscal) {
+        try {
+            SimpleJdbcCall jdbcCall;
+            jdbcCall = new SimpleJdbcCall(getJdbcTemplate()).withProcedureName("sp_control_correlativos_documentos");
+            MapSqlParameterSource in = new MapSqlParameterSource();
+            in.addValue("tipoDocumento", tipoDocumento);
+            in.addValue("ejercicioFiscal", ejercicioFiscal);
+            
+            Map<String, Object> out = jdbcCall.execute(in);
+            return  (Integer)out.get("correlativo");
+        }
+        catch(Exception e) {
+            System.out.println("Error en la generación del correlativo, envie lo siguiente a Roberto: " + e);
+            return 0;
+        }        
     }
 }

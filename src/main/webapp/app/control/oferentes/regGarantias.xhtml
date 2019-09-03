@@ -133,19 +133,16 @@
                 </p:outputPanel>     
                 <p:dataTable id="tblGarantias" value="#{bancoProveedoresBean.lstGarantias}" var="garantia" selectionMode="single" rowKey="#{garantia.identificadorGarantia}">
                     <p:ajax event="rowSelect"  listener="#{bancoProveedoresBean.onRowSelectGarantias}" oncomplete="PF('dlgRegGarantia').show()" update="dlgRegGarantia"/>  
-                    <p:column headerText="Id" width="40">
-                        <p:outputLabel value="#{garantia.identificadorGarantia}"/>
-                    </p:column>
-                    <p:column headerText="No. Garantia" width="40">
+                    <p:column headerText="No. Garantia" width="55">
                         <p:outputLabel value="#{garantia.noGarantia}"/>
                     </p:column>
                     <p:column headerText="Contratista">
                         <p:outputLabel value="#{garantia.razonSocial}"/>
                     </p:column>
-                    <p:column headerText="Tipo" width="150">
+                    <p:column headerText="Tipo" width="140">
                         <p:outputLabel value="#{garantia.descripcionTipoGarantia}"/>
                     </p:column>
-                    <p:column headerText="Monto" style="text-align: right;" width="80">
+                    <p:column headerText="Monto" style="text-align: right;" width="70">
                         <h:outputText value="#{garantia.montoGarantia}">
                             <f:convertNumber pattern="$ #,##0.00" />
                         </h:outputText>
@@ -155,13 +152,16 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputText>
                     </p:column>
+                    <p:column headerText="Estado" width="63">
+                        <h:outputText value="#{garantia.estadoGarantia}"/>
+                    </p:column>
                 </p:dataTable>
             </h:form>
             
             <p:dialog id="dlgRegGarantia" widgetVar="dlgRegGarantia" header="Registro de Garantia" width="625" height="345" modal="true" appendTo="@(body)">
                 <h:form id="frmDialog">
                 <p:menubar>
-                        <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia}" onclick="PF('dlgRegGarantia').hide()" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                        <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia}" onclick="PF('dlgRegGarantia').hide()" update="frmPrincipal:tblGarantias" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
                         <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
                         <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
                         

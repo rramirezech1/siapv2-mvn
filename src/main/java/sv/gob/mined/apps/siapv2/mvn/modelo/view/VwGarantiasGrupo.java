@@ -21,7 +21,7 @@ public class VwGarantiasGrupo {
     private String descripcionTipoGarantia;
     private BigDecimal montoGarantia;
     private Date fechaVencimiento;
-    private Integer estadoGarantia;
+    private String estadoGarantia;
     private String descripcionGarantia;
     private Integer estadoDeEliminacion;
     private Integer identificadorPrimarioOferente;
@@ -77,11 +77,11 @@ public class VwGarantiasGrupo {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public Integer getEstadoGarantia() {
+    public String getEstadoGarantia() {
         return estadoGarantia;
     }
 
-    public void setEstadoGarantia(Integer estadoGarantia) {
+    public void setEstadoGarantia(String estadoGarantia) {
         this.estadoGarantia = estadoGarantia;
     }
 

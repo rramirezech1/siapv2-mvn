@@ -158,7 +158,7 @@
                 </p:dataTable>
             </h:form>
             
-            <p:dialog id="dlgRegGarantia" widgetVar="dlgRegGarantia" header="Registro de Garantia" width="625" height="345" modal="true" appendTo="@(body)">
+            <p:dialog id="dlgRegGarantia" widgetVar="dlgRegGarantia" header="Registro de Garantia" width="625" height="385" modal="true" appendTo="@(body)">
                 <h:form id="frmDialog">
                 <p:menubar>
                         <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia}" onclick="PF('dlgRegGarantia').hide()" update="frmPrincipal:tblGarantias" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
@@ -220,20 +220,40 @@
                     <p:panelGrid columns="2" columnClasses="col2_label,col7" style="width: 100%; border:0px none; background-color:transparent;"
                                  styleClass="form-group ui-panelgrid-blank">                    
                         <p:outputLabel value="14. Observacion:"/>
-                        <p:inputTextarea id="txaDescripcion" cols="71" value="#{bancoProveedoresBean.currentGarantiaOferente.descripcionGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                        <p:inputTextarea id="txaDescripcion" cols="75" value="#{bancoProveedoresBean.currentGarantiaOferente.descripcionGarantia}" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                        <p:spacer height="5"/>
                     </p:panelGrid>
-                    <h:panelGrid columns="5" columnClasses="col2_label,col1,col1,col2_label,col1" style="width: 60%; border:0px none; background-color:transparent;"
+                    <h:panelGrid columns="7" columnClasses="col3_label,col1,col1,col2_label,col1,col3_label,col3" style="width: 100%; border:0px none; background-color:transparent;"
                                  styleClass="form-group ui-panelgrid-blank">  
-                        <p:outputLabel value="15. Efectiva:"/>
+                        <p:outputLabel value="15. Devuelta:"/>
                         <p:spacer width="1"/>
-                        <p:selectBooleanCheckbox id="chbEfectiva" value="#{bancoProveedoresBean.currentGarantiaOferente.efectiva}" disabled="#{bancoProveedoresBean.deshabilitado}" onchange="" >
-                                <p:ajax update="cdlEfectiva" listener="#{bancoProveedoresBean.efectivaChange}" /> 
+                        <p:selectBooleanCheckbox id="chbDevuelta" value="#{bancoProveedoresBean.currentGarantiaOferente.efectiva}" disabled="#{bancoProveedoresBean.deshabilitado}" onchange="" >
+                                <p:ajax update="cdlDevolucion cbAutorizaDevolucion" listener="#{bancoProveedoresBean.efectivaChange}" /> 
                         </p:selectBooleanCheckbox>
                         <p:outputLabel value="16. Fecha:" />
+                        <p:calendar id="cdlDevolucion" pattern="dd/MM/yyyy" size="9" focusOnSelect="true" value="#{bancoProveedoresBean.currentGarantiaOferente.fechaDevolucion}" disabled="#{bancoProveedoresBean.deshabilitadoEfectiva}" converterMessage="Necesita ingresar una fecha valida"/> 
+                        <p:outputLabel value="17. Autoriza:" />
+                        <p:selectOneMenu id="cbAutorizaDevolucion" value="#{consultasSiapBean.tipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitadoEfectiva}">
+                            <p:ajax event="change"  listener="#{consultasSiapBean.tipoGarantiaChange}"/>
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{bancoProveedoresBean.lstTipoGarantias}" var="gar" itemValue="#{gar.idTipoGarantia}" itemLabel="#{gar.descripcionTipoGarantia}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="18. Efectiva:"/>
+                        <p:spacer width="1"/>
+                        <p:selectBooleanCheckbox id="chbEfectiva" value="#{bancoProveedoresBean.currentGarantiaOferente.efectiva}" disabled="#{bancoProveedoresBean.deshabilitado}" onchange="" >
+                                <p:ajax update="cdlEfectiva cbAutorizaEfectiva" listener="#{bancoProveedoresBean.efectivaChange}" /> 
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel value="19. Fecha:" />
                         <p:calendar id="cdlEfectiva" pattern="dd/MM/yyyy" size="9" focusOnSelect="true" value="#{bancoProveedoresBean.currentGarantiaOferente.fechaDevolucion}" disabled="#{bancoProveedoresBean.deshabilitadoEfectiva}" converterMessage="Necesita ingresar una fecha valida"/> 
+                        <p:outputLabel value="20. Autoriza:" />
+                        <p:selectOneMenu id="cbAutorizaEfectiva" value="#{consultasSiapBean.tipoGarantia}" disabled="#{bancoProveedoresBean.deshabilitadoEfectiva}">
+                            <p:ajax event="change"  listener="#{consultasSiapBean.tipoGarantiaChange}"/>
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{bancoProveedoresBean.lstTipoGarantias}" var="gar" itemValue="#{gar.idTipoGarantia}" itemLabel="#{gar.descripcionTipoGarantia}"/>
+                        </p:selectOneMenu>
                     </h:panelGrid>
                   </h:form>
-               </p:dialog>                
+               </p:dialog>                  
         </ui:define>
     </ui:composition>
 </html>

@@ -444,6 +444,10 @@ public class BancoProveedoresBean {
             // currentGarantiaOferente.setFechaDeInsercion(new Date());
             currentGarantiaOferente.setEstadoDeEliminacion(0);
             currentGarantiaOferente.setName(variablesSession.getUsuario());
+            
+            if (currentGarantiaOferente.getEfectiva()){
+                currentGarantiaOferente.setEstadoGarantia(4);
+            }
             generaCorrelativo(currentGarantiaOferente.getIdTipoGarantia());
             
             bancoProv.saveGarantiaOferente(currentGarantiaOferente);
@@ -463,6 +467,14 @@ public class BancoProveedoresBean {
     }
 
         
+    public void devolucionChange() {
+        if (this.currentGarantiaOferente.getEfectiva() == Boolean.TRUE) {
+            this.deshabilitadoEfectiva = false;
+        } else {
+            this.deshabilitadoEfectiva = true;
+        }
+    }
+    
     public void efectivaChange() {
         if (this.currentGarantiaOferente.getEfectiva() == Boolean.TRUE) {
             this.deshabilitadoEfectiva = false;

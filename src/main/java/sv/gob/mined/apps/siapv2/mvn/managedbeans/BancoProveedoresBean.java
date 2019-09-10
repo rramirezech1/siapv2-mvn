@@ -97,8 +97,13 @@ public class BancoProveedoresBean {
     private List<FormaGarantia> lstFormaGarantia;
     private Boolean deshabilitado = true;
     private Boolean deshabilitadoEliminar = true;
-    private Boolean deshabilitadoEfectiva = true;
-
+    private Boolean deshabilitadoEstado = false;
+    private Boolean deshabilitadoEstadoDatos = true;
+    /*
+    Control de correlativos y documentos
+        1- Garantia  2- Devolucion de Garantia 3- Garantia efectiva
+    */
+    
     public BancoProveedoresBean() {
     }
     @Autowired
@@ -112,38 +117,6 @@ public class BancoProveedoresBean {
     /*public List<TipoCalificacionContratista> getLstTipoFaltas() {
      return bancoProv.getLstTipoFaltas();
      }*/
-    public List<TipoMultas> getLstTipoMultas() {
-        return bancoProv.getLstTipoMultas();
-    }
-
-    public List<TipoGarantias> getLstTipoGarantias() {
-        return bancoProv.getLstTipoGarantias();
-    }
-    
-    public List<FormaGarantia> getLstFormaGarantia() {
-        return bancoProv.getLstFormaGarantia();
-    }
-
-    public List<TipoRescision> getLstTipoRescisiones() {
-        return bancoProv.getLstTipoRescisiones();
-    }
-
-    public String getRazonSocial() {
-        return razonSocial;
-    }
-
-    public void setRazonSocial(String razonSocial) {
-        this.razonSocial = razonSocial;
-    }
-
-    public String getNumeroDeNit() {
-        return numeroDeNit;
-    }
-
-    public void setNumeroDeNit(String numeroDeNit) {
-        this.numeroDeNit = numeroDeNit;
-    }
-
     public Usuario getCurrentUsuario() {
         if (currentUsuario == null) {
             currentUsuario = new Usuario();
@@ -215,65 +188,23 @@ public class BancoProveedoresBean {
         }
     }
 
-    public List<Usuario> getLstUsuario() {
-        if (lstUsuario == null) {
-            lstUsuario = new ArrayList<Usuario>();
-        }
-        return lstUsuario;
-    }
-
-    public void setLstUsuario(List<Usuario> lstUsuario) {
-        this.lstUsuario = lstUsuario;
-    }
-
-    public List<Empresa> getLstEmpresa() {
-        if (lstEmpresa == null) {
-            lstEmpresa = new ArrayList<>();
-        }
-        return lstEmpresa;
-    }
-
-    public void setLstEmpresa(List<Empresa> lstEmpresa) {
-        this.lstEmpresa = lstEmpresa;
-    }
-
-    public void setLstSubSectorEconomico() {
-        if (idSector != null) {
-            lstSubSector = bancoProv.findAllSubSectorEconomico(idSector);
+    public void buscarEmpresa() {
+        deshabilitado = false;
+        if (razonSocial != null && !razonSocial.isEmpty()) {
+            lstEmpresa = bancoProv.getLstEmpresaByRazonSocial(razonSocial);
+        } else if (nombreComercial != null && !nombreComercial.isEmpty()) {
+            lstEmpresa = bancoProv.getLstEmpresaByNombreComercial(nombreComercial);
+        } else if (numeroDeNit != null && !numeroDeNit.isEmpty()) {
+            lstEmpresa = bancoProv.getLstEmpresaByNit(numeroDeNit);
+        } else if (giroEmpresa != null && !giroEmpresa.isEmpty()) {
+            lstEmpresa = bancoProv.getLstEmpresaByGiro(giroEmpresa);
+        } else if (idSubSector != null && idSubSector != 0) {
+            lstEmpresa = bancoProv.getLstEmpresaByQueOfrece(idSubSector);
+        } else {
+            lstEmpresa = bancoProv.getLstEmpresa();
         }
     }
 
-    public Boolean getDeshabilitado() {
-        return deshabilitado;
-    }
-
-    public void setDeshabilitado(Boolean deshabilitado) {
-        this.deshabilitado = deshabilitado;
-    }
-
-    public Boolean getDeshabilitadoEliminar() {
-        return deshabilitadoEliminar;
-    }
-
-    public void setDeshabilitadoEliminar(Boolean deshabilitadoEliminar) {
-        this.deshabilitadoEliminar = deshabilitadoEliminar;
-    }
-
-    public Boolean getDeshabilitadoEfectiva() {
-        return deshabilitadoEfectiva;
-    }
-
-    public void setDeshabilitadoEfectiva(Boolean deshabilitadoEfectiva) {
-        this.deshabilitadoEfectiva = deshabilitadoEfectiva;
-    }
-
-    /*public TipoFaltas getCurrentFaltas() {
-     return currentFaltas;
-     }
-
-     public void setCurrentFaltas(TipoFaltas currentFaltas) {
-     this.currentFaltas = currentFaltas;
-     }*/
     public void nuevaCalificacion() {
         nuevo();
         currentCalificacionContrato = new CalificacionContrato();
@@ -282,6 +213,7 @@ public class BancoProveedoresBean {
     public void nuevaGarantia() {
         nuevo();
         currentGarantiaOferente = new GarantiasOferente();
+        currentGarantiaOferente.setEstadoGarantia(1); // estado 1 = Registrada
     }
 
     public void nuevaRescision() {
@@ -302,6 +234,8 @@ public class BancoProveedoresBean {
     private void nuevo() {
         deshabilitado = false;
         deshabilitadoEliminar = true;
+        deshabilitadoEstado = true;
+        deshabilitadoEstadoDatos = true;
         currentEmpresa = null;
         numeroDeNit = null;
         razonSocial = null;
@@ -432,9 +366,10 @@ public class BancoProveedoresBean {
             valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaFin", Calendar.class, currentGarantiaOferente.getFechaVencimiento()) && valido;
             valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaRecepcion", Calendar.class, currentGarantiaOferente.getFechaPresentacion()) && valido;
             
-            if (currentGarantiaOferente.getEfectiva() == Boolean.TRUE) {
-                valido = JsfUtil.addErrorStyle("frmDialog", "cdlEfectiva", Calendar.class, currentGarantiaOferente.getFechaEmision()) && valido;
-            }
+            if ((currentGarantiaOferente.getEstadoGarantia() == 2)|(currentGarantiaOferente.getEstadoGarantia() == 4)) {
+                    valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaAccion", Calendar.class, currentGarantiaOferente.getFechaAccionEstado()) && valido;
+                    valido = JsfUtil.addErrorStyle("frmDialog", "cbAutorizaAccion", SelectOneMenu.class, currentGarantiaOferente.getAutorizaAccionEstado()) && valido;
+                }
             //valido = JsfUtil.addErrorStyle("frmDialog", "txaDescripcion", InputTextarea.class, currentGarantiaOferente.getDescripcionGarantia()) && valido;
         } else {
             valido = JsfUtil.addErrorStyle("frmDialog", "txtContratista", InputText.class, null);
@@ -445,10 +380,12 @@ public class BancoProveedoresBean {
             currentGarantiaOferente.setEstadoDeEliminacion(0);
             currentGarantiaOferente.setName(variablesSession.getUsuario());
             
-            if (currentGarantiaOferente.getEfectiva()){
+            /*if (currentGarantiaOferente.getEstadoEfectiva()){
                 currentGarantiaOferente.setEstadoGarantia(4);
             }
-            generaCorrelativo(currentGarantiaOferente.getIdTipoGarantia());
+            */
+            
+            generaCorrelativo(1); //El tipo de documento 1 corresponde a Garantia
             
             bancoProv.saveGarantiaOferente(currentGarantiaOferente);
             lstGarantias = bancoProv.getLstGarantiasGrupo(currentGarantiaOferente.getGrupoSiap());
@@ -467,21 +404,14 @@ public class BancoProveedoresBean {
     }
 
         
-    public void devolucionChange() {
-        if (this.currentGarantiaOferente.getEfectiva() == Boolean.TRUE) {
-            this.deshabilitadoEfectiva = false;
+    public void estadoChange() {
+        if ((this.currentGarantiaOferente.getEstadoGarantia() == 2)|(this.currentGarantiaOferente.getEstadoGarantia() == 4)){
+            this.deshabilitadoEstadoDatos = false;
         } else {
-            this.deshabilitadoEfectiva = true;
+            this.deshabilitadoEstadoDatos = true;
         }
     }
     
-    public void efectivaChange() {
-        if (this.currentGarantiaOferente.getEfectiva() == Boolean.TRUE) {
-            this.deshabilitadoEfectiva = false;
-        } else {
-            this.deshabilitadoEfectiva = true;
-        }
-    }
     
     public void guardarRescision() {
         Boolean valido;
@@ -647,15 +577,17 @@ public class BancoProveedoresBean {
     }
 
     public void onRowSelectGarantias(SelectEvent event) {
-        deshabilitado = false;
+        
         GarantiasOferente garantia = bancoProv.getGarantiaById(((VwGarantiasGrupo) event.getObject()).getIdentificadorGarantia());
                 
         if (garantia != null) {
             currentGarantiaOferente = garantia;
             currentGarantiaOferente.setRazonSocial(((VwGarantiasGrupo) event.getObject()).getRazonSocial());
             deshabilitadoEliminar = false;
+            deshabilitadoEstado = false;
+            deshabilitadoEstadoDatos = true;
             deshabilitado = false;
-            this.efectivaChange();
+            this.estadoChange();
         }
     }
 
@@ -759,15 +691,8 @@ public class BancoProveedoresBean {
     
     public void generaCorrelativo( int tipoDocumento) {
             
-            /*
-            java.util.Calendar fecha;
-            fecha = java.util.Calendar.getInstance();
-            fecha = currentGarantiaOferente.getFechaEmision();
-            int ejercicioFiscal = fecha.get(java.util.Calendar.YEAR);
-            */
-            
-            if ((currentGarantiaOferente.getNoGarantia()).equals("") || currentGarantiaOferente.getNoGarantia()==null){
-                int ejercicioFiscal = 2019;
+            if (currentGarantiaOferente.getNoGarantia()==null){
+                int ejercicioFiscal = JsfUtil.getNumAnyo(currentGarantiaOferente.getFechaEmision());
                 int corr = bancoProv.generaCorrelativo(tipoDocumento, ejercicioFiscal);
                 currentGarantiaOferente.setNoGarantia(String.valueOf(corr)+'/'+String.valueOf(ejercicioFiscal));
             }
@@ -892,6 +817,38 @@ public class BancoProveedoresBean {
         this.claveDeAcceso = claveDeAcceso;
     }
 
+     public List<TipoMultas> getLstTipoMultas() {
+        return bancoProv.getLstTipoMultas();
+    }
+
+    public List<TipoGarantias> getLstTipoGarantias() {
+        return bancoProv.getLstTipoGarantias();
+    }
+    
+    public List<FormaGarantia> getLstFormaGarantia() {
+        return bancoProv.getLstFormaGarantia();
+    }
+
+    public List<TipoRescision> getLstTipoRescisiones() {
+        return bancoProv.getLstTipoRescisiones();
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public String getNumeroDeNit() {
+        return numeroDeNit;
+    }
+
+    public void setNumeroDeNit(String numeroDeNit) {
+        this.numeroDeNit = numeroDeNit;
+    }
+
     public String getNombreComercial() {
         return nombreComercial;
     }
@@ -971,22 +928,73 @@ public class BancoProveedoresBean {
         this.representante = representante;
     }
 
-   
-    public void buscarEmpresa() {
-        deshabilitado = false;
-        if (razonSocial != null && !razonSocial.isEmpty()) {
-            lstEmpresa = bancoProv.getLstEmpresaByRazonSocial(razonSocial);
-        } else if (nombreComercial != null && !nombreComercial.isEmpty()) {
-            lstEmpresa = bancoProv.getLstEmpresaByNombreComercial(nombreComercial);
-        } else if (numeroDeNit != null && !numeroDeNit.isEmpty()) {
-            lstEmpresa = bancoProv.getLstEmpresaByNit(numeroDeNit);
-        } else if (giroEmpresa != null && !giroEmpresa.isEmpty()) {
-            lstEmpresa = bancoProv.getLstEmpresaByGiro(giroEmpresa);
-        } else if (idSubSector != null && idSubSector != 0) {
-            lstEmpresa = bancoProv.getLstEmpresaByQueOfrece(idSubSector);
-        } else {
-            lstEmpresa = bancoProv.getLstEmpresa();
+    public List<Usuario> getLstUsuario() {
+        if (lstUsuario == null) {
+            lstUsuario = new ArrayList<Usuario>();
         }
+        return lstUsuario;
+    }
+
+    public void setLstUsuario(List<Usuario> lstUsuario) {
+        this.lstUsuario = lstUsuario;
+    }
+
+    public List<Empresa> getLstEmpresa() {
+        if (lstEmpresa == null) {
+            lstEmpresa = new ArrayList<>();
+        }
+        return lstEmpresa;
+    }
+
+    public void setLstEmpresa(List<Empresa> lstEmpresa) {
+        this.lstEmpresa = lstEmpresa;
+    }
+
+    public void setLstSubSectorEconomico() {
+        if (idSector != null) {
+            lstSubSector = bancoProv.findAllSubSectorEconomico(idSector);
+        }
+    }
+
+    public Boolean getDeshabilitado() {
+        return deshabilitado;
+    }
+
+    public void setDeshabilitado(Boolean deshabilitado) {
+        this.deshabilitado = deshabilitado;
+    }
+
+    public Boolean getDeshabilitadoEliminar() {
+        return deshabilitadoEliminar;
+    }
+
+    public void setDeshabilitadoEliminar(Boolean deshabilitadoEliminar) {
+        this.deshabilitadoEliminar = deshabilitadoEliminar;
+    }
+
+    public Boolean getDeshabilitadoEstado() {
+        return deshabilitadoEstado;
+    }
+
+    public void setDeshabilitadoEstado(Boolean deshabilitadoEstado) {
+        this.deshabilitadoEstado = deshabilitadoEstado;
+    }
+    
+    
+    /*public TipoFaltas getCurrentFaltas() {
+     return currentFaltas;
+     }
+
+     public void setCurrentFaltas(TipoFaltas currentFaltas) {
+     this.currentFaltas = currentFaltas;
+     }*/
+
+    public Boolean getDeshabilitadoEstadoDatos() {
+        return deshabilitadoEstadoDatos;
+    }
+
+    public void setDeshabilitadoEstadoDatos(Boolean deshabilitadoEstadoDatos) {
+        this.deshabilitadoEstadoDatos = deshabilitadoEstadoDatos;
     }
 
 }

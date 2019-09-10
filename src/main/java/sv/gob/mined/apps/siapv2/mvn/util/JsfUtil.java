@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -152,5 +153,10 @@ public class JsfUtil {
         }
     }
     
+    public static int getNumAnyo(Date fecha) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(fecha);
+        return c.get(1);
+    }
    
 }

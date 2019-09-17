@@ -19,6 +19,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Departamento;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Municipio;
+import sv.gob.mined.apps.siapv2.mvn.modelo.EntidadEmisora;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SectorEconomico;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwCalificacionContratos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
@@ -99,6 +100,8 @@ public interface BancoProveedoresBo {
     public String findRepresentanteByEmpresa(Integer idEmpresa);
     
     public List<SectorEconomico> findAllSubSectorEconomico(Integer idSector);
+    
+    public List<EntidadEmisora> findAllEntidadEmisora();
     
     public List<Departamento> findAllDepartamentos();
     

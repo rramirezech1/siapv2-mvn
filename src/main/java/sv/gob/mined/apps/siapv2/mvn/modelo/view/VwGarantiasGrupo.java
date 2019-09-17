@@ -6,6 +6,7 @@ package sv.gob.mined.apps.siapv2.mvn.modelo.view;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -25,6 +26,7 @@ public class VwGarantiasGrupo {
     private String descripcionGarantia;
     private Integer estadoDeEliminacion;
     private Integer identificadorPrimarioOferente;
+    private Integer idTipoGarantia;
 
     public VwGarantiasGrupo() {
     }
@@ -123,6 +125,33 @@ public class VwGarantiasGrupo {
 
     public void setNoGarantia(String noGarantia) {
         this.noGarantia = noGarantia;
+    }
+
+    public Integer getIdTipoGarantia() {
+        return idTipoGarantia;
+    }
+
+    public void setIdTipoGarantia(Integer idTipoGarantia) {
+        this.idTipoGarantia = idTipoGarantia;
+    }
+    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final VwGarantiasGrupo other = (VwGarantiasGrupo) obj;
+        if (!Objects.equals(this.identificadorGarantia, other.identificadorGarantia)) {
+            return false;
+        }
+        return true;
     }
     
 }

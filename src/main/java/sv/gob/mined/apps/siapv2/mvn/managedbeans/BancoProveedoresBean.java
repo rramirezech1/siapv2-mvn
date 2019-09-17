@@ -45,6 +45,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.FormaGarantia;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
+import sv.gob.mined.apps.siapv2.mvn.modelo.EntidadEmisora;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwCalificacionContratos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwMultasEmpresa;
@@ -95,10 +96,17 @@ public class BancoProveedoresBean {
     private List<SectorEconomico> lstSectorEconomico;
     private List<SectorEconomico> lstSubSector;
     private List<FormaGarantia> lstFormaGarantia;
+    private List<EntidadEmisora> lstEntidadEmisora;
     private Boolean deshabilitado = true;
     private Boolean deshabilitadoEliminar = true;
     private Boolean deshabilitadoEstado = false;
     private Boolean deshabilitadoEstadoDatos = true;
+    //Control de reportes a imprimir, se hace porque es necesario contar con la información para que no de error
+    private Boolean deshabilitadoImpresionFichaGarantia = true;
+    private Boolean deshabilitadoImpresionDevolucionGarantia = true;
+    private Boolean deshabilitadoImpresionGarantiaEfectiva = true;
+    private Boolean deshabilitadoImpresionGarCumplimientoOferta = true;
+    private Boolean deshabilitadoImpresionGarCumplimientoContrato = true;
     /*
     Control de correlativos y documentos
         1- Garantia  2- Devolucion de Garantia 3- Garantia efectiva
@@ -233,6 +241,9 @@ public class BancoProveedoresBean {
 
     private void nuevo() {
         deshabilitado = false;
+        deshabilitadoImpresionFichaGarantia = true;
+        deshabilitadoImpresionGarantiaEfectiva = true;
+        deshabilitadoImpresionDevolucionGarantia = true;
         deshabilitadoEliminar = true;
         deshabilitadoEstado = true;
         deshabilitadoEstadoDatos = true;
@@ -357,19 +368,30 @@ public class BancoProveedoresBean {
 
     public void guardarGarantia() {
         Boolean valido;
+        java.util.Date fechaHoy = new Date();
 
         if (currentGarantiaOferente != null) {
             valido = JsfUtil.addErrorStyle("frmDialog", "txtIdDocumento", InputText.class, currentGarantiaOferente.getIdDocumento());
             valido = JsfUtil.addErrorStyle("frmDialog", "cbFormaGarantia", SelectOneMenu.class, currentGarantiaOferente.getIdFormaGarantia()) && valido;
             valido = JsfUtil.addErrorStyle("frmDialog", "txtMonto", InputText.class, currentGarantiaOferente.getMontoGarantia()) && valido;
+            valido = JsfUtil.addErrorStyle("frmDialog", "cbEntidadEmisora", SelectOneMenu.class, currentGarantiaOferente.getIdEntidadEmisora()) && valido;
             valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaInicio", Calendar.class, currentGarantiaOferente.getFechaEmision()) && valido;
             valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaFin", Calendar.class, currentGarantiaOferente.getFechaVencimiento()) && valido;
             valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaRecepcion", Calendar.class, currentGarantiaOferente.getFechaPresentacion()) && valido;
             
+            if (currentGarantiaOferente.getEstadoGarantia() == null){
+                    if (currentGarantiaOferente.getFechaVencimiento().before(fechaHoy)){
+                        currentGarantiaOferente.setEstadoGarantia(3);
+                    }else{
+                        currentGarantiaOferente.setEstadoGarantia(1);
+                    }
+            }
+                        
             if ((currentGarantiaOferente.getEstadoGarantia() == 2)|(currentGarantiaOferente.getEstadoGarantia() == 4)) {
-                    valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaAccion", Calendar.class, currentGarantiaOferente.getFechaAccionEstado()) && valido;
-                    valido = JsfUtil.addErrorStyle("frmDialog", "cbAutorizaAccion", SelectOneMenu.class, currentGarantiaOferente.getAutorizaAccionEstado()) && valido;
-                }
+                valido = JsfUtil.addErrorStyle("frmDialog", "cdFechaAccion", Calendar.class, currentGarantiaOferente.getFechaAccionEstado()) && valido;
+                valido = JsfUtil.addErrorStyle("frmDialog", "cbAutorizaAccion", SelectOneMenu.class, currentGarantiaOferente.getAutorizaAccionEstado()) && valido;
+            }
+            
             //valido = JsfUtil.addErrorStyle("frmDialog", "txaDescripcion", InputTextarea.class, currentGarantiaOferente.getDescripcionGarantia()) && valido;
         } else {
             valido = JsfUtil.addErrorStyle("frmDialog", "txtContratista", InputText.class, null);
@@ -405,10 +427,20 @@ public class BancoProveedoresBean {
 
         
     public void estadoChange() {
+        
         if ((this.currentGarantiaOferente.getEstadoGarantia() == 2)|(this.currentGarantiaOferente.getEstadoGarantia() == 4)){
             this.deshabilitadoEstadoDatos = false;
+            if (this.currentGarantiaOferente.getEstadoGarantia() == 2){
+                this.deshabilitadoImpresionGarantiaEfectiva = true;
+                this.deshabilitadoImpresionDevolucionGarantia = false;
+            }else{
+                this.deshabilitadoImpresionGarantiaEfectiva = false;
+                this.deshabilitadoImpresionDevolucionGarantia = true;
+            }
         } else {
             this.deshabilitadoEstadoDatos = true;
+            this.deshabilitadoImpresionGarantiaEfectiva = true;
+            this.deshabilitadoImpresionDevolucionGarantia = true;
         }
     }
     
@@ -586,6 +618,7 @@ public class BancoProveedoresBean {
             deshabilitadoEliminar = false;
             deshabilitadoEstado = false;
             deshabilitadoEstadoDatos = true;
+            deshabilitadoImpresionFichaGarantia=false;
             deshabilitado = false;
             this.estadoChange();
         }
@@ -995,6 +1028,50 @@ public class BancoProveedoresBean {
 
     public void setDeshabilitadoEstadoDatos(Boolean deshabilitadoEstadoDatos) {
         this.deshabilitadoEstadoDatos = deshabilitadoEstadoDatos;
+    }
+
+    public Boolean getDeshabilitadoImpresionFichaGarantia() {
+        return deshabilitadoImpresionFichaGarantia;
+    }
+
+    public void setDeshabilitadoImpresionFichaGarantia(Boolean deshabilitadoImpresionFichaGarantia) {
+        this.deshabilitadoImpresionFichaGarantia = deshabilitadoImpresionFichaGarantia;
+    }
+
+    public Boolean getDeshabilitadoImpresionDevolucionGarantia() {
+        return deshabilitadoImpresionDevolucionGarantia;
+    }
+
+    public void setDeshabilitadoImpresionDevolucionGarantia(Boolean deshabilitadoImpresionDevolucionGarantia) {
+        this.deshabilitadoImpresionDevolucionGarantia = deshabilitadoImpresionDevolucionGarantia;
+    }
+
+    public Boolean getDeshabilitadoImpresionGarantiaEfectiva() {
+        return deshabilitadoImpresionGarantiaEfectiva;
+    }
+
+    public void setDeshabilitadoImpresionGarantiaEfectiva(Boolean deshabilitadoImpresionGarantiaEfectiva) {
+        this.deshabilitadoImpresionGarantiaEfectiva = deshabilitadoImpresionGarantiaEfectiva;
+    }
+
+    public Boolean getDeshabilitadoImpresionGarCumplimientoOferta() {
+        return deshabilitadoImpresionGarCumplimientoOferta;
+    }
+
+    public void setDeshabilitadoImpresionGarCumplimientoOferta(Boolean deshabilitadoImpresionGarCumplimientoOferta) {
+        this.deshabilitadoImpresionGarCumplimientoOferta = deshabilitadoImpresionGarCumplimientoOferta;
+    }
+
+    public Boolean getDeshabilitadoImpresionGarCumplimientoContrato() {
+        return deshabilitadoImpresionGarCumplimientoContrato;
+    }
+
+    public void setDeshabilitadoImpresionGarCumplimientoContrato(Boolean deshabilitadoImpresionGarCumplimientoContrato) {
+        this.deshabilitadoImpresionGarCumplimientoContrato = deshabilitadoImpresionGarCumplimientoContrato;
+    }
+
+    public List<EntidadEmisora> getLstEntidadEmisora() {
+        return bancoProv.findAllEntidadEmisora();
     }
 
 }

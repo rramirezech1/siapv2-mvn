@@ -17,7 +17,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import sv.gob.mined.apps.siapv2.mvn.bo.ConsultasSiapBo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGrupos;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwAutoriza;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwContratosGrupo;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwOfertasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
 
@@ -27,9 +29,11 @@ import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
 public class ConsultasSiapBean {
     
     private List<VwGrupos> lstGrupos;
+    private List<VwAutoriza> lstAutoriza;
     private List<VwContratosGrupo> lstContratosGrupo;
     private List<VwOfertasGrupo> lstOfertasGrupo;
     private VwGrupos currentGrupo;
+    private VwAutoriza currentAutoriza;
     private VwOfertasGrupo currentOferta;
     private VwContratosGrupo currentContrato;
     private int tipoGrupo;
@@ -58,6 +62,11 @@ public class ConsultasSiapBean {
         return lstGrupos;
     }
 
+    public List<VwAutoriza> getLstAutoriza() {
+        lstAutoriza = consultasSiap.getLstAutoriza();
+        return lstAutoriza;
+    }
+    
     public void setLstGrupos(List<VwGrupos> lstGrupos) {
         this.lstGrupos = lstGrupos;
     }
@@ -98,6 +107,19 @@ public class ConsultasSiapBean {
         bp.setDeshabilitadoEliminar(true);
         
         bp.getLstGarantias(currentGrupo.getGrupo());
+        
+        for (VwGarantiasGrupo garantia : bp.getLstGarantias()) {
+            if(garantia.getIdTipoGarantia()== 1){
+                bp.setDeshabilitadoImpresionGarCumplimientoOferta(false);
+            }else if (garantia.getIdTipoGarantia()>=2){
+                     bp.setDeshabilitadoImpresionGarCumplimientoContrato(false);
+                  } else 
+                  {
+                    bp.setDeshabilitadoImpresionGarCumplimientoOferta(true);
+                    bp.setDeshabilitadoImpresionGarCumplimientoContrato(true);
+                  }
+        }
+        
         
         bp.getCurrentGarantiaOferente().setNoLicitacion(currentGrupo.getNo_licitacion());
         
@@ -194,4 +216,6 @@ public class ConsultasSiapBean {
     public void setHabilitadoOfertas(Boolean habilitadoOfertas) {
         this.habilitadoOfertas = habilitadoOfertas;
     }
+    
+    
 }

@@ -11,10 +11,11 @@ import sv.gob.mined.apps.siapv2.mvn.bo.ConsultasSiapBo;
 import sv.gob.mined.apps.siapv2.mvn.dao.GruposDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.ContratosDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.OfertasDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.AutorizaDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGrupos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwContratosGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwOfertasGrupo;
-
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwAutoriza;
 /**
  *
  * @author Infosoft
@@ -29,6 +30,8 @@ public class ConsultasSiapBoImpl implements ConsultasSiapBo {
     @Autowired
     private GruposDao grupos;
     @Autowired
+    private AutorizaDao autoriza;
+    @Autowired
     private ContratosDao contratos;
     @Autowired
     private OfertasDao ofertas;
@@ -36,6 +39,11 @@ public class ConsultasSiapBoImpl implements ConsultasSiapBo {
     @Override
     public List<VwGrupos> getLstGrupos(String usuarioSession, Integer tipoGrupo) {
         return grupos.findGruposByUser(usuarioSession, tipoGrupo);
+    }
+    
+    @Override
+    public List<VwAutoriza> getLstAutoriza() {
+        return autoriza.findAll();
     }
     
     @Override

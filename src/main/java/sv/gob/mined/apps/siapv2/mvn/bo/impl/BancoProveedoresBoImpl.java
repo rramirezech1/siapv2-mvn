@@ -23,6 +23,7 @@ import sv.gob.mined.apps.siapv2.mvn.dao.UsuarioDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.DepartamentoDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.MunicipioDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SectorEconomicoDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.EntidadEmisoraDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.CalificacionContrato;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Empresa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Departamento;
@@ -38,6 +39,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.FormaGarantia;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoMultas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRescision;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
+import sv.gob.mined.apps.siapv2.mvn.modelo.EntidadEmisora;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwCalificacionContratos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwMultasEmpresa;
@@ -79,6 +81,8 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     PersonaDao persona;
     @Autowired
     DepartamentoDao departamento;
+    @Autowired
+    EntidadEmisoraDao entidadEmisora;
     @Autowired
     MunicipioDao municipio;
     @Autowired
@@ -310,12 +314,19 @@ public class BancoProveedoresBoImpl implements BancoProveedoresBo {
     public List<SectorEconomico> findAllSubSectorEconomico(Integer idSector) {
         return sector.findAllSub(idSector);
     }
-     
+    
+    
+     @Override
+    public List<EntidadEmisora> findAllEntidadEmisora() {
+        return entidadEmisora.findAll();
+    }
+    
+    
      @Override
     public List<Departamento> findAllDepartamentos() {
         return departamento.findAll();
     }
-    
+       
     @Override
     public List<Municipio> findAllMunicipios() {
         return municipio.findAll();

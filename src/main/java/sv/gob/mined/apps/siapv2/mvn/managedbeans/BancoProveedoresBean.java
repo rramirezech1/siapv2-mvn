@@ -6,6 +6,7 @@ package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +61,7 @@ import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
  */
 @Component(value = "bancoProveedoresBean")
 @Scope(value = "view")
-public class BancoProveedoresBean {
+public class BancoProveedoresBean implements Serializable {
 
     private Integer idEmpresa;
     private String primerNombre;
@@ -107,6 +108,10 @@ public class BancoProveedoresBean {
     private Boolean deshabilitadoImpresionGarantiaEfectiva = true;
     private Boolean deshabilitadoImpresionGarCumplimientoOferta = true;
     private Boolean deshabilitadoImpresionGarCumplimientoContrato = true;
+    private String reporteImprimir;
+    private Integer tecnicoResponsable;
+    private Integer jefeArea;
+    private Integer tecnicoRecibe;
     /*
     Control de correlativos y documentos
         1- Garantia  2- Devolucion de Garantia 3- Garantia efectiva
@@ -425,7 +430,25 @@ public class BancoProveedoresBean {
         }
     }
 
+    
+    public void imprimirReporte() {
+        Boolean valido;
         
+        valido = JsfUtil.addErrorStyle("frmDialog", "cbReporteImp", SelectOneMenu.class, this.getReporteImprimir());
+        valido = JsfUtil.addErrorStyle("frmDialog", "cbTecRespImp", SelectOneMenu.class, this.getTecnicoResponsable()) && valido;
+        valido = JsfUtil.addErrorStyle("frmDialog", "cbAutorizaImp", SelectOneMenu.class, this.getJefeArea()) && valido;
+        valido = JsfUtil.addErrorStyle("frmDialog", "cbTecRecibe", SelectOneMenu.class, this.getTecnicoRecibe()) && valido;
+        
+        
+        if (valido == true) {
+            
+            JsfUtil.addSuccessMessage("El registro ha sido guardado");
+        } else {
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+        }
+    }
+
+    
     public void estadoChange() {
         
         if ((this.currentGarantiaOferente.getEstadoGarantia() == 2)|(this.currentGarantiaOferente.getEstadoGarantia() == 4)){
@@ -1074,4 +1097,37 @@ public class BancoProveedoresBean {
         return bancoProv.findAllEntidadEmisora();
     }
 
+    public String getReporteImprimir() {
+        return reporteImprimir;
+    }
+
+    public void setReporteImprimir(String reporteImprimir) {
+        this.reporteImprimir = reporteImprimir;
+    }
+
+    public Integer getTecnicoResponsable() {
+        return tecnicoResponsable;
+    }
+
+    public void setTecnicoResponsable(Integer tecnicoResponsable) {
+        this.tecnicoResponsable = tecnicoResponsable;
+    }
+
+    public Integer getJefeArea() {
+        return jefeArea;
+    }
+
+    public void setJefeArea(Integer jefeArea) {
+        this.jefeArea = jefeArea;
+    }
+
+    public Integer getTecnicoRecibe() {
+        return tecnicoRecibe;
+    }
+
+    public void setTecnicoRecibe(Integer tecnicoRecibe) {
+        this.tecnicoRecibe = tecnicoRecibe;
+    }
+    
+    
 }

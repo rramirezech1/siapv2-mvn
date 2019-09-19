@@ -9,12 +9,15 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGrupos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwContratosGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwOfertasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwAutoriza;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTecnicoUaci;
 
 public interface ConsultasSiapBo {
           
    public List<VwGrupos> getLstGrupos(String usuarioSession, Integer tipoGrupo);
    
    public List<VwAutoriza> getLstAutoriza();
+   
+   public List<VwTecnicoUaci> getLstTecnicoUaci();
     
    public VwGrupos getGrupoById(Integer id);
    

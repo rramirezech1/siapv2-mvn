@@ -5,6 +5,7 @@
 package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import sv.gob.mined.apps.siapv2.mvn.bo.ConsultasSiapBo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGrupos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwAutoriza;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTecnicoUaci;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwContratosGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwOfertasGrupo;
@@ -26,10 +28,11 @@ import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
 
 @Component(value = "consultasSiapBean")
 @Scope(value = "view")
-public class ConsultasSiapBean {
+public class ConsultasSiapBean implements Serializable{
     
     private List<VwGrupos> lstGrupos;
     private List<VwAutoriza> lstAutoriza;
+    private List<VwTecnicoUaci> lstTecnicoUaci;
     private List<VwContratosGrupo> lstContratosGrupo;
     private List<VwOfertasGrupo> lstOfertasGrupo;
     private VwGrupos currentGrupo;
@@ -65,6 +68,11 @@ public class ConsultasSiapBean {
     public List<VwAutoriza> getLstAutoriza() {
         lstAutoriza = consultasSiap.getLstAutoriza();
         return lstAutoriza;
+    }
+    
+    public List<VwTecnicoUaci> getLstTecnicoUaci() {
+        lstTecnicoUaci = consultasSiap.getLstTecnicoUaci();
+        return lstTecnicoUaci;
     }
     
     public void setLstGrupos(List<VwGrupos> lstGrupos) {

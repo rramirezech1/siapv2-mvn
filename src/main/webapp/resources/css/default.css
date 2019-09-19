@@ -176,7 +176,7 @@ ESTILOS PARA TABLAS
 
 .ui-menu-child {
     white-space: nowrap;
-    width: 200px !important;
+    width: auto !important;
 }
 
 .sinBorder tr, .sinBorder td {

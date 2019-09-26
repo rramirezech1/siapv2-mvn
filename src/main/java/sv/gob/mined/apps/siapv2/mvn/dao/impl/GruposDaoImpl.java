@@ -46,7 +46,7 @@ public class GruposDaoImpl extends XJdbcTemplate2 implements GruposDao {
     
     @Override
     public VwGrupos findById(Integer idGrupo) {
-        String sql = "SELECT grupos.grupo, grupos.no_licitacion, pg_convenio.numero_convenio as convenio, grupos.concepto, metodos_adquisiciones.descripcion FROM Grupos  INNER JOIN\n" +
+        String sql = "SELECT grupos.grupo, grupos.no_licitacion, pg_convenio.numero_convenio as convenio, grupos.concepto, metodos_adquisiciones.descripcion as metodoAdquisicion FROM Grupos  INNER JOIN\n" +
                      " metodos_adquisiciones ON grupos.metodo= metodos_adquisiciones.metodo INNER JOIN\n"+     
                      " pg_convenio ON grupos.convenio = pg_convenio.convenio WHERE grupo = " + idGrupo;
         List<VwGrupos> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwGrupos.class));

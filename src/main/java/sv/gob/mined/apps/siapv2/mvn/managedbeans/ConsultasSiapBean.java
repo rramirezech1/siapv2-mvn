@@ -130,17 +130,17 @@ public class ConsultasSiapBean implements Serializable{
         
         
         bp.getCurrentGarantiaOferente().setNoLicitacion(currentGrupo.getNo_licitacion());
-        bp.getCurrentGarantiaOferente().setNoLicitacion(currentGrupo.getMetodoAdquisicion());
+        bp.setMetodoAdquisicion(currentGrupo.getMetodoAdquisicion());
         
         if(tipoGarantia==1){
             if (currentOferta != null){
-                bp.getCurrentGarantiaOferente().setIdDocumento(currentOferta.getIdOferta());
+                bp.getCurrentGarantiaOferente().setDocumento(currentOferta.getIdOferta().toString());
                 bp.getCurrentGarantiaOferente().setIdentificadorPrimarioOferente(currentOferta.getIdentificadorPrimarioOferente());
                 bp.getCurrentGarantiaOferente().setRazonSocial(currentOferta.getRazonSocial());
             }
         }else{
             if (currentContrato != null){
-                bp.getCurrentGarantiaOferente().setIdDocumento(currentContrato.getIdContrato());
+                bp.getCurrentGarantiaOferente().setDocumento(currentContrato.getNumeroContrato());
                 bp.getCurrentGarantiaOferente().setIdentificadorPrimarioOferente(currentContrato.getIdentificadorPrimarioOferente());
                 bp.getCurrentGarantiaOferente().setRazonSocial(currentContrato.getRazonSocial());
             }

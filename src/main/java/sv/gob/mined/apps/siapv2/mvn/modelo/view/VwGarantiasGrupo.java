@@ -16,8 +16,9 @@ public class VwGarantiasGrupo {
 
     private Integer identificadorGarantia;
     private String razonSocial;
-    private String idDocumento;
+    private String documento;
     private String noLicitacion;
+    private String metodoAdquisicion;
     private String noGarantia;
     private String descripcionTipoGarantia;
     private BigDecimal montoGarantia;
@@ -47,12 +48,12 @@ public class VwGarantiasGrupo {
         this.razonSocial = razonSocial;
     }
 
-    public String getIdDocumento() {
-        return idDocumento;
+    public String getDocumento() {
+        return documento;
     }
 
-    public void setIdDocumento(String idDocumento) {
-        this.idDocumento = idDocumento;
+    public void setDocumento(String documento) {
+        this.documento = documento;
     }
 
     public String getDescripcionTipoGarantia() {
@@ -134,7 +135,6 @@ public class VwGarantiasGrupo {
     public void setIdTipoGarantia(Integer idTipoGarantia) {
         this.idTipoGarantia = idTipoGarantia;
     }
-    
 
     @Override
     public boolean equals(Object obj) {

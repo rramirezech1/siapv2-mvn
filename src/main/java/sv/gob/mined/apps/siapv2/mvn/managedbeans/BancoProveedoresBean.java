@@ -112,6 +112,7 @@ public class BancoProveedoresBean implements Serializable {
     private Integer tecnicoResponsable;
     private Integer jefeArea;
     private Integer tecnicoRecibe;
+    private String metodoAdquisicion;
     /*
     Control de correlativos y documentos
         1- Garantia  2- Devolucion de Garantia 3- Garantia efectiva
@@ -314,7 +315,7 @@ public class BancoProveedoresBean implements Serializable {
         java.util.Date fechaHoy = new Date();
 
         if (currentGarantiaOferente != null) {
-            valido = JsfUtil.addErrorStyle("frmDialog", "txtIdDocumento", InputText.class, currentGarantiaOferente.getIdDocumento());
+            valido = JsfUtil.addErrorStyle("frmDialog", "txtIdDocumento", InputText.class, currentGarantiaOferente.getDocumento());
             valido = JsfUtil.addErrorStyle("frmDialog", "cbFormaGarantia", SelectOneMenu.class, currentGarantiaOferente.getIdFormaGarantia()) && valido;
             valido = JsfUtil.addErrorStyle("frmDialog", "txtMonto", InputText.class, currentGarantiaOferente.getMontoGarantia()) && valido;
             valido = JsfUtil.addErrorStyle("frmDialog", "cbEntidadEmisora", SelectOneMenu.class, currentGarantiaOferente.getIdEntidadEmisora()) && valido;
@@ -1153,6 +1154,14 @@ public class BancoProveedoresBean implements Serializable {
 
     public void setTecnicoRecibe(Integer tecnicoRecibe) {
         this.tecnicoRecibe = tecnicoRecibe;
+    }
+
+    public String getMetodoAdquisicion() {
+        return metodoAdquisicion;
+    }
+
+    public void setMetodoAdquisicion(String metodoAdquisicion) {
+        this.metodoAdquisicion = metodoAdquisicion;
     }
     
     

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="612" pageHeight="792" columnWidth="562" leftMargin="30" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a60f8baf-6d9a-49dd-9d2b-7cebbbbdbea8">
 	<property name="ireport.zoom" value="1.7715610000000015"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="260"/>
+	<property name="ireport.x" value="92"/>
+	<property name="ireport.y" value="336"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -226,14 +226,14 @@ dbo.f_obtener_nombre_persona($P{tecnicoResponsable}) as tecnicoResponsable FROM 
 				<text><![CDATA[Monto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="478" y="1" width="39" height="15" forecolor="#736343" uuid="a3dab13d-b2aa-4c6e-9c3b-b28b0a49bd40"/>
+				<reportElement style="Column header" x="469" y="1" width="42" height="15" forecolor="#736343" uuid="a3dab13d-b2aa-4c6e-9c3b-b28b0a49bd40"/>
 				<textElement textAlignment="Center">
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<text><![CDATA[Inicio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="517" y="1" width="37" height="15" forecolor="#736343" uuid="5b4528e5-e59a-4932-a54d-2d62ea200665"/>
+				<reportElement style="Column header" x="516" y="1" width="38" height="15" forecolor="#736343" uuid="5b4528e5-e59a-4932-a54d-2d62ea200665"/>
 				<textElement textAlignment="Center">
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
@@ -247,7 +247,7 @@ dbo.f_obtener_nombre_persona($P{tecnicoResponsable}) as tecnicoResponsable FROM 
 				<text><![CDATA[Forma]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="429" y="1" width="46" height="15" forecolor="#736343" uuid="a70de0a8-13c8-46dc-a320-4316b5237fd3"/>
+				<reportElement style="Column header" x="429" y="1" width="39" height="15" forecolor="#736343" uuid="a70de0a8-13c8-46dc-a320-4316b5237fd3"/>
 				<textElement textAlignment="Center">
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
@@ -281,7 +281,7 @@ dbo.f_obtener_nombre_persona($P{tecnicoResponsable}) as tecnicoResponsable FROM 
 					<textFieldExpression><![CDATA[$F{razonSocial}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement style="Detail" x="225" y="0" width="61" height="15" uuid="17099b32-9acc-4dbe-bac0-cea5bdef9bf9"/>
+					<reportElement style="Detail" stretchType="RelativeToTallestObject" x="225" y="0" width="61" height="15" uuid="17099b32-9acc-4dbe-bac0-cea5bdef9bf9"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
@@ -302,14 +302,14 @@ dbo.f_obtener_nombre_persona($P{tecnicoResponsable}) as tecnicoResponsable FROM 
 					<textFieldExpression><![CDATA[$F{montoGarantia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
-					<reportElement style="Detail" x="477" y="0" width="37" height="15" uuid="433d30a8-073f-45f9-bda4-cf456a4b572b"/>
+					<reportElement style="Detail" x="466" y="0" width="43" height="15" uuid="433d30a8-073f-45f9-bda4-cf456a4b572b"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{fechaEmision}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
-					<reportElement style="Detail" x="516" y="0" width="38" height="15" uuid="b3af14a7-9127-48cb-8da5-1f49554b22d1"/>
+					<reportElement style="Detail" x="511" y="0" width="44" height="15" uuid="b3af14a7-9127-48cb-8da5-1f49554b22d1"/>
 					<textElement>
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
@@ -323,7 +323,7 @@ dbo.f_obtener_nombre_persona($P{tecnicoResponsable}) as tecnicoResponsable FROM 
 					<textFieldExpression><![CDATA[$F{descripcion_forma_garantia}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="###0">
-					<reportElement style="Detail" x="441" y="0" width="22" height="15" uuid="f668fa52-d664-474c-adad-dcd595377e66"/>
+					<reportElement style="Detail" x="438" y="0" width="22" height="15" uuid="f668fa52-d664-474c-adad-dcd595377e66"/>
 					<textElement textAlignment="Center">
 						<font fontName="Times New Roman" size="8"/>
 					</textElement>
@@ -425,21 +425,21 @@ dbo.f_obtener_nombre_persona($P{tecnicoResponsable}) as tecnicoResponsable FROM 
 			<textField>
 				<reportElement stretchType="RelativeToTallestObject" x="178" y="163" width="246" height="20" uuid="ad3ab287-6b76-4f3c-b879-853f5fe09d9e"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman"/>
+					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{jefeArea}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement stretchType="RelativeToTallestObject" x="178" y="107" width="240" height="20" uuid="ee53080d-3937-4ffd-a5e7-407ba96322b2"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman"/>
+					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tecnicoRecibe}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement stretchType="RelativeToTallestObject" x="178" y="49" width="240" height="20" uuid="fff44ea2-9c14-4815-a728-63ac272e10b7"/>
 				<textElement textAlignment="Center">
-					<font fontName="Times New Roman"/>
+					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tecnicoResponsable}]]></textFieldExpression>
 			</textField>

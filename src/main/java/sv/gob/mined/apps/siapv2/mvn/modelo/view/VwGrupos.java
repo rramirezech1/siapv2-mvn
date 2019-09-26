@@ -14,6 +14,7 @@ public class VwGrupos {
     private String no_licitacion;
     private String convenio;
     private String concepto;
+    private String metodoAdquisicion;
     private Boolean seleccionado; 
     
     public VwGrupos() {
@@ -59,4 +60,11 @@ public class VwGrupos {
         this.seleccionado = seleccionado;
     }
 
+    public String getMetodoAdquisicion() {
+        return metodoAdquisicion;
+    }
+
+    public void setMetodoAdquisicion(String metodoAdquisicion) {
+        this.metodoAdquisicion = metodoAdquisicion;
+    }
 }

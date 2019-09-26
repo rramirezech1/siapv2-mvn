@@ -26,7 +26,7 @@
                                 disabled="#{bancoProveedoresBean.deshabilitado}"
                                 partialSubmit="true" />
                     <p:menuitem value="Imprimir" icon="imprimir" target="_blank" disabled="#{bancoProveedoresBean.deshabilitado}"
-                                action="#{bancoProveedoresBean.imprimir}" ajax="false"
+                                action="#{bancoProveedoresBean.imprimir(1)}" ajax="false"
                                 />
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>

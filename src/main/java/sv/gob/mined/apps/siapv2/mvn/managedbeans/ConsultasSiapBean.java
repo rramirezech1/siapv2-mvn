@@ -130,6 +130,7 @@ public class ConsultasSiapBean implements Serializable{
         
         
         bp.getCurrentGarantiaOferente().setNoLicitacion(currentGrupo.getNo_licitacion());
+        bp.getCurrentGarantiaOferente().setNoLicitacion(currentGrupo.getMetodoAdquisicion());
         
         if(tipoGarantia==1){
             if (currentOferta != null){

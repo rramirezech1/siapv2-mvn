@@ -249,14 +249,13 @@
                   </h:form>
                </p:dialog>
             <p:dialog id="dlgImpGarantia" widgetVar="dlgImpGarantia" header="Impresion de Garantia" width="450" height="180" modal="true" appendTo="@(body)">
-                <h:form id="frmImpDialog">
+                <h:form id="frmImpDialog" target="_blank">
                    <p:spacer height="10px"/>
                    <p:panelGrid columns="2" columnClasses="col4_label,col8" style="width: 100%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank">
                       <p:outputLabel value="1. Reporte a imprimir:"/>
                       <p:selectOneMenu id="cbReporteImp" value="#{bancoProveedoresBean.reporteImprimir}" disabled="false">
                             <f:selectItem itemLabel="Seleccione un valor"/>
-                            <f:selectItem itemLabel="Mantenimiento de Oferta" itemValue="1"/>
-                            <f:selectItem itemLabel="Cumplimiento de Contrato" itemValue="2"/>
+                            <f:selectItems value="#{bancoProveedoresBean.lstTipoGarantias}" var="tip" itemValue="#{tip.idTipoGarantia}" itemLabel="#{tip.descripcionTipoGarantia}"/>
                       </p:selectOneMenu>
                       <p:outputLabel value="2. Técnico Responsable:"/>
                       <p:selectOneMenu id="cbTecRespImp" value="#{bancoProveedoresBean.tecnicoResponsable}" disabled="false">
@@ -279,9 +278,7 @@
                         <p:confirm header="Confirmación" message="¿Esta Seguro que desea cancelar la impresion?" icon="pi pi-exclamation-triangle" />
                    </p:commandButton> 
                    <p:spacer width= "40px" height="30px"/>
-                   <p:commandButton value="Imprimir" icon="imprimir" action="#{bancoProveedoresBean.imprimirReporte}" process="@this">
-                        <p:confirm header="Confirmación" message="¿Esta Seguro de imprimir reporte?" icon="pi pi-exclamation-triangle" />
-                   </p:commandButton> 
+                   <p:commandButton value="Imprimir" icon="imprimir"  action="#{bancoProveedoresBean.validaImprimirRecepcion}" ajax="false"/>
                 </h:form>
             </p:dialog>
         </ui:define>

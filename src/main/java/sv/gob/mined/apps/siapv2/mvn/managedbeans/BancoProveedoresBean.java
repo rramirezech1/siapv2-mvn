@@ -108,7 +108,7 @@ public class BancoProveedoresBean implements Serializable {
     private Boolean deshabilitadoImpresionGarantiaEfectiva = true;
     private Boolean deshabilitadoImpresionGarCumplimientoOferta = true;
     private Boolean deshabilitadoImpresionGarCumplimientoContrato = true;
-    private String reporteImprimir;
+    private Integer reporteImprimir;
     private Integer tecnicoResponsable;
     private Integer jefeArea;
     private Integer tecnicoRecibe;
@@ -130,69 +130,7 @@ public class BancoProveedoresBean implements Serializable {
     /*public List<TipoCalificacionContratista> getLstTipoFaltas() {
      return bancoProv.getLstTipoFaltas();
      }*/
-    public Usuario getCurrentUsuario() {
-        if (currentUsuario == null) {
-            currentUsuario = new Usuario();
-            //currentUsuario.setIdPregunta1(getLstPreguntas().get(0).getIdPregunta());
-        }
-        return currentUsuario;
-    }
-
-    public void setCurrentUsuario(Usuario currentUsuario) {
-        this.currentUsuario = currentUsuario;
-    }
-
-    public Empresa getCurrentEmpresa() {
-        return currentEmpresa;
-    }
-
-    public void setCurrentEmpresa(Empresa currentEmpresa) {
-        if (currentEmpresa != null) {
-            this.currentEmpresa = currentEmpresa;
-            if (currentCalificacionContrato != null) {
-                lstCalificaciones = bancoProv.getLstFaltasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-            } else if (currentMultaOferente != null) {
-                lstMultas = bancoProv.getLstMultasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-            } 
-            else if (currentGarantiaOferente != null) {
-                lstGarantias = bancoProv.getLstGarantiasGrupo(currentGarantiaOferente.getGrupoSiap());
-            }
-            else if (currentRescisionesOferente != null) {
-                lstRescision = bancoProv.getLstRescisionesOferente(currentEmpresa.getIdentificadorPrimarioOferente());
-            }
-        }
-    }
-
-    public Persona getCurrentPersona() {
-        return currentPersona;
-    }
-
-    public void setCurrentPersona(Persona currentPersona) {
-        this.currentPersona = currentPersona;
-    }
-
-    public MultasOferente getCurrentMultaOferente() {
-        if (currentMultaOferente == null) {
-            currentMultaOferente = new MultasOferente();
-        }
-        return currentMultaOferente;
-    }
-
-    public void setCurrentMultaOferente(MultasOferente currentMultaOferente) {
-        this.currentMultaOferente = currentMultaOferente;
-    }
-
-    public RescisionesOferente getCurrentRescisionesOferente() {
-        if (currentRescisionesOferente == null) {
-            currentRescisionesOferente = new RescisionesOferente();
-        }
-        return currentRescisionesOferente;
-    }
-
-    public void setCurrentRescisionesOferente(RescisionesOferente currentRescisionesOferente) {
-        this.currentRescisionesOferente = currentRescisionesOferente;
-    }
-
+   
     public void buscarEmpresas() {
         if (razonSocial != null && !razonSocial.isEmpty()) {
             lstEmpresa = bancoProv.getLstEmpresaByRazonSocial(razonSocial);
@@ -429,26 +367,7 @@ public class BancoProveedoresBean implements Serializable {
             JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
         }
     }
-
-    
-    public void imprimirReporte() {
-        Boolean valido;
-        
-        valido = JsfUtil.addErrorStyle("frmDialog", "cbReporteImp", SelectOneMenu.class, this.getReporteImprimir());
-        valido = JsfUtil.addErrorStyle("frmDialog", "cbTecRespImp", SelectOneMenu.class, this.getTecnicoResponsable()) && valido;
-        valido = JsfUtil.addErrorStyle("frmDialog", "cbAutorizaImp", SelectOneMenu.class, this.getJefeArea()) && valido;
-        valido = JsfUtil.addErrorStyle("frmDialog", "cbTecRecibe", SelectOneMenu.class, this.getTecnicoRecibe()) && valido;
-        
-        
-        if (valido == true) {
-            
-            JsfUtil.addSuccessMessage("El registro ha sido guardado");
-        } else {
-            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
-        }
-    }
-
-    
+   
     public void estadoChange() {
         
         if ((this.currentGarantiaOferente.getEstadoGarantia() == 2)|(this.currentGarantiaOferente.getEstadoGarantia() == 4)){
@@ -503,90 +422,6 @@ public class BancoProveedoresBean implements Serializable {
         } else {
             JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
         }
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public CalificacionContrato getCurrentCalificacionContrato() {
-        if (currentCalificacionContrato == null) {
-            currentCalificacionContrato = new CalificacionContrato();
-        }
-        return currentCalificacionContrato;
-    }
-
-    public GarantiasOferente getCurrentGarantiaOferente() {
-        if (currentGarantiaOferente == null) {
-            currentGarantiaOferente = new GarantiasOferente();
-        }
-        return currentGarantiaOferente;
-    }
-
-    public void setCurrentGarantiaOferente(GarantiasOferente currentGarantiaOferente) {
-        this.currentGarantiaOferente = currentGarantiaOferente;
-    }
-
-    public void setCurrentFaltasOferente(CalificacionContrato curretFaltasOferente) {
-        this.currentCalificacionContrato = curretFaltasOferente;
-    }
-
-    public List<VwCalificacionContratos> getLstCalificaciones() {
-        if (lstCalificaciones == null) {
-            lstCalificaciones = new ArrayList<VwCalificacionContratos>();
-        }
-        return lstCalificaciones;
-    }
-
-    public void setLstCalificaciones(List<VwCalificacionContratos> lstCalificaciones) {
-        this.lstCalificaciones = lstCalificaciones;
-    }
-
-    public List<VwRescisionesEmpresa> getLstRescision() {
-        if (lstRescision == null) {
-            lstRescision = new ArrayList<VwRescisionesEmpresa>();
-        }
-        return lstRescision;
-    }
-
-    public void setLstRescision(List<VwRescisionesEmpresa> lstRescision) {
-        this.lstRescision = lstRescision;
-    }
-
-    public List<VwMultasEmpresa> getLstMultas() {
-        if (lstMultas == null) {
-            lstMultas = new ArrayList<VwMultasEmpresa>();
-        }
-        return lstMultas;
-    }
-
-    public void setLstMultas(List<VwMultasEmpresa> lstMultas) {
-        this.lstMultas = lstMultas;
-    }
-
-    public List<VwGarantiasGrupo> getLstGarantias() {
-        if (lstGarantias == null) {
-            lstGarantias = new ArrayList<VwGarantiasGrupo>();
-        }
-        return lstGarantias;
-    }
-    
-    public List<VwGarantiasGrupo> getLstGarantias(int grupo){
-        lstGarantias = bancoProv.getLstGarantiasGrupo(grupo);
-        return lstGarantias;    
-    }
-
-    public void setLstGarantias(List<VwGarantiasGrupo> lstGarantias) {
-        this.lstGarantias = lstGarantias;
-    }
-
-    public List<VwTrasladoEmpresa> getLstTrasladoEmpresa() {
-        lstTrasladoEmpresa = bancoProv.getLstTrasladoEmpresa();
-        return lstTrasladoEmpresa;
     }
 
     public void onRowSelectEmpresa(SelectEvent event) {
@@ -765,29 +600,6 @@ public class BancoProveedoresBean implements Serializable {
 
     }
 
-    public List<TipoCalificacionContratista> getLstTipoCalificacionContratista() {
-        return bancoProv.getLstTipoCalificacionContratista();
-    }
-
-    public void imprimir() {
-        try {
-            byte[] content;
-            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            content = imprimirFicha();
-            response.setContentType("application/pdf");
-            response.setContentLength(content == null ? 0 : content.length);
-            response.getOutputStream().write(content);
-            response.getOutputStream().flush();
-            FacesContext.getCurrentInstance().responseComplete();
-        } catch (SQLException ex) {
-            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public void linkRegistro() {
 
         Persona per = bancoProv.findPersonaByUsuarioClave(usuario, claveDeAcceso);
@@ -801,7 +613,7 @@ public class BancoProveedoresBean implements Serializable {
         }
 
     }
-
+      
     public byte[] imprimirFicha() throws SQLException, JRException {
         ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String reportPath = ctx.getRealPath(JsfUtil.PATH_REPORTES);
@@ -815,6 +627,220 @@ public class BancoProveedoresBean implements Serializable {
         }
 
         return JasperRunManager.runReportToPdf(reportPath + File.separator + "fichaOferente.jasper", param, jdbcTemplate.getDataSource().getConnection());
+    }
+    
+        public void validaImprimirRecepcion() {
+        //Reporte Numero 2
+        
+        Boolean valido;
+        
+        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbReporteImp", SelectOneMenu.class, this.getReporteImprimir());
+        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbTecRespImp", SelectOneMenu.class, this.getTecnicoResponsable()) && valido;
+        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbAutorizaImp", SelectOneMenu.class, this.getJefeArea()) && valido;
+        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbTecRecibe", SelectOneMenu.class, this.getTecnicoRecibe()) && valido;
+        
+        
+        if (valido == true) {
+            imprimir(2);
+            
+        } else {
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+        }
+    }
+
+    
+    public byte[] imprimirRecepcion() throws SQLException, JRException {
+        ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String reportPath = ctx.getRealPath(JsfUtil.PATH_REPORTES);
+        HashMap param = new HashMap();
+        param.put("ubicacionImagenes", ctx.getRealPath(JsfUtil.PATH_IMAGENES));
+        param.put("reporteImprimir", this.getReporteImprimir());
+        param.put("tecnicoResponsable", this.getTecnicoResponsable());
+        param.put("jefeArea", this.getJefeArea());
+        param.put("tecnicoRecibe", this.getTecnicoRecibe());
+        param.put("grupoSIAP", currentGarantiaOferente.getGrupoSiap());
+
+        return JasperRunManager.runReportToPdf(reportPath + File.separator + "formularioRecepcionGarantia.jasper", param, jdbcTemplate.getDataSource().getConnection());
+    }
+
+    public void imprimir(int contRep) {
+        try {
+            byte[] content;
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            switch (contRep){
+                case 1:
+                    content = imprimirFicha();
+                    break;
+                case 2:
+                    content = imprimirRecepcion();
+                    break;
+                default:
+                    content = imprimirFicha();
+            }
+            
+            response.setContentType("application/pdf");
+            response.setContentLength(content == null ? 0 : content.length);
+            response.getOutputStream().write(content);
+            response.getOutputStream().flush();
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (SQLException ex) {
+            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public CalificacionContrato getCurrentCalificacionContrato() {
+        if (currentCalificacionContrato == null) {
+            currentCalificacionContrato = new CalificacionContrato();
+        }
+        return currentCalificacionContrato;
+    }
+
+    public GarantiasOferente getCurrentGarantiaOferente() {
+        if (currentGarantiaOferente == null) {
+            currentGarantiaOferente = new GarantiasOferente();
+        }
+        return currentGarantiaOferente;
+    }
+
+    public void setCurrentGarantiaOferente(GarantiasOferente currentGarantiaOferente) {
+        this.currentGarantiaOferente = currentGarantiaOferente;
+    }
+
+    public void setCurrentFaltasOferente(CalificacionContrato curretFaltasOferente) {
+        this.currentCalificacionContrato = curretFaltasOferente;
+    }
+
+    public List<VwCalificacionContratos> getLstCalificaciones() {
+        if (lstCalificaciones == null) {
+            lstCalificaciones = new ArrayList<VwCalificacionContratos>();
+        }
+        return lstCalificaciones;
+    }
+
+    public void setLstCalificaciones(List<VwCalificacionContratos> lstCalificaciones) {
+        this.lstCalificaciones = lstCalificaciones;
+    }
+
+    public List<VwRescisionesEmpresa> getLstRescision() {
+        if (lstRescision == null) {
+            lstRescision = new ArrayList<VwRescisionesEmpresa>();
+        }
+        return lstRescision;
+    }
+
+    public void setLstRescision(List<VwRescisionesEmpresa> lstRescision) {
+        this.lstRescision = lstRescision;
+    }
+
+    public List<VwMultasEmpresa> getLstMultas() {
+        if (lstMultas == null) {
+            lstMultas = new ArrayList<VwMultasEmpresa>();
+        }
+        return lstMultas;
+    }
+
+    public void setLstMultas(List<VwMultasEmpresa> lstMultas) {
+        this.lstMultas = lstMultas;
+    }
+
+    public List<VwGarantiasGrupo> getLstGarantias() {
+        if (lstGarantias == null) {
+            lstGarantias = new ArrayList<VwGarantiasGrupo>();
+        }
+        return lstGarantias;
+    }
+    
+    public List<VwGarantiasGrupo> getLstGarantias(int grupo){
+        lstGarantias = bancoProv.getLstGarantiasGrupo(grupo);
+        return lstGarantias;    
+    }
+
+    public void setLstGarantias(List<VwGarantiasGrupo> lstGarantias) {
+        this.lstGarantias = lstGarantias;
+    }
+
+    public List<VwTrasladoEmpresa> getLstTrasladoEmpresa() {
+        lstTrasladoEmpresa = bancoProv.getLstTrasladoEmpresa();
+        return lstTrasladoEmpresa;
+    }
+
+    public List<TipoCalificacionContratista> getLstTipoCalificacionContratista() {
+        return bancoProv.getLstTipoCalificacionContratista();
+    }
+   
+    public Usuario getCurrentUsuario() {
+        if (currentUsuario == null) {
+            currentUsuario = new Usuario();
+            //currentUsuario.setIdPregunta1(getLstPreguntas().get(0).getIdPregunta());
+        }
+        return currentUsuario;
+    }
+
+    public void setCurrentUsuario(Usuario currentUsuario) {
+        this.currentUsuario = currentUsuario;
+    }
+
+    public Empresa getCurrentEmpresa() {
+        return currentEmpresa;
+    }
+
+    public void setCurrentEmpresa(Empresa currentEmpresa) {
+        if (currentEmpresa != null) {
+            this.currentEmpresa = currentEmpresa;
+            if (currentCalificacionContrato != null) {
+                lstCalificaciones = bancoProv.getLstFaltasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            } else if (currentMultaOferente != null) {
+                lstMultas = bancoProv.getLstMultasOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            } 
+            else if (currentGarantiaOferente != null) {
+                lstGarantias = bancoProv.getLstGarantiasGrupo(currentGarantiaOferente.getGrupoSiap());
+            }
+            else if (currentRescisionesOferente != null) {
+                lstRescision = bancoProv.getLstRescisionesOferente(currentEmpresa.getIdentificadorPrimarioOferente());
+            }
+        }
+    }
+
+    public Persona getCurrentPersona() {
+        return currentPersona;
+    }
+
+    public void setCurrentPersona(Persona currentPersona) {
+        this.currentPersona = currentPersona;
+    }
+
+    public MultasOferente getCurrentMultaOferente() {
+        if (currentMultaOferente == null) {
+            currentMultaOferente = new MultasOferente();
+        }
+        return currentMultaOferente;
+    }
+
+    public void setCurrentMultaOferente(MultasOferente currentMultaOferente) {
+        this.currentMultaOferente = currentMultaOferente;
+    }
+
+    public RescisionesOferente getCurrentRescisionesOferente() {
+        if (currentRescisionesOferente == null) {
+            currentRescisionesOferente = new RescisionesOferente();
+        }
+        return currentRescisionesOferente;
+    }
+
+    public void setCurrentRescisionesOferente(RescisionesOferente currentRescisionesOferente) {
+        this.currentRescisionesOferente = currentRescisionesOferente;
     }
 
     public Integer getIdEmpresa() {
@@ -1097,11 +1123,11 @@ public class BancoProveedoresBean implements Serializable {
         return bancoProv.findAllEntidadEmisora();
     }
 
-    public String getReporteImprimir() {
+    public Integer getReporteImprimir() {
         return reporteImprimir;
     }
 
-    public void setReporteImprimir(String reporteImprimir) {
+    public void setReporteImprimir(Integer reporteImprimir) {
         this.reporteImprimir = reporteImprimir;
     }
 

@@ -1,37 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="frmDevolucion" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e8fdd0e9-aaa2-4b73-9eef-8e9040f424e7">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.x" value="75"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="numForm" class="java.lang.String"/>
-	<parameter name="tipoGarantia" class="java.lang.String"/>
-	<parameter name="contrato" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
-	<parameter name="metodoAdquisicion" class="java.lang.String"/>
-	<parameter name="horaFecha" class="java.lang.String"/>
-	<parameter name="proveedor" class="java.lang.String"/>
-	<parameter name="afianzadora" class="java.lang.String"/>
-	<parameter name="numGarantia" class="java.lang.String"/>
-	<parameter name="fechaVencimiento" class="java.lang.String"/>
-	<parameter name="montoGarantia" class="java.math.BigDecimal"/>
-	<parameter name="gerente" class="java.lang.String"/>
-	<parameter name="descripcion" class="java.lang.String"/>
 	<parameter name="urlEscudoES" class="java.lang.String"/>
-	<parameter name="numProceso" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
-	<parameter name="proceso" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<parameter name="ligadoAContrato" class="java.lang.Boolean">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="garantia" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[SELECT     GarantiasOferente.noGarantia AS numGarantia,
+GarantiasOferente.noDevolucion AS numForm, TipoGarantias.descripcionTipoGarantia AS tipoGarantia,
+dbo.f_obtener_nombre_metodo(GarantiasOferente.grupoSiap) AS metodoAdquisicion,
+GarantiasOferente.documento AS contrato,       GarantiasOferente.noLicitacion AS numProceso, GarantiasOferente.fechaAccionEstado AS horaFecha, GarantiasOferente.fechaVencimiento,                      EntidadEmisora.nombreEntidadEmisora AS afianzadora, dbo.f_obtener_nombre_proceso(GarantiasOferente.grupoSiap) AS descripcion,
+Empresa.razonSocial AS proveedor,
+GarantiasOferente.montoGarantia AS montoGarantia, dbo.f_obtener_nombre_persona(GarantiasOferente.autorizaAccionEstado) 
+AS gerente
+FROM GarantiasOferente INNER JOIN
+TipoGarantias ON GarantiasOferente.idTipoGarantia = TipoGarantias.idTipoGarantia INNER JOIN
+EntidadEmisora ON GarantiasOferente.idEntidadEmisora = EntidadEmisora.idEntidadEmisora INNER JOIN
+Empresa ON GarantiasOferente.identificadorPrimarioOferente = Empresa.identificadorPrimarioOferente
+WHERE     (GarantiasOferente.identificadorGarantia = $P{garantia})]]>
 	</queryString>
-	<field name="NUM_PROCESO" class="java.lang.String"/>
-	<field name="NOMBRE_METODO" class="java.lang.String"/>
+	<field name="numGarantia" class="java.lang.String"/>
+	<field name="numForm" class="java.lang.String"/>
+	<field name="tipoGarantia" class="java.lang.String"/>
+	<field name="metodoAdquisicion" class="java.lang.String"/>
+	<field name="contrato" class="java.lang.String"/>
+	<field name="numProceso" class="java.lang.String"/>
+	<field name="horaFecha" class="java.sql.Timestamp"/>
+	<field name="fechaVencimiento" class="java.sql.Timestamp"/>
+	<field name="afianzadora" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="proveedor" class="java.lang.String"/>
+	<field name="montoGarantia" class="java.lang.Double"/>
+	<field name="gerente" class="java.lang.String"/>
 	<title>
 		<band height="117" splitType="Stretch">
 			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
@@ -43,21 +48,21 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["FORMULARIO N° " + $P{numForm}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["FORMULARIO N° " + $F{numForm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="85" width="555" height="15" isRemoveLineWhenBlank="true" uuid="cd6b7d57-1784-4614-b9b7-16a9dfcff662"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["DEVOLUCION DE " + $P{tipoGarantia}.toUpperCase() + " " + $P{contrato}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["DEVOLUCION DE " + $F{tipoGarantia}.toUpperCase() + " " + $F{contrato}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="100" width="555" height="15" uuid="65068046-c51e-457e-827d-d55841aa240c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{metodoAdquisicion}+" "+$P{numProceso}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{metodoAdquisicion}+" "+$F{numProceso}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -70,7 +75,7 @@
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="36" y="19" width="519" height="14" uuid="83f4d283-fcf0-4e90-bf8b-8ef0fcadf577"/>
-				<textFieldExpression><![CDATA[$P{horaFecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{horaFecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="38" y="41" width="138" height="15" uuid="2a08c097-a369-4eb3-9f86-3438aaef6e6c"/>
@@ -94,13 +99,13 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="76" y="156" width="445" height="69" uuid="016bb6c0-6874-4c44-907b-6f91fd38f169"/>
 				<textElement textAlignment="Justified"/>
-				<textFieldExpression><![CDATA["Que para garantizar las obligaciones contraídas en el proceso "+$P{numProceso}+ ($P{ligadoAContrato}? " y documento N° " + $P{contrato}:",") + " que se refirió a " + $P{descripcion} + " suscrito entre el Ministerio de Educación y " + $P{proveedor} +
-", se presentó garantía emitida por " + $P{afianzadora} + ", por la cantidad de $" + $P{montoGarantia}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Que para garantizar las obligaciones contraídas en el proceso "+$F{numProceso}+ ($P{ligadoAContrato}? " y documento N° " + $F{contrato}:",") + " que se refirió a " + $F{descripcion} + " suscrito entre el Ministerio de Educación y " + $F{proveedor} +
+", se presentó garantía emitida por " + $F{afianzadora} + ", por la cantidad de $" + $F{montoGarantia}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="76" y="231" width="445" height="46" uuid="e3fa856e-8b26-4d6c-92a1-e46c3410f340"/>
 				<textElement textAlignment="Justified"/>
-				<textFieldExpression><![CDATA["Que habiéndose contratado y cumplido las obligaciones garantizadas y/o vencido el plazo de la referida garantía, la Gerencia de Adquisiciones y Contrataciones Institucional, del Ministerio de Educación, procede a devolver a " + $P{proveedor} + ", la garantía que a continuación se detalla:"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Que habiéndose contratado y cumplido las obligaciones garantizadas y/o vencido el plazo de la referida garantía, la Gerencia de Adquisiciones y Contrataciones Institucional, del Ministerio de Educación, procede a devolver a " + $F{proveedor} + ", la garantía que a continuación se detalla:"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" x="55" y="231" width="13" height="15" uuid="85985f01-4797-44ed-b98e-4944c4f9ed91"/>
@@ -190,7 +195,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{numGarantia}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{numGarantia}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="93" y="37" width="83" height="47" uuid="019b32b1-59ba-4df2-b803-191a2820644b"/>
@@ -204,7 +209,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{fechaVencimiento}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fechaVencimiento}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="176" y="37" width="101" height="47" uuid="47448a43-6f79-4d38-ba3d-aa075a8787a9"/>
@@ -218,7 +223,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{tipoGarantia}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tipoGarantia}]]></textFieldExpression>
 			</textField>
 			<textField pattern="$ #,##0.00;(#,##0.00)" isBlankWhenNull="true">
 				<reportElement x="277" y="37" width="85" height="47" uuid="32e97d0a-ca05-4b9e-afa1-697ed3c59237"/>
@@ -232,7 +237,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{montoGarantia}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{montoGarantia}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="362" y="37" width="159" height="47" uuid="76ca3ced-85ad-46bb-9f6f-eb3b10ef9ecd"/>
@@ -246,7 +251,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{proveedor}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proveedor}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -260,7 +265,7 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="29" y="7" width="278" height="15" uuid="2811d88c-e25f-4bd6-9449-381aed148cde"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{gerente}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{gerente}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

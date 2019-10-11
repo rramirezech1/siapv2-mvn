@@ -679,13 +679,14 @@ public class BancoProveedoresBean implements Serializable {
         
         Boolean valido;
         
-        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbTecRespImp", SelectOneMenu.class, this.getTecnicoResponsable());
-        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbTecRecibe", SelectOneMenu.class, this.getTecnicoRecibe()) && valido;
+        valido = JsfUtil.addErrorStyle("frmImpDev", "cbTecRespImpDev", SelectOneMenu.class, this.getTecnicoResponsable());
+        valido = JsfUtil.addErrorStyle("frmImpDev", "cbTecRecibeDev", SelectOneMenu.class, this.getTecnicoRecibe()) && valido;
         
         
         if (valido == true) {
            RequestContext context = RequestContext.getCurrentInstance();
-           context.execute("document.getElementById('frmImpDev:ocultoImpDev').click();");      
+           context.execute("document.getElementById('frmImpDev:ocultoImpDev').click();");
+            
             
         } else {
             JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
@@ -717,7 +718,7 @@ public class BancoProveedoresBean implements Serializable {
             
             response.setContentType("application/pdf");
             response.setContentLength(content == null ? 0 : content.length);
-            response.setHeader("Content-disposition", "attachment; filename=" + nombreFile + ".pdf");
+            response.setHeader("Content-disposition", "attachment; filename=" + nombreFile + currentGarantiaOferente.getNoGarantia()+".pdf");
             response.getOutputStream().write(content);
             response.getOutputStream().flush();
             FacesContext.getCurrentInstance().responseComplete();
@@ -748,13 +749,16 @@ public class BancoProveedoresBean implements Serializable {
         ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String reportPath = ctx.getRealPath(JsfUtil.PATH_REPORTES);
         HashMap param = new HashMap();
-        param.put("ubicacionImagenes", ctx.getRealPath(JsfUtil.PATH_IMAGENES));
-        param.put("jefeArea", currentGarantiaOferente.getAutorizaAccionEstado());
-        param.put("tecnicoResponsable", this.getTecnicoResponsable());
-        param.put("tecnicoRecibe", this.getTecnicoRecibe());
+        param.put("urlEscudoES", ctx.getRealPath(JsfUtil.PATH_IMAGENES));
         param.put("garantia", currentGarantiaOferente.getIdentificadorGarantia());
+        
+        if (currentGarantiaOferente.getIdTipoGarantia()== 1){
+            param.put("ligadoAContrato", false);
+        }else{
+            param.put("ligadoAContrato", true);
+        }
 
-        return JasperRunManager.runReportToPdf(reportPath + File.separator + "formularioRecepcionGarantia.jasper", param, jdbcTemplate.getDataSource().getConnection());
+        return JasperRunManager.runReportToPdf(reportPath + File.separator + "formularioDevolucionGarantia.jasper", param, jdbcTemplate.getDataSource().getConnection());
     }
     
     public String getDescripcion() {

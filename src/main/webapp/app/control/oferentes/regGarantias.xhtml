@@ -168,7 +168,7 @@
                         <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
                         <p:submenu label="Imprimir" icon="imprimir" >
                             <p:menuitem value="Ficha de Garantia" disabled="#{bancoProveedoresBean.deshabilitadoImpresionFichaGarantia}" onclick="PF('dlgImpGarantia').show()"/>
-                            <p:menuitem value="Devolucion de Garantia" disabled="#{bancoProveedoresBean.deshabilitadoImpresionDevolucionGarantia}" onclick="PF('dlgImpDevGarantia').show()"/>
+                            <p:menuitem value="Devolucion de Garantia" disabled="#{bancoProveedoresBean.deshabilitadoImpresionDevolucionGarantia}" action="#{bancoProveedoresBean.imprimir(3)}" ajax="false"/>
                             <p:menuitem value="Garantia Efectiva" disabled="#{bancoProveedoresBean.deshabilitadoImpresionGarantiaEfectiva}" onclick="PF('dlgImpGarantia').show()"/>
                         </p:submenu>
                         <f:facet name="options">
@@ -298,40 +298,6 @@
                        <p:commandButton id ="ocultoImp"  widgetVar="ocultoImp" action="#{bancoProveedoresBean.imprimir(2)}" ajax="false"/>
                    </p:panel>
                    
-                </h:form>
-            </p:dialog>
-            
-            
-            
-            <p:dialog id="dlgImpDevGarantia" widgetVar="dlgImpDevGarantia" header="Impresion Devolucion de Garantia" width="450" height="180" modal="true" appendTo="@(body)">
-                <h:form id="frmImpDev">
-                   <p:spacer height="10px"/>
-                   <p:panelGrid columns="2" columnClasses="col4_label,col8" style="width: 100%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank">
-                       <p:outputLabel value="1. Jefe Autoriza:"/>
-                       <p:selectOneMenu id="cbAutorizaImpDev" value="#{bancoProveedoresBean.currentGarantiaOferente.autorizaAccionEstado}" disabled="true">
-                            <f:selectItem itemLabel="Seleccione un valor"/>
-                            <f:selectItems value="#{consultasSiapBean.lstAutoriza}" var="aut" itemValue="#{aut.personal_id}" itemLabel="#{aut.nombre}"/>
-                      </p:selectOneMenu>
-                      <p:outputLabel value="2. Técnico Responsable:"/>
-                      <p:selectOneMenu id="cbTecRespImpDev" value="#{bancoProveedoresBean.tecnicoResponsable}" disabled="false">
-                            <f:selectItem itemLabel="Seleccione un valor"/>
-                            <f:selectItems value="#{consultasSiapBean.lstTecnicoUaci}" var="aut" itemValue="#{aut.personal_id}" itemLabel="#{aut.nombre}"/>
-                      </p:selectOneMenu>
-                      <p:outputLabel value="3. Técnico Recibe:"/>
-                      <p:selectOneMenu id="cbTecRecibeDev" value="#{bancoProveedoresBean.tecnicoRecibe}" disabled="false">
-                            <f:selectItem itemLabel="Seleccione un valor"/>
-                            <f:selectItems value="#{consultasSiapBean.lstTecnicoUaci}" var="aut" itemValue="#{aut.personal_id}" itemLabel="#{aut.nombre}"/>
-                      </p:selectOneMenu>
-                    </p:panelGrid>
-                   <p:spacer width= "100px" height="30px"/>
-                   <p:commandButton value="Cancelar" icon="salir" oncomplete="PF('dlgImpDevGarantia').hide()">
-                        <p:confirm header="Confirmación" message="¿Esta Seguro que desea cancelar la impresion?" icon="pi pi-exclamation-triangle" />
-                   </p:commandButton> 
-                   <p:spacer width= "40px" height="30px"/>
-                   <p:commandButton value="Imprimir" icon="imprimir" action="#{bancoProveedoresBean.validaImprimirDevolucion}" ajax="true"/>
-                   <p:panel visible="false">
-                       <p:commandButton id ="ocultoImpDev"  widgetVar="ocultoImpDev" action="#{bancoProveedoresBean.imprimir(3)}" ajax="false"/>
-                   </p:panel>
                 </h:form>
             </p:dialog>
         </ui:define>

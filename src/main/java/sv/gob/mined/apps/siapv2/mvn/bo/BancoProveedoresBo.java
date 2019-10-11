@@ -112,5 +112,4 @@ public interface BancoProveedoresBo {
     public List<SectorEconomico> findAllSubSector();
     
     public int generaCorrelativo(Integer tipoDocumento, Integer ejercicioFiscal);
-   
 }

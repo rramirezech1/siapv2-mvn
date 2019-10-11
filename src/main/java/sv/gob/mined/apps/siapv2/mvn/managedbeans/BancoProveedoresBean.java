@@ -20,11 +20,14 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperRunManager;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -108,11 +111,14 @@ public class BancoProveedoresBean implements Serializable {
     private Boolean deshabilitadoImpresionGarantiaEfectiva = true;
     private Boolean deshabilitadoImpresionGarCumplimientoOferta = true;
     private Boolean deshabilitadoImpresionGarCumplimientoContrato = true;
+    private Boolean habilitadoDevolucion = false;
+    private Boolean habilitadoEfectiva = false;
     private Integer reporteImprimir;
     private Integer tecnicoResponsable;
     private Integer jefeArea;
     private Integer tecnicoRecibe;
     private String metodoAdquisicion;
+    
     /*
     Control de correlativos y documentos
         1- Garantia  2- Devolucion de Garantia 3- Garantia efectiva
@@ -342,16 +348,11 @@ public class BancoProveedoresBean implements Serializable {
         }
 
         if (valido == true) {
-            // currentGarantiaOferente.setFechaDeInsercion(new Date());
+            
             currentGarantiaOferente.setEstadoDeEliminacion(0);
             currentGarantiaOferente.setName(variablesSession.getUsuario());
-            
-            /*if (currentGarantiaOferente.getEstadoEfectiva()){
-                currentGarantiaOferente.setEstadoGarantia(4);
-            }
-            */
-            
-            generaCorrelativo(1); //El tipo de documento 1 corresponde a Garantia
+                       
+            generaCorrelativo(); //El tipo de documento 1 corresponde a Numero de Garantia
             
             bancoProv.saveGarantiaOferente(currentGarantiaOferente);
             lstGarantias = bancoProv.getLstGarantiasGrupo(currentGarantiaOferente.getGrupoSiap());
@@ -364,6 +365,7 @@ public class BancoProveedoresBean implements Serializable {
             }
 
             JsfUtil.addSuccessMessage("El registro ha sido guardado");
+            PrimeFaces.current().executeScript("PF('dlgRegGarantia').hide();");
         } else {
             JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
         }
@@ -376,9 +378,14 @@ public class BancoProveedoresBean implements Serializable {
             if (this.currentGarantiaOferente.getEstadoGarantia() == 2){
                 this.deshabilitadoImpresionGarantiaEfectiva = true;
                 this.deshabilitadoImpresionDevolucionGarantia = false;
+                this.habilitadoDevolucion = true;
+                this.habilitadoEfectiva = false;
+
             }else{
                 this.deshabilitadoImpresionGarantiaEfectiva = false;
                 this.deshabilitadoImpresionDevolucionGarantia = true;
+                this.habilitadoDevolucion = false;
+                this.habilitadoEfectiva = true;
             }
         } else {
             this.deshabilitadoEstadoDatos = true;
@@ -580,14 +587,28 @@ public class BancoProveedoresBean implements Serializable {
             JsfUtil.addWarningMessage("No ha seleccionado ningun registro");
         }
     }
-    
-    public void generaCorrelativo( int tipoDocumento) {
+        
+    public void generaCorrelativo() {
+            int tipoDocumento ;
             
             if (currentGarantiaOferente.getNoGarantia()==null){
+                tipoDocumento = 1;
                 int ejercicioFiscal = JsfUtil.getNumAnyo(currentGarantiaOferente.getFechaEmision());
                 int corr = bancoProv.generaCorrelativo(tipoDocumento, ejercicioFiscal);
                 currentGarantiaOferente.setNoGarantia(String.valueOf(corr)+'/'+String.valueOf(ejercicioFiscal));
-            }
+            }else if (currentGarantiaOferente.getEstadoGarantia() == 2){
+                // Correlativo para devolucion tipo documento 2
+                tipoDocumento= 2;
+                int ejercicioFiscal = JsfUtil.getNumAnyo(currentGarantiaOferente.getFechaAccionEstado());
+                int corr = bancoProv.generaCorrelativo(tipoDocumento, ejercicioFiscal);
+                currentGarantiaOferente.setNoDevolucion(String.valueOf(corr)+'/'+String.valueOf(ejercicioFiscal));
+            } else if (currentGarantiaOferente.getEstadoGarantia()== 4){
+                // Correlativo para GarantiaEfectiva tipo documento 3
+                tipoDocumento= 3;
+                int ejercicioFiscal = JsfUtil.getNumAnyo(currentGarantiaOferente.getFechaAccionEstado());
+                int corr = bancoProv.generaCorrelativo(tipoDocumento, ejercicioFiscal);
+                currentGarantiaOferente.setNoGarEfectiva(String.valueOf(corr)+'/'+String.valueOf(ejercicioFiscal));
+            }            
     }
 
     public void habilitaOferente() {
@@ -630,25 +651,84 @@ public class BancoProveedoresBean implements Serializable {
         return JasperRunManager.runReportToPdf(reportPath + File.separator + "fichaOferente.jasper", param, jdbcTemplate.getDataSource().getConnection());
     }
     
-        public void validaImprimirRecepcion() {
+    public void validaImprimirRecepcion() {
         //Reporte Numero 2
         
         Boolean valido;
         
-        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbReporteImp", SelectOneMenu.class, this.getReporteImprimir());
-        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbTecRespImp", SelectOneMenu.class, this.getTecnicoResponsable()) && valido;
-        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbAutorizaImp", SelectOneMenu.class, this.getJefeArea()) && valido;
+        valido = JsfUtil.addErrorStyle("frmImpRecep", "cbReporteImp", SelectOneMenu.class, this.getReporteImprimir());
+        valido = JsfUtil.addErrorStyle("frmImpRecep", "cbTecRespImp", SelectOneMenu.class, this.getTecnicoResponsable()) && valido;
+        valido = JsfUtil.addErrorStyle("frmImpRecep", "cbAutorizaImp", SelectOneMenu.class, this.getJefeArea()) && valido;
+        valido = JsfUtil.addErrorStyle("frmImpRecep", "cbTecRecibe", SelectOneMenu.class, this.getTecnicoRecibe()) && valido;
+        
+        
+        if (valido == true) {
+           
+           RequestContext context = RequestContext.getCurrentInstance();
+           context.execute("document.getElementById('frmImpRecep:ocultoImp').click();");
+           
+            //PrimeFaces.current().executeScript("#document.getElementById('frmImpRecep:ocultoImp').click();");
+           //imprimir(2);
+        } else {
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+        }
+    }
+
+    public void validaImprimirDevolucion() {
+        //Reporte Numero 3
+        
+        Boolean valido;
+        
+        valido = JsfUtil.addErrorStyle("frmImpDialog", "cbTecRespImp", SelectOneMenu.class, this.getTecnicoResponsable());
         valido = JsfUtil.addErrorStyle("frmImpDialog", "cbTecRecibe", SelectOneMenu.class, this.getTecnicoRecibe()) && valido;
         
         
         if (valido == true) {
-            imprimir(2);
+           RequestContext context = RequestContext.getCurrentInstance();
+           context.execute("document.getElementById('frmImpDev:ocultoImpDev').click();");      
             
         } else {
             JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
         }
     }
 
+        
+    public void imprimir(int contRep) {
+        try {
+            byte[] content; //= JasperExportManager.exportReportToPdf(jp);
+            String nombreFile="";
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            switch (contRep){
+                case 1:
+                    content = imprimirFicha();
+                    nombreFile= "fichaGarantia";
+                    break;
+                case 2:
+                    content = imprimirRecepcion();
+                    nombreFile= "recepcionGarantia";
+                    break;
+                case 3:
+                    content = imprimirDevolucion();  
+                    nombreFile= "devolucionGarantia";
+                    break;
+                default:
+                    content = imprimirFicha();
+            }
+            
+            response.setContentType("application/pdf");
+            response.setContentLength(content == null ? 0 : content.length);
+            response.setHeader("Content-disposition", "attachment; filename=" + nombreFile + ".pdf");
+            response.getOutputStream().write(content);
+            response.getOutputStream().flush();
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (SQLException ex) {
+            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JRException ex) {
+            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     public byte[] imprimirRecepcion() throws SQLException, JRException {
         ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
@@ -663,34 +743,18 @@ public class BancoProveedoresBean implements Serializable {
 
         return JasperRunManager.runReportToPdf(reportPath + File.separator + "formularioRecepcionGarantia.jasper", param, jdbcTemplate.getDataSource().getConnection());
     }
+    
+     public byte[] imprimirDevolucion() throws SQLException, JRException {
+        ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String reportPath = ctx.getRealPath(JsfUtil.PATH_REPORTES);
+        HashMap param = new HashMap();
+        param.put("ubicacionImagenes", ctx.getRealPath(JsfUtil.PATH_IMAGENES));
+        param.put("jefeArea", currentGarantiaOferente.getAutorizaAccionEstado());
+        param.put("tecnicoResponsable", this.getTecnicoResponsable());
+        param.put("tecnicoRecibe", this.getTecnicoRecibe());
+        param.put("garantia", currentGarantiaOferente.getIdentificadorGarantia());
 
-    public void imprimir(int contRep) {
-        try {
-            byte[] content;
-            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            switch (contRep){
-                case 1:
-                    content = imprimirFicha();
-                    break;
-                case 2:
-                    content = imprimirRecepcion();
-                    break;
-                default:
-                    content = imprimirFicha();
-            }
-            
-            response.setContentType("application/pdf");
-            response.setContentLength(content == null ? 0 : content.length);
-            response.getOutputStream().write(content);
-            response.getOutputStream().flush();
-            FacesContext.getCurrentInstance().responseComplete();
-        } catch (SQLException ex) {
-            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(BancoProveedoresBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        return JasperRunManager.runReportToPdf(reportPath + File.separator + "formularioRecepcionGarantia.jasper", param, jdbcTemplate.getDataSource().getConnection());
     }
     
     public String getDescripcion() {
@@ -1063,15 +1127,6 @@ public class BancoProveedoresBean implements Serializable {
         this.deshabilitadoEstado = deshabilitadoEstado;
     }
     
-    
-    /*public TipoFaltas getCurrentFaltas() {
-     return currentFaltas;
-     }
-
-     public void setCurrentFaltas(TipoFaltas currentFaltas) {
-     this.currentFaltas = currentFaltas;
-     }*/
-
     public Boolean getDeshabilitadoEstadoDatos() {
         return deshabilitadoEstadoDatos;
     }
@@ -1163,6 +1218,20 @@ public class BancoProveedoresBean implements Serializable {
     public void setMetodoAdquisicion(String metodoAdquisicion) {
         this.metodoAdquisicion = metodoAdquisicion;
     }
-    
-    
+
+    public Boolean getHabilitadoDevolucion() {
+        return habilitadoDevolucion;
+    }
+
+    public void setHabilitadoDevolucion(Boolean habilitadoDevolucion) {
+        this.habilitadoDevolucion = habilitadoDevolucion;
+    }
+
+    public Boolean getHabilitadoEfectiva() {
+        return habilitadoEfectiva;
+    }
+
+    public void setHabilitadoEfectiva(Boolean habilitadoEfectiva) {
+        this.habilitadoEfectiva = habilitadoEfectiva;
+    }
 }

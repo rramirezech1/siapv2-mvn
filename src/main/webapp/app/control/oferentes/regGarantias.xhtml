@@ -5,6 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
+    
     <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
         <ui:define name ="auxiliar">
             <p:dialog header="Confirmar" widgetVar="dlg2" modal="true" resizable="false" closable="false" height="70" focus="no" >
@@ -21,7 +22,7 @@
                 <p:menubar id="menuPpalGarantias">
                     <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevaGarantia}" update="frmPrincipal pnlGrupos tblGarantias tblGrupos" icon="nuevo" ajax="true"/>
                     <p:submenu label="Imprimir" icon="imprimir">
-                        <p:menuitem value="Recepcion de Garantias" disabled="#{bancoProveedoresBean.deshabilitadoImpresionGarCumplimientoOferta}" style="width: 120px;" onclick="PF('dlgImpGarantia').show()"/>
+                        <p:menuitem value="Recepcion de Garantias" disabled="#{bancoProveedoresBean.deshabilitadoImpresionGarCumplimientoOferta}" style="width: 120px;" onclick="PF('dlgImpRecep').show()"/>
                     </p:submenu>
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>
@@ -160,20 +161,20 @@
                 </p:dataTable>
             </h:form>
             
-            <p:dialog id="dlgRegGarantia" widgetVar="dlgRegGarantia" header="Registro de Garantia" width="750" height="415" modal="true" appendTo="@(body)">
+            <p:dialog id="dlgRegGarantia" widgetVar="dlgRegGarantia" header="Registro de Garantia" width="750" height="480" modal="true" appendTo="@(body)">
                 <h:form id="frmDialog">
                     <p:menubar id="menuRegistroGarantia">
-                        <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia}" onclick="PF('dlgRegGarantia').hide()" update="frmPrincipal:tblGarantias" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                        <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia}" update="frmPrincipal:tblGarantias" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}" />
                         <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
                         <p:submenu label="Imprimir" icon="imprimir" >
-                            <p:menuitem value="Ficha de Garantia" url="#" disabled="#{bancoProveedoresBean.deshabilitadoImpresionFichaGarantia}" />
-                            <p:menuitem value="Devolucion de Garantia" url="#" disabled="#{bancoProveedoresBean.deshabilitadoImpresionDevolucionGarantia}"/>
-                            <p:menuitem value="Garantia Efectiva" url="#" disabled="#{bancoProveedoresBean.deshabilitadoImpresionGarantiaEfectiva}"/>
+                            <p:menuitem value="Ficha de Garantia" disabled="#{bancoProveedoresBean.deshabilitadoImpresionFichaGarantia}" onclick="PF('dlgImpGarantia').show()"/>
+                            <p:menuitem value="Devolucion de Garantia" disabled="#{bancoProveedoresBean.deshabilitadoImpresionDevolucionGarantia}" onclick="PF('dlgImpDevGarantia').show()"/>
+                            <p:menuitem value="Garantia Efectiva" disabled="#{bancoProveedoresBean.deshabilitadoImpresionGarantiaEfectiva}" onclick="PF('dlgImpGarantia').show()"/>
                         </p:submenu>
                         <f:facet name="options">
                            <p:spacer width="15"/>
-                           <p:commandButton value="Cancelar" icon="salir" oncomplete="PF('dlgRegGarantia').hide()">
-                                <p:confirm header="Confirmación" message="¿Esta Seguro que desea cancelar el registro?" icon="pi pi-exclamation-triangle" />
+                           <p:commandButton value="Salir" icon="salir" oncomplete="PF('dlgRegGarantia').hide()">
+                                <p:confirm header="Confirmación" message="¿Esta Seguro que desea salir?" icon="pi pi-exclamation-triangle" />
                            </p:commandButton>                    
                         </f:facet>
                     </p:menubar>           
@@ -236,7 +237,7 @@
                     </p:panelGrid>                    
                     <p:panelGrid columns="5" columnClasses="col5,col2_label,col1,col2_label,col1" style="width: 100%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank"> 
                         <p:selectOneRadio id="estadoChange" value="#{bancoProveedoresBean.currentGarantiaOferente.estadoGarantia}" disabled="#{bancoProveedoresBean.deshabilitadoEstado}">
-                            <p:ajax event="change" listener="#{bancoProveedoresBean.estadoChange}" update="cdFechaAccion cbAutorizaAccion menuRegistroGarantia"/>
+                            <p:ajax event="change" listener="#{bancoProveedoresBean.estadoChange}" update="cdFechaAccion cbAutorizaAccion menuRegistroGarantia pnlDevolucion pnlEfectiva"/>
                             <f:selectItem itemLabel="Devuelta" itemValue="2" />
                             <f:selectItem itemLabel="Efectiva" itemValue="4" />
                         </p:selectOneRadio>
@@ -248,10 +249,22 @@
                             <f:selectItems value="#{consultasSiapBean.lstAutoriza}" var="aut" itemValue="#{aut.personal_id}" itemLabel="#{aut.nombre}"/>
                         </p:selectOneMenu>
                     </p:panelGrid>
+                    <p:panel id="pnlDevolucion" styleClass="panelSinBorder" visible="#{bancoProveedoresBean.habilitadoDevolucion}">
+                        <p:panelGrid columns="2" columnClasses="col4_label,col2" style="width: 80%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank">
+                            <p:outputLabel value="18. Numero Devolucion:" />
+                            <p:inputText id="noDevolucion" value="#{bancoProveedoresBean.currentGarantiaOferente.noDevolucion}" disabled="true"/>
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:panel id="pnlEfectiva" styleClass="panelSinBorder" visible="#{bancoProveedoresBean.habilitadoEfectiva}">
+                        <p:panelGrid columns="2" columnClasses="col4_label,col2" style="width: 80%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank">
+                            <p:outputLabel value="18. Numero Efectiva:" />
+                            <p:inputText id="noGarEfectiva" value="#{bancoProveedoresBean.currentGarantiaOferente.noGarEfectiva}" disabled="true"/>
+                        </p:panelGrid>
+                    </p:panel>
                   </h:form>
                </p:dialog>
-            <p:dialog id="dlgImpGarantia" widgetVar="dlgImpGarantia" header="Impresion de Garantia" width="450" height="180" modal="true" appendTo="@(body)">
-                <h:form id="frmImpDialog" target="_blank">
+            <p:dialog id="dlgImpRecep" widgetVar="dlgImpRecep" header="Impresion de Recepcion deGarantia" width="450" height="180" modal="true" appendTo="@(body)">
+                <h:form id="frmImpRecep">
                    <p:spacer height="10px"/>
                    <p:panelGrid columns="2" columnClasses="col4_label,col8" style="width: 100%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank">
                       <p:outputLabel value="1. Reporte a imprimir:"/>
@@ -276,11 +289,49 @@
                       </p:selectOneMenu>
                     </p:panelGrid>
                    <p:spacer width= "100px" height="30px"/>
-                   <p:commandButton value="Cancelar" icon="salir" oncomplete="PF('dlgImpGarantia').hide()">
+                   <p:commandButton value="Cancelar" icon="salir" oncomplete="PF('dlgImpRecep').hide()">
                         <p:confirm header="Confirmación" message="¿Esta Seguro que desea cancelar la impresion?" icon="pi pi-exclamation-triangle" />
                    </p:commandButton> 
                    <p:spacer width= "40px" height="30px"/>
-                   <p:commandButton value="Imprimir" icon="imprimir"  action="#{bancoProveedoresBean.validaImprimirRecepcion}" ajax="false"/>
+                   <p:commandButton value="Imprimir" icon="imprimir" action="#{bancoProveedoresBean.validaImprimirRecepcion}" ajax="true"/>
+                   <p:panel visible="false">
+                       <p:commandButton id ="ocultoImp"  widgetVar="ocultoImp" action="#{bancoProveedoresBean.imprimir(2)}" ajax="false"/>
+                   </p:panel>
+                   
+                </h:form>
+            </p:dialog>
+            
+            
+            
+            <p:dialog id="dlgImpDevGarantia" widgetVar="dlgImpDevGarantia" header="Impresion Devolucion de Garantia" width="450" height="180" modal="true" appendTo="@(body)">
+                <h:form id="frmImpDev">
+                   <p:spacer height="10px"/>
+                   <p:panelGrid columns="2" columnClasses="col4_label,col8" style="width: 100%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank">
+                       <p:outputLabel value="1. Jefe Autoriza:"/>
+                       <p:selectOneMenu id="cbAutorizaImpDev" value="#{bancoProveedoresBean.currentGarantiaOferente.autorizaAccionEstado}" disabled="true">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{consultasSiapBean.lstAutoriza}" var="aut" itemValue="#{aut.personal_id}" itemLabel="#{aut.nombre}"/>
+                      </p:selectOneMenu>
+                      <p:outputLabel value="2. Técnico Responsable:"/>
+                      <p:selectOneMenu id="cbTecRespImpDev" value="#{bancoProveedoresBean.tecnicoResponsable}" disabled="false">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{consultasSiapBean.lstTecnicoUaci}" var="aut" itemValue="#{aut.personal_id}" itemLabel="#{aut.nombre}"/>
+                      </p:selectOneMenu>
+                      <p:outputLabel value="3. Técnico Recibe:"/>
+                      <p:selectOneMenu id="cbTecRecibeDev" value="#{bancoProveedoresBean.tecnicoRecibe}" disabled="false">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{consultasSiapBean.lstTecnicoUaci}" var="aut" itemValue="#{aut.personal_id}" itemLabel="#{aut.nombre}"/>
+                      </p:selectOneMenu>
+                    </p:panelGrid>
+                   <p:spacer width= "100px" height="30px"/>
+                   <p:commandButton value="Cancelar" icon="salir" oncomplete="PF('dlgImpDevGarantia').hide()">
+                        <p:confirm header="Confirmación" message="¿Esta Seguro que desea cancelar la impresion?" icon="pi pi-exclamation-triangle" />
+                   </p:commandButton> 
+                   <p:spacer width= "40px" height="30px"/>
+                   <p:commandButton value="Imprimir" icon="imprimir" action="#{bancoProveedoresBean.validaImprimirDevolucion}" ajax="true"/>
+                   <p:panel visible="false">
+                       <p:commandButton id ="ocultoImpDev"  widgetVar="ocultoImpDev" action="#{bancoProveedoresBean.imprimir(3)}" ajax="false"/>
+                   </p:panel>
                 </h:form>
             </p:dialog>
         </ui:define>

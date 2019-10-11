@@ -199,7 +199,7 @@ public class ConsultasSiapBean implements Serializable{
         this.tipoGarantia = tipoGarantia;
     }
     
-     public void tipoGarantiaChange() {
+    public void tipoGarantiaChange() {
         if (this.tipoGarantia == 1) {
             this.habilitadoContratos = false;
             this.habilitadoOfertas = true;

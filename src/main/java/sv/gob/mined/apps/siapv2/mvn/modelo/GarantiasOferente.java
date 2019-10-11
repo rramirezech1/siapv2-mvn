@@ -37,6 +37,8 @@ public class GarantiasOferente implements PersistenciaDao {
     private Integer autorizaAccionEstado;
     private String razonSocial;
     private Integer idEntidadEmisora;
+    private String noDevolucion;
+    private String noGarEfectiva;
     
     public GarantiasOferente() {
     }
@@ -237,6 +239,22 @@ public class GarantiasOferente implements PersistenciaDao {
         this.idEntidadEmisora = idEntidadEmisora;
     }
 
+    public String getNoDevolucion() {
+        return noDevolucion;
+    }
+
+    public void setNoDevolucion(String noDevolucion) {
+        this.noDevolucion = noDevolucion;
+    }
+
+    public String getNoGarEfectiva() {
+        return noGarEfectiva;
+    }
+
+    public void setNoGarEfectiva(String noGarEfectiva) {
+        this.noGarEfectiva = noGarEfectiva;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -275,12 +293,12 @@ public class GarantiasOferente implements PersistenciaDao {
 
     @Override
     public String generarUpdateSQL() {
-        return "UPDATE dbo.GarantiasOferente SET identificadorPrimarioOferente=?, idTipoGarantia=?, idFormaGarantia=?, idEntidadEmisora=?, documento=?, grupoSiap=?, noLicitacion=?, noGarantia=?, descripcionGarantia=?, fechaPresentacion=?, fechaEmision=?, fechaVencimiento=?, montoGarantia=?, fechaAccionEstado=?, autorizaAccionEstado=?, estadoGarantia=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=?"
+        return "UPDATE dbo.GarantiasOferente SET identificadorPrimarioOferente=?, idTipoGarantia=?, idFormaGarantia=?, idEntidadEmisora=?, documento=?, grupoSiap=?, noLicitacion=?, noGarantia=?, descripcionGarantia=?, fechaPresentacion=?, fechaEmision=?, fechaVencimiento=?, montoGarantia=?, fechaAccionEstado=?, autorizaAccionEstado=?, estadoGarantia=?, noDevolucion=?, noGarEfectiva=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=?"
                 + " WHERE identificadorGarantia=?";
     }
 
     @Override
     public Object[] getDatosUpdate() {
-        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idEntidadEmisora, documento, grupoSiap, noLicitacion, noGarantia, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaAccionEstado, autorizaAccionEstado, estadoGarantia,  fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name, identificadorGarantia};
+        return new Object[]{identificadorPrimarioOferente, idTipoGarantia, idFormaGarantia, idEntidadEmisora, documento, grupoSiap, noLicitacion, noGarantia, descripcionGarantia, fechaPresentacion, fechaEmision, fechaVencimiento, montoGarantia, fechaAccionEstado, autorizaAccionEstado, estadoGarantia, noDevolucion, noGarEfectiva, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name, identificadorGarantia};
     }
 }

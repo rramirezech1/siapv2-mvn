@@ -13,7 +13,7 @@ import javax.faces.validator.ValidatorException;
 
 /**
  *
- * @author misanchez
+ * @author CTESOFT
  */
 @FacesValidator("validatorFechaActividad")
 public class ValidatorFechaActividad implements Validator {

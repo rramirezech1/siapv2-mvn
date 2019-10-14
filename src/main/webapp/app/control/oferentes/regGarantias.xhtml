@@ -167,7 +167,7 @@
                         <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarGarantia}" update="frmPrincipal:tblGarantias" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}" />
                         <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
                         <p:submenu label="Imprimir" icon="imprimir" >
-                            <p:menuitem value="Ficha de Garantia" disabled="#{bancoProveedoresBean.deshabilitadoImpresionFichaGarantia}" onclick="PF('dlgImpGarantia').show()"/>
+                            
                             <p:menuitem value="Devolucion de Garantia" disabled="#{bancoProveedoresBean.deshabilitadoImpresionDevolucionGarantia}" action="#{bancoProveedoresBean.imprimir(3)}" ajax="false"/>
                             <p:menuitem value="Garantia Efectiva" disabled="#{bancoProveedoresBean.deshabilitadoImpresionGarantiaEfectiva}" onclick="PF('dlgImpGarantia').show()"/>
                         </p:submenu>

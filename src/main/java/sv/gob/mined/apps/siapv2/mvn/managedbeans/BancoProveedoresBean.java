@@ -702,7 +702,7 @@ public class BancoProveedoresBean implements Serializable {
             switch (contRep){
                 case 1:
                     content = imprimirFicha();
-                    nombreFile= "fichaGarantia";
+                    nombreFile= "fichaOferente";
                     break;
                 case 2:
                     content = imprimirRecepcion();
@@ -718,7 +718,7 @@ public class BancoProveedoresBean implements Serializable {
             
             response.setContentType("application/pdf");
             response.setContentLength(content == null ? 0 : content.length);
-            response.setHeader("Content-disposition", "attachment; filename=" + nombreFile + currentGarantiaOferente.getNoGarantia()+".pdf");
+            //response.setHeader("Content-disposition", "attachment; filename=" + nombreFile + currentGarantiaOferente.getNoGarantia()+".pdf");
             response.getOutputStream().write(content);
             response.getOutputStream().flush();
             FacesContext.getCurrentInstance().responseComplete();

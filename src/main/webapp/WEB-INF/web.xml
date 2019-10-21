@@ -28,12 +28,12 @@
         <param-value>redmond</param-value>  
     </context-param-->  
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
     <!-- Handle JSF page expirations gracefully -->
     <error-page>
 	<exception-type>javax.faces.application.ViewExpiredException</exception-type>        
-	<location>index.jsp</location>
+	<location>/index.jsp</location>
     </error-page>
     
     <context-param>
@@ -51,36 +51,4 @@
             org.springframework.web.context.request.RequestContextListener
         </listener-class>
     </listener>
-     <security-constraint>  
-        <web-resource-collection>  
-            <web-resource-name>adminPages</web-resource-name>  
-            <description>Ingreso a todo el sistema</description>  
-            <url-pattern>/app/inicio.xhtml</url-pattern> 
-            <http-method>DELETE</http-method>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-            <http-method>PUT</http-method>
-        </web-resource-collection>  
-        <auth-constraint>  
-            <role-name>ADMINISTRADOR</role-name>  
-        </auth-constraint>  
-    </security-constraint>  
-     
-    <login-config>
-        <auth-method>FORM</auth-method>
-        <realm-name>seguridadSiap</realm-name>
-        <form-login-config>
-            <form-login-page>/index.jsf</form-login-page> 
-            <form-error-page>/indexError.jsf</form-error-page>
-        </form-login-config>
-    </login-config>   
-    
-    <security-role>  
-        <role-name>RECEPCION</role-name>  
-    </security-role>  
-  
-    <security-role>
-        <description> A user </description>
-        <role-name>ADMINISTRADOR</role-name>  
-    </security-role>  
 </web-app>

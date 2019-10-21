@@ -28,6 +28,7 @@ import sv.gob.mined.apps.siapv2.mvn.dao.ProcesosDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityInfoDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityTemplateDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUsersDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.SecurityGroupDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.TipoRolControlDao;
 import sv.gob.mined.apps.siapv2.mvn.dto.CadenaWhereMetasActividades;
 import sv.gob.mined.apps.siapv2.mvn.modelo.ActorDelProceso;
@@ -48,6 +49,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.Procesos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityInfo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityTemplate;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
+import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRolControl;
 import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 
@@ -84,6 +86,8 @@ public class RolesBoImpl implements RolesBo {
     private SecurityTemplateDao securitytemplatedao;
     @Autowired
     private SecurityUsersDao securityusersdao;
+    @Autowired
+    private SecurityGroupDao securitygroupdao;
     @Autowired
     private SecurityInfoDao securityinfodao;
     @Autowired
@@ -158,6 +162,11 @@ public class RolesBoImpl implements RolesBo {
     public List<SecurityUsers> getLstSecurityUser() {
         return securityusersdao.findAll();
     }
+    
+     @Override
+    public List<SecurityGroup> getLstSecurityGroup() {
+        return securitygroupdao.findAll();
+    }
 
     @Override
     public Integer createPlantillaSeguridad(PlantillasDeSeguridad plantilla, Boolean edit) {
@@ -195,11 +204,28 @@ public class RolesBoImpl implements RolesBo {
     }
 
     @Override
+    public SecurityGroup buscarSecurityGroupById(Integer id) {
+        return securitygroupdao.findById(id);
+    }
+    
+    @Override
+    public Integer saveSecurityGroup(SecurityGroup grupo) {
+        securitygroupdao.setSecurityGroup(grupo);
+        if (grupo.getIdGrupo() == null) {
+            Integer id = securitygroupdao.create();
+            grupo.setIdGrupo(id);
+            return id;
+        } else {
+            return securitygroupdao.update();
+        }
+    }
+    
+    @Override
     public Integer saveSecurityInfo(SecurityInfo securityinfo) {
         securityinfodao.setSecurityInfo(securityinfo);
         return securityinfodao.create();
     }
-
+    
     @Override
     public List<SecurityTemplate> getListadosSecurityTemplateModificacion(Integer id) {
         List<SecurityTemplate> listaretorno = new ArrayList<SecurityTemplate>();

@@ -24,7 +24,9 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.Procesos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityInfo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityTemplate;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
+import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRolControl;
+import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 
 /**
  *
@@ -57,6 +59,8 @@ public interface RolesBo {
     public List<SecurityTemplate> getLstSecurityTemplate();
 
     public List<SecurityUsers> getLstSecurityUser();
+    
+    public List<SecurityGroup> getLstSecurityGroup();
 
     public List<SecurityUsers> getLstSecurityUserByCriteria(String criteria);
 
@@ -67,6 +71,10 @@ public interface RolesBo {
     public Integer createDetalleAccesoPlantilla(DetalleAccesoPlantilla detplan, Boolean edit);
 
     public SecurityUsers buscarSecurityUserById(Integer id);
+    
+    public SecurityGroup buscarSecurityGroupById(Integer id);
+    
+    public Integer saveSecurityGroup(SecurityGroup grupo);
 
     public Integer saveSecurityInfo(SecurityInfo securityinfo);
 

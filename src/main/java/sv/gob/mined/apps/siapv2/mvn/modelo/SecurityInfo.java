@@ -86,31 +86,6 @@ public class SecurityInfo implements PersistenciaDao {
     }
 
     @Override
-    public String toString() {
-        return "SecurityInfo{" + "application=" + application + ", window=" + window + ", control=" + control + ", user_name=" + user_name + ", status=" + status + ", identificacionDelProceso=" + identificacionDelProceso + ", idPlantillaSeguridad=" + idPlantillaSeguridad + '}';
-    }
-
-    @Override
-    public String generarInsertSQL() {
-        return "INSERT INTO dbo.security_info (application, window, control, user_name, status, identificacionDelProceso, idPlantillaSeguridad) 	VALUES (?,?,?,?,?,?,?)";
-    }
-
-    @Override
-    public Object[] getDatosInsert() {
-        return new Object[]{application, window, control, user_name, status, identificacionDelProceso, idPlantillaSeguridad};
-    }
-
-    @Override
-    public String generarUpdateSQL() {
-        return "update dbo.security_info set status=?, identificacionDelProceso=?, idPlantillaSeguridad=? where application=? and window=? and control=? and user_name=?";
-    }
-
-    @Override
-    public Object[] getDatosUpdate() {
-        return new Object[]{status, identificacionDelProceso, idPlantillaSeguridad, application, window, control, user_name};
-    }
-
-    @Override
     public void setName(String user_name) {
         this.user_name = user_name;
     }
@@ -139,4 +114,29 @@ public class SecurityInfo implements PersistenciaDao {
     public void setEstadoDeEliminacion(Integer valor) {
         this.estadoDeEliminacion = valor;
     }
+     @Override
+    public String toString() {
+        return "SecurityInfo{" + "application=" + application + ", window=" + window + ", control=" + control + ", user_name=" + user_name + ", status=" + status + ", identificacionDelProceso=" + identificacionDelProceso + ", idPlantillaSeguridad=" + idPlantillaSeguridad + '}';
+    }
+
+    @Override
+    public String generarInsertSQL() {
+        return "INSERT INTO dbo.security_info (application, window, control, user_name, status, identificacionDelProceso, idPlantillaSeguridad) 	VALUES (?,?,?,?,?,?,?)";
+    }
+
+    @Override
+    public Object[] getDatosInsert() {
+        return new Object[]{application, window, control, user_name, status, identificacionDelProceso, idPlantillaSeguridad};
+    }
+
+    @Override
+    public String generarUpdateSQL() {
+        return "update dbo.security_info set status=?, identificacionDelProceso=?, idPlantillaSeguridad=? where application=? and window=? and control=? and user_name=?";
+    }
+
+    @Override
+    public Object[] getDatosUpdate() {
+        return new Object[]{status, identificacionDelProceso, idPlantillaSeguridad, application, window, control, user_name};
+    }
+
 }

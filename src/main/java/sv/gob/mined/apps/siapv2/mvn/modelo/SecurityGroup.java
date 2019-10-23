@@ -15,6 +15,7 @@ public class SecurityGroup implements PersistenciaDao{
 
     private Integer idGrupo;
     private String grupo;
+    private String codigoGrupo;
     private Date fechaDeInsercion;
     private Date fechaDeModificacion;
     private Date fechaDeEliminacion;
@@ -42,6 +43,15 @@ public class SecurityGroup implements PersistenciaDao{
         this.grupo = grupo;
     }
 
+    public String getCodigoGrupo() {
+        return codigoGrupo;
+    }
+
+    public void setCodigoGrupo(String codigoGrupo) {
+        this.codigoGrupo = codigoGrupo;
+    }
+
+    
     public Date getFechaDeInsercion() {
         return fechaDeInsercion;
     }
@@ -114,26 +124,26 @@ public class SecurityGroup implements PersistenciaDao{
 
      @Override
     public String toString() {
-        return "SecurityGroup{" + "grupo=" + grupo + ", fecha_insercion=" + fechaDeInsercion + ", fechaModificacion=" + fechaDeModificacion + ", fecha_eliminacion=" + fechaDeEliminacion + ", activo=" + activo + ", name=" + name + '}';
+        return "SecurityGroup{" + "grupo=" + grupo + ", fechaDeInsercion=" + fechaDeInsercion + ", fechaDeModificacion=" + fechaDeModificacion + ", fechaDeEliminacion=" + fechaDeEliminacion + ", activo=" + activo + ", name=" + name + '}';
     }
     
     @Override
     public String generarInsertSQL() {
-        return "INSERT INTO dbo.security_group (grupo, fecha_insercion, fecha_modificacion, fecha_eliminacion, activo, name) VALUES (?,?,?,?,?,?)";
+        return "INSERT INTO dbo.security_group (codigoGrupo, grupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name) VALUES (?,?,?,?,?,?,?)";
     }
 
     @Override
     public Object[] getDatosInsert() {
-        return new Object[]{grupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
+        return new Object[]{codigoGrupo, grupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
     }
 
     @Override
     public String generarUpdateSQL() {
-        return "update dbo.security_group set grupo=?, fecha_insercion=?, fecha_modificacion=?, fecha_eliminacion=?, activo=?, name=? where id_grupo = ?";
+        return "update dbo.security_group set grupo=?, codigoGrupo=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, activo=?, name=? where idGrupo = ?";
     }
 
     @Override
     public Object[] getDatosUpdate() {
-        return new Object[]{grupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
+        return new Object[]{grupo, codigoGrupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
     }
 }

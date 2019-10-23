@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='iso-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+    </h:head>
+    <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
+        <ui:define name="content">
+            <h:form id="frmPrincipal">
+                <p:menubar>
+                    <p:menuitem value="Nuevo" icon="nuevo" ajax="true" action="#{rolesBean.nuevo}" />
+                    <p:menuitem value="Modificar" icon="modificar" ajax="true" action="#{rolesBean.modificar}" />
+                    <p:menuitem value="Eliminar" icon="eliminar" />
+                    <p:menuitem value="Guardar" icon="guardar" ajax="true" action="#{rolesBean.guardar}" />
+                    <p:menuitem value="Recuperar" icon="recuperar" />
+                    <p:menuitem value="Imprimir" icon="imprimir" />
+                    <f:facet name="options">
+                        <p:outputLabel value="Usuario: "/>
+                        <p:outputLabel value="ADMIN" style="font-weight: bold;"/>
+                        <p:spacer width="10" height="8"/>
+                        <p:commandButton value="Salir" icon="salir" />
+                    </f:facet>
+                </p:menubar>
+                
+            
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

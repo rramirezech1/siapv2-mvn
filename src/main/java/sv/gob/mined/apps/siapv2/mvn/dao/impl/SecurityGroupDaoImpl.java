@@ -33,7 +33,7 @@ public class SecurityGroupDaoImpl extends XJdbcTemplate implements SecurityGroup
     
     @Override
     public List<SecurityGroup> findAll() {
-        String sql = "SELECT * FROM SecurityGroup";
+        String sql = "SELECT * FROM Security_Group";
         List<SecurityGroup> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SecurityGroup.class));
         if (lst.isEmpty()) {
             return null;

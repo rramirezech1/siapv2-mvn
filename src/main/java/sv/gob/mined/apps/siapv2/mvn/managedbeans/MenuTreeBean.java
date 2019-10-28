@@ -54,9 +54,10 @@ public class MenuTreeBean implements Serializable {
         TreeNode node16 = new DefaultTreeNode(new OpcionMenu("5.2. Reprogramaciones POA", "/app/regReprogramacion.jsf"), node14);
         TreeNode node17 = new DefaultTreeNode(new OpcionMenu("6. Seguridad", "#"), root);
         TreeNode node18 = new DefaultTreeNode(new OpcionMenu("6.1. Admin. de Grupos", "/app/seguridad/regGrupo.jsf"), node17);
-        TreeNode node19 = new DefaultTreeNode(new OpcionMenu("6.2. Admin. de Autorizacion", "/app/seguridad/regRoles.jsf"), node17);
-        TreeNode node20 = new DefaultTreeNode(new OpcionMenu("6.3. Admin. de Acceso a Datos", "/app/seguridad/regRolesAutorizacion.jsf"), node17);
-        TreeNode node21 = new DefaultTreeNode(new OpcionMenu("6.4. Verificacion", "/app/verificacion.jsf"), node17);
+        TreeNode node19 = new DefaultTreeNode(new OpcionMenu("6.2. Asignacion Usuario-Grupos", "/app/seguridad/regUsuarioGrupo.jsf"), node17);
+        TreeNode node20 = new DefaultTreeNode(new OpcionMenu("6.3. Admin. de Autorizacion", "/app/seguridad/regRoles.jsf"), node17);
+        TreeNode node21 = new DefaultTreeNode(new OpcionMenu("6.4. Admin. de Acceso a Datos", "/app/seguridad/regRolesAutorizacion.jsf"), node17);
+        TreeNode node22 = new DefaultTreeNode(new OpcionMenu("6.5. Verificacion", "/app/verificacion.jsf"), node17);
         node0.setExpanded(true);
         node6.setExpanded(true);
         node14.setExpanded(false);

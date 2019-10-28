@@ -8,12 +8,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sv.gob.mined.apps.siapv2.mvn.bo.SeguridadBo;
-import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUsersDao;
-import sv.gob.mined.apps.siapv2.mvn.dao.SecurityGroupDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
+import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUserGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityInfo;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityInfoDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUsersDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.SecurityGroupDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUserGroupDao;
 
 /**
  *
@@ -30,6 +32,8 @@ public class SeguridadBoImpl implements SeguridadBo {
     @Autowired
     private SecurityGroupDao securitygroupdao;
     @Autowired
+    private SecurityUserGroupDao securityusergroupdao;
+    @Autowired
     private SecurityInfoDao securityinfodao;
     
     
@@ -41,6 +45,11 @@ public class SeguridadBoImpl implements SeguridadBo {
      @Override
     public List<SecurityGroup> getLstSecurityGroup() {
         return securitygroupdao.findAll();
+    }
+    
+    @Override
+    public List<SecurityUserGroup> getLstSecurityUserGroup() {
+        return securityusergroupdao.findAll();
     }
 
     @Override
@@ -59,6 +68,11 @@ public class SeguridadBoImpl implements SeguridadBo {
     }
     
     @Override
+    public SecurityUserGroup buscarSecurityUserGroupById(Integer idUserGroup) {
+        return securityusergroupdao.findById(idUserGroup);
+    }
+    
+    @Override
     public Integer saveSecurityGroup(SecurityGroup grupo) {
         securitygroupdao.setSecurityGroup(grupo);
         if (grupo.getIdGrupo() == null) {
@@ -67,6 +81,18 @@ public class SeguridadBoImpl implements SeguridadBo {
             return id;
         } else {
             return securitygroupdao.update();
+        }
+    }
+    
+    @Override
+    public Integer saveSecurityUserGroup(SecurityUserGroup userGroup) {
+        securityusergroupdao.setSecurityUserGroup(userGroup);
+        if (userGroup.getIdUserGroup()== null) {
+            Integer id = securityusergroupdao.create();
+            userGroup.setIdUserGroup(id);
+            return id;
+        } else {
+            return securityusergroupdao.update();
         }
     }
     

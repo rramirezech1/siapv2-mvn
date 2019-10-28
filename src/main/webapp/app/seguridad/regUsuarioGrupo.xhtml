@@ -10,24 +10,56 @@
 
     </h:head>
     <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
-        <ui:define name="content">
+         <ui:define name="content">
             <h:form id="frmPrincipal">
                 <p:menubar>
-                    <p:menuitem value="Nuevo" icon="nuevo" ajax="true" action="#{rolesBean.nuevo}" />
-                    <p:menuitem value="Modificar" icon="modificar" ajax="true" action="#{rolesBean.modificar}" />
-                    <p:menuitem value="Eliminar" icon="eliminar" />
-                    <p:menuitem value="Guardar" icon="guardar" ajax="true" action="#{rolesBean.guardar}" />
-                    <p:menuitem value="Recuperar" icon="recuperar" />
-                    <p:menuitem value="Imprimir" icon="imprimir" />
+                    <p:menuitem value="Nuevo" action="#{seguridadBean.nuevoUsuarioGrupo}" update="frmPrincipal pnlUsuarioGrupos tblUsuarioGrupos" icon="nuevo" ajax="true"/>
+                    <p:menuitem value="Modificar" icon="modificar" action="#{seguridadBean.nuevoUsuarioGrupo}" update="pnlUsuarioGrupos tblUsuarioGrupos frmPrincipal" disabled="#{!seguridadBean.deshabilitado}"/>
+                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{seguridadBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
+                    <p:menuitem value="Guardar" action="#{seguridadBean.guardarUsuarioGrupo}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{seguridadBean.deshabilitado}"/>
+                    <p:menuitem value="Recuperar" icon="recuperar" action="#{seguridadBean.nuevoUsuarioGrupo}" update="pnlUsuarioGrupos tblUsuarioGrupos frmPrincipal" disabled="#{!seguridadBean.deshabilitado}"/>
+                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>
-                        <p:outputLabel value="ADMIN" style="font-weight: bold;"/>
+                        <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
                         <p:spacer width="10" height="8"/>
-                        <p:commandButton value="Salir" icon="salir" />
+                        <p:growl id="message" showDetail="true" />
+     
+                        <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
+                            <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
+                        </p:confirmDialog>    
                     </f:facet>
                 </p:menubar>
-                
-            
+                <p:panel id="pnlUsuarioGrupos">
+                    <f:facet name="header">
+                        <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                        <p:spacer width="10"/>
+                        <h:outputText value="Asignacion de Usuarios a  Grupos"/>
+                    </f:facet>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="1. Grupo:"/>
+                        <p:inputText id="txtGrupo" value="#{seguridadBean.currentGrupo.codigoGrupo}" disabled="#{seguridadBean.deshabilitado}"/>
+                        <p:outputLabel value="2. Usuario:"/>
+                        <p:inputText  id="txtUsuario" value="#{seguridadBean.currentGrupo.grupo}" disabled="#{seguridadBean.deshabilitado}" />
+                    </h:panelGrid>
+                </p:panel>
+                <p:dataTable id="tblUsuarioGrupos" value="#{seguridadBean.lstUsuarioGrupo}" var="ugr" selectionMode="single" rowKey="#{ugr.groupName}">
+                    <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectUsuarioGrupo}"   
+                            update=":frmPrincipal :frmPrincipal:pnlUsuarioGrupos" /> 
+                    <p:column headerText="Id Grupo">
+                        <p:outputLabel value="#{gru.idGrupo}"/>
+                    </p:column>
+                    <p:column headerText="Codigo Grupo">
+                        <p:outputLabel value="#{gru.codigoGrupo}"/>
+                    </p:column>
+                    <p:column headerText="Grupo de Seguridad">
+                        <p:outputLabel value="#{gru.grupo}"/>
+                    </p:column>
+                </p:dataTable>
             </h:form>
         </ui:define>
     </ui:composition>

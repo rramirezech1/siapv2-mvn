@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import sv.gob.mined.apps.siapv2.mvn.bo.SeguridadBo;
 import sv.gob.mined.apps.siapv2.mvn.bo.UsuarioBo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
+import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUserGroup;
 import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
 import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 
@@ -32,11 +33,12 @@ import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 public class SeguridadBean implements Serializable{
 
     private SecurityGroup currentGrupo;
+    private SecurityUserGroup currentUsuarioGrupo;
     private Boolean deshabilitado = true;
     private Boolean deshabilitadoEliminar = true;
     private Boolean deshabilitadoEstado = false;
     private List<SecurityGroup> lstGrupo;
-    
+    private List<SecurityUserGroup> lstUsuarioGrupo;
     
     @Autowired
     private SeguridadBo seguridadBo;
@@ -57,11 +59,17 @@ public class SeguridadBean implements Serializable{
     @PostConstruct
     public void init() {
         lstGrupo = seguridadBo.getLstSecurityGroup();
+        lstUsuarioGrupo = seguridadBo.getLstSecurityUserGroup();
     }
     
     public void nuevoGrupo() {
         nuevo();
         currentGrupo = new SecurityGroup();
+    }
+    
+    public void nuevoUsuarioGrupo() {
+        nuevo();
+        currentUsuarioGrupo = new SecurityUserGroup();
     }
 
     private void nuevo() {
@@ -97,7 +105,42 @@ public class SeguridadBean implements Serializable{
         }
     }
     
+    public void guardarUsuarioGrupo() {
+        Boolean valido;
+
+        if (currentGrupo != null) {
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtGrupo", InputText.class, currentUsuarioGrupo.getUserName());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtUsuario", InputText.class, currentUsuarioGrupo.getGroupName()) && valido;
+        } else {
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtIdGrupo", InputText.class, null);
+        }
+
+        if (currentGrupo != null && valido == true) {
+            seguridadBo.saveSecurityGroup(currentGrupo);
+            lstGrupo = seguridadBo.getLstSecurityGroup();
+
+            if (currentGrupo.getIdGrupo()== null) {
+                currentGrupo = new SecurityGroup();
+                deshabilitadoEliminar = true;
+            } else {
+                deshabilitadoEliminar = false;
+            }
+
+            JsfUtil.addSuccessMessage("El registro ha sido guardado");
+        } else {
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+        }
+    }
+    
     public void onRowSelectGrupo(SelectEvent event) {
+        SecurityGroup grupo = seguridadBo.buscarSecurityGroupById(((SecurityGroup) event.getObject()).getIdGrupo());
+        if (grupo != null) {
+            deshabilitadoEliminar = false;
+            currentGrupo = grupo;
+        }
+    }
+    
+     public void onRowSelectUsuarioGrupo(SelectEvent event) {
         SecurityGroup grupo = seguridadBo.buscarSecurityGroupById(((SecurityGroup) event.getObject()).getIdGrupo());
         if (grupo != null) {
             deshabilitadoEliminar = false;
@@ -144,4 +187,13 @@ public class SeguridadBean implements Serializable{
     public void setLstGrupo(List<SecurityGroup> lstGrupo) {
         this.lstGrupo = lstGrupo;
     }
+
+    public List<SecurityUserGroup> getLstUsuarioGrupo() {
+        return lstUsuarioGrupo;
+    }
+
+    public void setLstUsuarioGrupo(List<SecurityUserGroup> lstUsuarioGrupo) {
+        this.lstUsuarioGrupo = lstUsuarioGrupo;
+    }
+    
 }

@@ -33,7 +33,7 @@ public class SecurityUserGroupDaoImpl extends XJdbcTemplate implements SecurityU
     
     @Override
     public List<SecurityUserGroup> findAll() {
-        String sql = "SELECT * FROM Security_Group";
+        String sql = "SELECT * FROM Security_user_group";
         List<SecurityUserGroup> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SecurityUserGroup.class));
         if (lst.isEmpty()) {
             return null;

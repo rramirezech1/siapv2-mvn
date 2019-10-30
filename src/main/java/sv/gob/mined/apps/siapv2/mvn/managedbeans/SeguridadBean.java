@@ -89,6 +89,7 @@ public class SeguridadBean implements Serializable{
         }
 
         if (currentGrupo != null && valido == true) {
+            currentGrupo.setName(variablesSession.getUsuario());
             seguridadBo.saveSecurityGroup(currentGrupo);
             lstGrupo = seguridadBo.getLstSecurityGroup();
 
@@ -110,12 +111,13 @@ public class SeguridadBean implements Serializable{
 
         if (currentGrupo != null) {
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtGrupo", InputText.class, currentUsuarioGrupo.getUserName());
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtUsuario", InputText.class, currentUsuarioGrupo.getGroupName()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtUsuario", InputText.class, currentUsuarioGrupo.getIdGrupo()) && valido;
         } else {
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtIdGrupo", InputText.class, null);
         }
 
         if (currentGrupo != null && valido == true) {
+            currentGrupo.setName(variablesSession.getUsuario());
             seguridadBo.saveSecurityGroup(currentGrupo);
             lstGrupo = seguridadBo.getLstSecurityGroup();
 
@@ -136,6 +138,7 @@ public class SeguridadBean implements Serializable{
         SecurityGroup grupo = seguridadBo.buscarSecurityGroupById(((SecurityGroup) event.getObject()).getIdGrupo());
         if (grupo != null) {
             deshabilitadoEliminar = false;
+            deshabilitado = false;
             currentGrupo = grupo;
         }
     }
@@ -155,6 +158,16 @@ public class SeguridadBean implements Serializable{
     public void setCurrentGrupo(SecurityGroup currentGrupo) {
         this.currentGrupo = currentGrupo;
     }
+
+    public SecurityUserGroup getCurrentUsuarioGrupo() {
+        return currentUsuarioGrupo;
+    }
+
+    public void setCurrentUsuarioGrupo(SecurityUserGroup currentUsuarioGrupo) {
+        this.currentUsuarioGrupo = currentUsuarioGrupo;
+    }
+    
+    
 
     public Boolean getDeshabilitado() {
         return deshabilitado;

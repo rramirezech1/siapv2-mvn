@@ -21,7 +21,7 @@ public class SecurityGroup implements PersistenciaDao{
     private Date fechaDeEliminacion;
     private Integer estadoDeEliminacion;
     private String name;
-    private Integer activo;
+  
     
     
     public SecurityGroup() {
@@ -78,14 +78,6 @@ public class SecurityGroup implements PersistenciaDao{
     public void setFechaDeEliminacion(Date fechaDeEliminacion) {
         this.fechaDeEliminacion = fechaDeEliminacion;
     }
-
-    public Integer getActivo() {
-        return activo;
-    }
-
-    public void setActivo(Integer activo) {
-        this.activo = activo;
-    }
     
     @Override
     public void setName(String name) {
@@ -124,7 +116,7 @@ public class SecurityGroup implements PersistenciaDao{
 
      @Override
     public String toString() {
-        return "SecurityGroup{" + "grupo=" + grupo + ", fechaDeInsercion=" + fechaDeInsercion + ", fechaDeModificacion=" + fechaDeModificacion + ", fechaDeEliminacion=" + fechaDeEliminacion + ", activo=" + activo + ", name=" + name + '}';
+        return "SecurityGroup{" + "grupo=" + grupo + ", fechaDeInsercion=" + fechaDeInsercion + ", fechaDeModificacion=" + fechaDeModificacion + ", fechaDeEliminacion=" + fechaDeEliminacion + ", estadoDeEliminacion=" + estadoDeEliminacion + ", name=" + name + '}';
     }
     
     @Override
@@ -134,16 +126,16 @@ public class SecurityGroup implements PersistenciaDao{
 
     @Override
     public Object[] getDatosInsert() {
-        return new Object[]{codigoGrupo, grupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
+        return new Object[]{codigoGrupo, grupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name};
     }
 
     @Override
     public String generarUpdateSQL() {
-        return "update dbo.security_group set grupo=?, codigoGrupo=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, activo=?, name=? where idGrupo = ?";
+        return "update dbo.security_group set grupo=?, codigoGrupo=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=? where idGrupo = ?";
     }
 
     @Override
     public Object[] getDatosUpdate() {
-        return new Object[]{grupo, codigoGrupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
+        return new Object[]{grupo, codigoGrupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name, idGrupo};
     }
 }

@@ -44,7 +44,7 @@ public class SecurityGroupDaoImpl extends XJdbcTemplate implements SecurityGroup
     
     @Override
     public SecurityGroup findById(Integer idGrupo) {
-        String sql = "SELECT * FROM SecurityGroup WHERE idGrupo = " + idGrupo;
+        String sql = "SELECT * FROM security_group WHERE idGrupo = " + idGrupo;
         List<SecurityGroup> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SecurityGroup.class));
         if (lst.isEmpty()) {
             return null;

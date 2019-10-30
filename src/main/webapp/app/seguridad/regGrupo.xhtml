@@ -14,10 +14,8 @@
             <h:form id="frmPrincipal">
                 <p:menubar>
                     <p:menuitem value="Nuevo" action="#{seguridadBean.nuevoGrupo}" update="frmPrincipal pnlGrupos tblGrupos" icon="nuevo" ajax="true"/>
-                    <p:menuitem value="Modificar" icon="modificar" action="#{seguridadBean.nuevoGrupo}" update="pnlGrupos tblGrupos frmPrincipal" disabled="#{!seguridadBean.deshabilitado}"/>
-                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{seguridadBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
                     <p:menuitem value="Guardar" action="#{seguridadBean.guardarGrupo}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{seguridadBean.deshabilitado}"/>
-                    <p:menuitem value="Recuperar" icon="recuperar" action="#{seguridadBean.nuevoGrupo}" update="pnlGrupos tblGrupos frmPrincipal" disabled="#{!seguridadBean.deshabilitado}"/>
+                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{seguridadBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
                     <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>
@@ -60,7 +58,6 @@
                     <p:column headerText="Codigo Grupo">
                         <p:outputLabel value="#{gru.codigoGrupo}"/>
                     </p:column>
-
                     <p:column headerText="Grupo de Seguridad">
                         <p:outputLabel value="#{gru.grupo}"/>
                     </p:column>

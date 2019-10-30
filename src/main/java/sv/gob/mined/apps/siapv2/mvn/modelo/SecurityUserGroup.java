@@ -16,7 +16,7 @@ public class SecurityUserGroup implements PersistenciaDao{
 
     private Integer idUserGroup;
     private String userName;
-    private String groupName;
+    private Integer idGrupo;
     private Date fechaDeInsercion;
     private Date fechaDeModificacion;
     private Date fechaDeEliminacion;
@@ -35,12 +35,12 @@ public class SecurityUserGroup implements PersistenciaDao{
         this.userName = userName;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public Integer getIdGrupo() {
+        return idGrupo;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setIdGrupo(Integer idGrupo) {
+        this.idGrupo = idGrupo;
     }
 
     public Date getFechaDeInsercion() {
@@ -128,7 +128,7 @@ public class SecurityUserGroup implements PersistenciaDao{
         if (!Objects.equals(this.userName, other.userName)) {
             return false;
         }
-        if (!Objects.equals(this.groupName, other.groupName)) {
+        if (!Objects.equals(this.idGrupo, other.idGrupo)) {
             return false;
         }
         return true;
@@ -137,26 +137,26 @@ public class SecurityUserGroup implements PersistenciaDao{
    
      @Override
     public String toString() {
-        return "SecurityGroupings{" + "group_name=" + groupName + ", user_name=" + userName + ", fechaDeInsercion=" + fechaDeInsercion + ", fechaDeModificacion=" + fechaDeModificacion + ", fechaDeEliminacion=" + fechaDeEliminacion + ", activo=" + activo + ", name=" + name + '}';
+        return "SecurityGroupings{" + "id_grupo=" + idGrupo + ", user_name=" + userName + ", fechaDeInsercion=" + fechaDeInsercion + ", fechaDeModificacion=" + fechaDeModificacion + ", fechaDeEliminacion=" + fechaDeEliminacion + ", activo=" + activo + ", name=" + name + '}';
     }
     
     @Override
     public String generarInsertSQL() {
-        return "INSERT INTO dbo.security_groupings (group_name, user_name, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name) VALUES (?,?,?,?,?,?,?)";
+        return "INSERT INTO dbo.security_groupings (id_grupo, user_name, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name) VALUES (?,?,?,?,?,?,?)";
     }
 
     @Override
     public Object[] getDatosInsert() {
-        return new Object[]{groupName, userName, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
+        return new Object[]{idGrupo, userName, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
     }
 
     @Override
     public String generarUpdateSQL() {
-        return "update dbo.security_groupings set group_name=?, user_name=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, activo=?, name=? where id_user_group = ?";
+        return "update dbo.security_groupings set id_grupo=?, user_name=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, activo=?, name=? where id_user_group = ?";
     }
 
     @Override
     public Object[] getDatosUpdate() {
-        return new Object[]{groupName, userName, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
+        return new Object[]{idGrupo, userName, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
     }
 }

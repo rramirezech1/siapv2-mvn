@@ -13,11 +13,9 @@
          <ui:define name="content">
             <h:form id="frmPrincipal">
                 <p:menubar>
-                    <p:menuitem value="Nuevo" action="#{seguridadBean.nuevoUsuarioGrupo}" update="frmPrincipal pnlUsuarioGrupos tblUsuarioGrupos" icon="nuevo" ajax="true"/>
-                    <p:menuitem value="Modificar" icon="modificar" action="#{seguridadBean.nuevoUsuarioGrupo}" update="pnlUsuarioGrupos tblUsuarioGrupos frmPrincipal" disabled="#{!seguridadBean.deshabilitado}"/>
-                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{seguridadBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
+                    <p:menuitem value="Nuevo" action="#{seguridadBean.nuevoUsuarioGrupo}" update="frmPrincipal" icon="nuevo" ajax="true"/>
                     <p:menuitem value="Guardar" action="#{seguridadBean.guardarUsuarioGrupo}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{seguridadBean.deshabilitado}"/>
-                    <p:menuitem value="Recuperar" icon="recuperar" action="#{seguridadBean.nuevoUsuarioGrupo}" update="pnlUsuarioGrupos tblUsuarioGrupos frmPrincipal" disabled="#{!seguridadBean.deshabilitado}"/>
+                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{seguridadBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
                     <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>
@@ -42,22 +40,21 @@
                     </f:facet>
                     <h:panelGrid columns="2">
                         <p:outputLabel value="1. Grupo:"/>
-                        <p:inputText id="txtGrupo" value="#{seguridadBean.currentGrupo.codigoGrupo}" disabled="#{seguridadBean.deshabilitado}"/>
+                        <p:inputText id="txtIdGrupo" value="#{seguridadBean.currentUsuarioGrupo.idGrupo}" disabled="#{seguridadBean.deshabilitado}"/>
                         <p:outputLabel value="2. Usuario:"/>
-                        <p:inputText  id="txtUsuario" value="#{seguridadBean.currentGrupo.grupo}" disabled="#{seguridadBean.deshabilitado}" />
+                        <p:inputText  id="txtUsuario" value="#{seguridadBean.currentUsuarioGrupo.name}" disabled="#{seguridadBean.deshabilitado}" />
                     </h:panelGrid>
                 </p:panel>
-                <p:dataTable id="tblUsuarioGrupos" value="#{seguridadBean.lstUsuarioGrupo}" var="ugr" selectionMode="single" rowKey="#{ugr.groupName}">
-                    <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectUsuarioGrupo}"   
-                            update=":frmPrincipal :frmPrincipal:pnlUsuarioGrupos" /> 
-                    <p:column headerText="Id Grupo">
-                        <p:outputLabel value="#{gru.idGrupo}"/>
+                <p:dataTable id="tblUsrGrupo" value="#{seguridadBean.lstUsuarioGrupo}" var="ugr" selectionMode="single" rowKey="#{ugr.idUserGroup}">
+                    <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectUsuarioGrupo}" update=":frmPrincipal" /> 
+                    <p:column headerText="Id Asignacion">
+                        <p:outputLabel value="#{ugr.idUserGroup}"/>
                     </p:column>
-                    <p:column headerText="Codigo Grupo">
-                        <p:outputLabel value="#{gru.codigoGrupo}"/>
+                    <p:column headerText="Grupo">
+                        <p:outputLabel value="#{ugr.idGrupo}"/>
                     </p:column>
-                    <p:column headerText="Grupo de Seguridad">
-                        <p:outputLabel value="#{gru.grupo}"/>
+                    <p:column headerText="Usuario">
+                        <p:outputLabel value="#{ugr.name}"/>
                     </p:column>
                 </p:dataTable>
             </h:form>

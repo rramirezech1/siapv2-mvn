@@ -110,8 +110,8 @@ public class SeguridadBean implements Serializable{
         Boolean valido;
 
         if (currentGrupo != null) {
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtGrupo", InputText.class, currentUsuarioGrupo.getUserName());
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtUsuario", InputText.class, currentUsuarioGrupo.getIdGrupo()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbGrupo", SelectOneMenu.class, currentUsuarioGrupo.getIdGrupo());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtUsuario", InputText.class, currentUsuarioGrupo.getUserName()) && valido;
         } else {
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtIdGrupo", InputText.class, null);
         }

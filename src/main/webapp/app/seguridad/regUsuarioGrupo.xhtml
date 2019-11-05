@@ -38,9 +38,14 @@
                         <p:spacer width="10"/>
                         <h:outputText value="Asignacion de Usuarios a  Grupos"/>
                     </f:facet>
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="4">
                         <p:outputLabel value="1. Grupo:"/>
-                        <p:inputText id="txtIdGrupo" value="#{seguridadBean.currentUsuarioGrupo.idGrupo}" disabled="#{seguridadBean.deshabilitado}"/>
+                        <p:selectOneMenu id="cbGrupo" value="#{seguridadBean.currentUsuarioGrupo.idGrupo}" disabled="#{seguridadBean.deshabilitado}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{seguridadBean.lstGrupo}" var="gr" itemValue="#{gr.idGrupo}" itemLabel="#{gr.grupo}"/>
+                        </p:selectOneMenu>
+                        
+                        <p:inputText id="txtIdGrupo" value="" disabled="#{seguridadBean.deshabilitado}"/>
                         <p:outputLabel value="2. Usuario:"/>
                         <p:inputText  id="txtUsuario" value="#{seguridadBean.currentUsuarioGrupo.name}" disabled="#{seguridadBean.deshabilitado}" />
                     </h:panelGrid>

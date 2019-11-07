@@ -58,8 +58,8 @@ public class SeguridadBean implements Serializable{
 
     @PostConstruct
     public void init() {
-        lstGrupo = seguridadBo.getLstSecurityGroup();
         lstUsuarioGrupo = seguridadBo.getLstSecurityUserGroup();
+        lstGrupo = seguridadBo.getLstSecurityGroup();
     }
     
     public void nuevoGrupo() {

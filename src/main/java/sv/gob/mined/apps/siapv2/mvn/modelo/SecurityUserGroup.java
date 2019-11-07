@@ -142,7 +142,7 @@ public class SecurityUserGroup implements PersistenciaDao{
     
     @Override
     public String generarInsertSQL() {
-        return "INSERT INTO dbo.security_groupings (id_grupo, user_name, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name) VALUES (?,?,?,?,?,?,?)";
+        return "INSERT INTO dbo.security_user_group (id_grupo, user_name, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name) VALUES (?,?,?,?,?,?,?)";
     }
 
     @Override
@@ -152,7 +152,7 @@ public class SecurityUserGroup implements PersistenciaDao{
 
     @Override
     public String generarUpdateSQL() {
-        return "update dbo.security_groupings set id_grupo=?, user_name=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, activo=?, name=? where id_user_group = ?";
+        return "update dbo.security_user_group set id_grupo=?, user_name=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, activo=?, name=? where id_user_group = ?";
     }
 
     @Override

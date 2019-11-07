@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="default.css" library="css"/>
+        <h:outputScript name="function.js" library="jsf"/>
+        <style>
+            .wrapper_header {
+                text-align: center;
+                vertical-align: middle;
+                height: 50px;
+                font-size: 24px;
+            }
+            .faces-layout-fix {
+                border: none !important;
+                height: 100%;
+                width: 100%;
+            }
+            
+            
+        </style>
+
+        <script type="text/javascript">
+            function abrirSisBO() {
+                open("http://pruebas.mined.gob.sv:8080/bnprove-mvn/index.jsf", "test");
+            }
+        </script>
+
+    </h:head>
+
+    <h:body>        
+        <p:idleMonitor onactive="PF('sessionTerminada').show();" timeout="#{session.maxInactiveInterval * 500}" >
+            <p:ajax event="idle" listener="#{menuTreeBean.logout}"/>
+        </p:idleMonitor>
+
+        <p:dialog header="Sesión caducada" widgetVar="sessionTerminada"
+                  modal="true" closable="false" width="400" visible="false" resizable="false">
+            <h:panelGrid columns="1" style="vertical-align: middle; text-align: center;">
+                <h:panelGrid columns="2" style="vertical-align: middle; text-align: center;">
+                    <h:outputText value="La sesión a caducado por inactividad, por favor, pulse sobre el siguiente botón para volver a acceder a la aplicación" />
+                    <p:graphicImage url="/resources/images/desconectado.png"  /> 
+                </h:panelGrid>
+
+                <p:commandButton id="confirmBackToLogin" type="button" value="Iniciar sesión" onclick="window.location = '#{request.contextPath}/index.jsp';"/>
+            </h:panelGrid>
+        </p:dialog>
+
+        <ui:insert name="auxiliar" ></ui:insert>
+
+        <div id="divPrincipal" style="height:100%; width: 1024px; position: absolute;">
+            <p:layout id="layout" styleClass="faces-layout-fix">  
+                <p:layoutUnit position="north">
+                    <p:spacer width="8" height="8"/>
+                    <div style="text-align: center; ">
+                        <h:outputText value="Sistema de Administracion Publica - v1.5" style="font-size: 24px"/>
+                        <br/>
+                        <h:outputText value="Ministerio de Educacion, Ciencia y Tecnología" style="font-size: 15px;"/>
+                    </div>
+                    <p:spacer width="8" height="8"/>
+                </p:layoutUnit>
+
+
+                <p:layoutUnit resizable="true" position="west" size="220" header="Menu"  collapsible="true">
+                    <h:form id="frmMenu" prependId="false" >
+                        <p:growl id="growl" showDetail="true">
+                            <p:autoUpdate/>
+                        </p:growl>
+                        
+                        <p:menu id="menuPrincipal" style="width: 95%">
+                            <p:menuitem value="Opcion1" />
+                            <p:menuitem value="Opcion2" />
+                            <p:menuitem value="Opcion3" />
+                        </p:menu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south"  size="24">
+                    <p:outputLabel value="Usuario: "/>
+                    <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
+                    <p:spacer width="20" height="8"/>
+                    <p:outputLabel value="Codigo: " />
+                    <p:spacer width="20" height="8"/>
+                    <p:outputLabel value="Perfil: " />
+                    <p:outputLabel value="#{variablesSession.perfil}" style="font-weight: bold;"/>
+                </p:layoutUnit>
+
+                <p:layoutUnit resizable="true" position="center"  >
+                    <ui:insert name="content"></ui:insert>
+                </p:layoutUnit>
+            </p:layout> 
+        </div>
+
+        <ui:insert name="status">
+            <p:ajaxStatus style="width:220px;height:75px;position:fixed;right:5px;bottom:5px">
+                <f:facet name="start">
+                    <p:graphicImage url="/resources/images/loader2.gif"  /> 
+                </f:facet>
+
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+        </ui:insert>
+    </h:body>
+</html>

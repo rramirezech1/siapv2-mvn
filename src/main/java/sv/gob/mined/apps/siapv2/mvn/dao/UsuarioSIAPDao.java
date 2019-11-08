@@ -4,6 +4,7 @@
  */
 package sv.gob.mined.apps.siapv2.mvn.dao;
 
+import java.util.List;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 
 /**
@@ -15,6 +16,8 @@ public interface UsuarioSIAPDao {
     public Usuario findUsuarioByNameClave(String usuario, String clave);
      
     public void setUsuario(Usuario userName);
+    
+    public List<Usuario> findAll(); 
     
          
 }

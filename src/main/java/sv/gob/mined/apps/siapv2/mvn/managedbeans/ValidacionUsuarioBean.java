@@ -1,6 +1,7 @@
 
 package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 
+import java.util.List;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -29,6 +30,7 @@ public class ValidacionUsuarioBean {
     private Usuario currentUsuario;
     private Boolean mostrarSignUp= Boolean.FALSE;
     private Boolean mostrarRecuperarCont= Boolean.FALSE;
+    private List<Usuario> lstUsuario;
 
     
     @Autowired
@@ -229,6 +231,15 @@ public class ValidacionUsuarioBean {
 
     public void setPerfil(String perfil) {
         this.perfil = perfil;
+    }  
+
+    public List<Usuario> getLstUsuario() {
+        lstUsuario = usuBo.getLstUsuario();
+        return lstUsuario;
+        
+    }
+
+    public void setLstUsuario(List<Usuario> lstUsuario) {
+        this.lstUsuario = lstUsuario;
     }   
-    
 }

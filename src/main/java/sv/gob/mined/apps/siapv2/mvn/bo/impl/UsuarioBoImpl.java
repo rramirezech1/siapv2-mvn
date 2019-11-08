@@ -4,6 +4,7 @@
  */
 package sv.gob.mined.apps.siapv2.mvn.bo.impl;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sv.gob.mined.apps.siapv2.mvn.bo.UsuarioBo;
@@ -23,5 +24,10 @@ public class UsuarioBoImpl implements UsuarioBo {
     @Override
     public Usuario findUsuarioByNameClave(String userName, String clave) {
         return usuSIAPDao.findUsuarioByNameClave(userName, clave);
+    }
+    
+    @Override
+    public List<Usuario> getLstUsuario() {
+        return usuSIAPDao.findAll();
     }
 }

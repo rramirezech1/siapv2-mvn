@@ -45,7 +45,10 @@
                             <f:selectItems value="#{seguridadBean.lstGrupo}" var="gr" itemValue="#{gr.idGrupo}" itemLabel="#{gr.grupo}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="2. Usuario:"/>
-                        <p:inputText  id="txtUsuario" value="#{seguridadBean.currentUsuarioGrupo.name}" disabled="#{seguridadBean.deshabilitado}" />
+                        <p:selectOneMenu id="cbUsuario" value="#{seguridadBean.currentUsuarioGrupo.userName}" disabled="#{seguridadBean.deshabilitado}">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{validacionUsuarioBean.lstUsuario}" var="usr" itemValue="#{usr.name}" itemLabel="#{usr.primerNombre} #{usr.segundoNombre} #{usr.primerApellido} #{usr.segundoApellido}"/>
+                        </p:selectOneMenu>
                     </h:panelGrid>
                 </p:panel>
                 <p:dataTable id="tblUsrGrupo" value="#{seguridadBean.lstUsuarioGrupo}" var="ugr" selectionMode="single" rowKey="#{ugr.idUserGroup}">

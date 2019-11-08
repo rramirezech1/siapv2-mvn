@@ -35,6 +35,17 @@ public class UsuarioSIAPDaoImpl extends XJdbcTemplate2 implements UsuarioSIAPDao
     }
     
     @Override
+    public List<Usuario> findAll() {
+        
+        String sql = " SELECT name as userName, g_personal.primer_nombre as primerNombre, g_personal.segundo_nombre as segundoNombre, g_personal.primer_apellido as primerApellido, g_personal.segundo_apellido AS segundoApellido" +
+                     " FROM   security_users INNER JOIN\n" +
+                     " g_personal ON security_users.personal_id = g_personal.personal_id \n" +
+                     " WHERE (security_user.activo=1)";
+        
+        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(Usuario.class));
+    }
+    
+    @Override
     public void setUsuario(Usuario userName) {
         super.setObjeto(userName);
     }

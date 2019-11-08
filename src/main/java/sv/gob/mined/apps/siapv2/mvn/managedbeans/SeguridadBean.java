@@ -39,6 +39,7 @@ public class SeguridadBean implements Serializable{
     private Boolean deshabilitadoEstado = false;
     private List<SecurityGroup> lstGrupo;
     private List<SecurityUserGroup> lstUsuarioGrupo;
+   
     
     @Autowired
     private SeguridadBo seguridadBo;
@@ -49,7 +50,7 @@ public class SeguridadBean implements Serializable{
     
     @Inject
     private VariablesSession variablesSession;
-
+   
     /**
      * Creates a new instance of RolesBean
      */

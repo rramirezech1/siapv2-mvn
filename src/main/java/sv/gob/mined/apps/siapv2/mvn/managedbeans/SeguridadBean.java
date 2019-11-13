@@ -33,7 +33,7 @@ import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 public class SeguridadBean implements Serializable{
 
     private SecurityGroup currentGrupo;
-    private SecurityUserGroup currentUsuarioGrupo;
+    private SecurityUserGroup currentUsuarioGrupo = new SecurityUserGroup();;
     private Boolean deshabilitado = true;
     private Boolean deshabilitadoEliminar = true;
     private Boolean deshabilitadoEstado = false;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichaOferenteSubEmpresaQueOfrece" language="groovy" pageWidth="535" pageHeight="400" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f260ca29-22ce-4d90-a911-a9b03630f737">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichaOferenteSubEmpresaQueOfrece" pageWidth="535" pageHeight="400" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f260ca29-22ce-4d90-a911-a9b03630f737">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -20,7 +20,7 @@ WHERE     (dbo.Empresa.identificadorPrimarioDeLaEmpresa = $P{identificadorPrimar
 	<detail>
 		<band height="14" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="0534b273-3d7f-45a2-93a0-970b058063fe" x="0" y="0" width="535" height="14"/>
+				<reportElement x="0" y="0" width="535" height="14" uuid="0534b273-3d7f-45a2-93a0-970b058063fe"/>
 				<box>
 					<pen lineWidth="0.75"/>
 					<topPen lineWidth="0.75"/>

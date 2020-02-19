@@ -5,7 +5,7 @@
     <groupId>sv.gob.mined.apps</groupId>
     <artifactId>siapv2-mvn</artifactId>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.02</version>
 
     <name>siapv2-mvn</name>
     <url>http://maven.apache.org</url>

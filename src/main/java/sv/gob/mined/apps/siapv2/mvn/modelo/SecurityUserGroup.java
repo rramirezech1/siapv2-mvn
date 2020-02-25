@@ -137,26 +137,26 @@ public class SecurityUserGroup implements PersistenciaDao{
    
      @Override
     public String toString() {
-        return "SecurityGroupings{" + "id_grupo=" + idGrupo + ", user_name=" + userName + ", fechaDeInsercion=" + fechaDeInsercion + ", fechaDeModificacion=" + fechaDeModificacion + ", fechaDeEliminacion=" + fechaDeEliminacion + ", activo=" + activo + ", name=" + name + '}';
+        return "security_user_group{" + "idGrupo=" + idGrupo + ", userName=" + userName + ", fechaDeInsercion=" + fechaDeInsercion + ", fechaDeModificacion=" + fechaDeModificacion + ", fechaDeEliminacion=" + fechaDeEliminacion + ", estadoDeEliminacion=" + estadoDeEliminacion + ", name=" + name + '}';
     }
     
     @Override
     public String generarInsertSQL() {
-        return "INSERT INTO dbo.security_user_group (id_grupo, user_name, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name) VALUES (?,?,?,?,?,?,?)";
+        return "INSERT INTO dbo.security_user_group (idGrupo, userName, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name) VALUES (?,?,?,?,?,?,?)";
     }
 
     @Override
     public Object[] getDatosInsert() {
-        return new Object[]{idGrupo, userName, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
+        return new Object[]{idGrupo, userName, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name};
     }
 
     @Override
     public String generarUpdateSQL() {
-        return "update dbo.security_user_group set id_grupo=?, user_name=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, activo=?, name=? where id_user_group = ?";
+        return "update dbo.security_user_group set idGrupo=?, userName=?, fechaDeInsercion=?, fechaDeModificacion=?, fechaDeEliminacion=?, estadoDeEliminacion=?, name=? where id_user_group = ?";
     }
 
     @Override
     public Object[] getDatosUpdate() {
-        return new Object[]{idGrupo, userName, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name};
+        return new Object[]{idGrupo, userName, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name};
     }
 }

@@ -45,22 +45,22 @@
                             <f:selectItems value="#{seguridadBean.lstGrupo}" var="gr" itemValue="#{gr.idGrupo}" itemLabel="#{gr.grupo}"/>
                         </p:selectOneMenu>
                         <p:outputLabel value="2. Usuario:"/>
-                        <p:selectOneMenu id="cbUsuario" value="#{seguridadBean.currentUsuarioGrupo.userName}" disabled="#{seguridadBean.deshabilitado}">
+                        <p:selectOneMenu id="cbUsuario" value="#{seguridadBean.currentUsuarioGrupo.userName}" disabled="#{seguridadBean.deshabilitado}" filter="true" filterMatchMode="startsWith">
                             <f:selectItem itemLabel="Seleccione un valor"/>
-                            <f:selectItems value="#{validacionUsuarioBean.lstUsuario}" var="usr" itemValue="#{usr.name}" itemLabel="#{usr.primerNombre} #{usr.segundoNombre} #{usr.primerApellido} #{usr.segundoApellido}"/>
+                            <f:selectItems value="#{validacionUsuarioBean.lstUsuario}" var="usr" itemValue="#{usr.userName}" itemLabel="#{usr.primerNombre} #{usr.segundoNombre} #{usr.primerApellido} #{usr.segundoApellido}"/>
                         </p:selectOneMenu>
                     </h:panelGrid>
                 </p:panel>
                 <p:dataTable id="tblUsrGrupo" value="#{seguridadBean.lstUsuarioGrupo}" var="ugr" selectionMode="single" rowKey="#{ugr.idUserGroup}">
                     <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectUsuarioGrupo}" update=":frmPrincipal" /> 
-                    <p:column headerText="Id Asignacion">
-                        <p:outputLabel value="#{ugr.idUserGroup}"/>
+                    <p:column headerText="Id" width="45">
+                        <p:outputLabel value="#{ugr.idUserGroup}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Grupo">
-                        <p:outputLabel value="#{ugr.idGrupo}"/>
+                    <p:column headerText="Grupo" width="200">
+                        <p:outputLabel value="#{ugr.idGrupo}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
                     <p:column headerText="Usuario">
-                        <p:outputLabel value="#{ugr.name}"/>
+                        <p:outputLabel value="#{ugr.userName}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
                 </p:dataTable>
             </h:form>

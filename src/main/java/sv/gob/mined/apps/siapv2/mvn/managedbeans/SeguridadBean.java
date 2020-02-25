@@ -21,6 +21,7 @@ import sv.gob.mined.apps.siapv2.mvn.bo.SeguridadBo;
 import sv.gob.mined.apps.siapv2.mvn.bo.UsuarioBo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUserGroup;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwUsuarioGrupos;
 import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
 import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 
@@ -39,6 +40,7 @@ public class SeguridadBean implements Serializable{
     private Boolean deshabilitadoEstado = false;
     private List<SecurityGroup> lstGrupo;
     private List<SecurityUserGroup> lstUsuarioGrupo;
+    private List<VwUsuarioGrupos> lstUserGroup;
    
     
     @Autowired
@@ -110,20 +112,20 @@ public class SeguridadBean implements Serializable{
     public void guardarUsuarioGrupo() {
         Boolean valido;
 
-        if (currentGrupo != null) {
+        if (currentUsuarioGrupo != null) {
             valido = JsfUtil.addErrorStyle("frmPrincipal", "cbGrupo", SelectOneMenu.class, currentUsuarioGrupo.getIdGrupo());
-            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtUsuario", InputText.class, currentUsuarioGrupo.getUserName()) && valido;
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "cbUsuario", SelectOneMenu.class, currentUsuarioGrupo.getUserName()) && valido;
         } else {
             valido = JsfUtil.addErrorStyle("frmPrincipal", "txtIdGrupo", InputText.class, null);
         }
 
-        if (currentGrupo != null && valido == true) {
-            currentGrupo.setName(variablesSession.getUsuario());
-            seguridadBo.saveSecurityGroup(currentGrupo);
-            lstGrupo = seguridadBo.getLstSecurityGroup();
+        if (currentUsuarioGrupo != null && valido == true) {
+            currentUsuarioGrupo.setName(variablesSession.getUsuario());
+            seguridadBo.saveSecurityUserGroup(currentUsuarioGrupo);
+            lstUsuarioGrupo = seguridadBo.getLstSecurityUserGroup();
 
-            if (currentGrupo.getIdGrupo()== null) {
-                currentGrupo = new SecurityGroup();
+            if (currentUsuarioGrupo.getIdUserGroup()!= null) {
+                currentUsuarioGrupo = new SecurityUserGroup();
                 deshabilitadoEliminar = true;
             } else {
                 deshabilitadoEliminar = false;

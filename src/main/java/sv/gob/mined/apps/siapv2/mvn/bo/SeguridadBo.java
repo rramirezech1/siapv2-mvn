@@ -9,6 +9,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityInfo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUserGroup;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwUsuarioGrupos;
 
 /**
  *
@@ -21,7 +22,7 @@ public interface SeguridadBo {
     public List<SecurityGroup> getLstSecurityGroup();
 
     public List<SecurityUserGroup> getLstSecurityUserGroup();
-    
+     
     public List<SecurityUsers> getLstSecurityUserByCriteria(String criteria);
 
     public SecurityUsers buscarSecurityUserById(Integer id);

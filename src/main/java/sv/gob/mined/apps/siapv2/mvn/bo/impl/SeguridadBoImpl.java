@@ -16,6 +16,7 @@ import sv.gob.mined.apps.siapv2.mvn.dao.SecurityInfoDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUsersDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityGroupDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUserGroupDao;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwUsuarioGrupos;
 
 /**
  *
@@ -46,6 +47,7 @@ public class SeguridadBoImpl implements SeguridadBo {
     public List<SecurityGroup> getLstSecurityGroup() {
         return securitygroupdao.findAll();
     }
+    
     
     @Override
     public List<SecurityUserGroup> getLstSecurityUserGroup() {

@@ -46,17 +46,17 @@
                         <p:outputLabel value="2. Codigo Grupo:"/>
                         <p:inputText id="txtCodGrupo" value="#{seguridadBean.currentGrupo.codigoGrupo}" disabled="#{seguridadBean.deshabilitado}"/>
                         <p:outputLabel value="3. Nombre Grupo:"/>
-                        <p:inputText  id="txtGrupo" value="#{seguridadBean.currentGrupo.grupo}" disabled="#{seguridadBean.deshabilitado}" />
+                        <p:inputText  id="txtGrupo" value="#{seguridadBean.currentGrupo.grupo}" disabled="#{seguridadBean.deshabilitado}" />                        
                     </h:panelGrid>
                 </p:panel>
                 <p:dataTable id="tblGrupos" value="#{seguridadBean.lstGrupo}" var="gru" selectionMode="single" rowKey="#{gru.idGrupo}">
                     <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectGrupo}"   
                             update=":frmPrincipal :frmPrincipal:pnlGrupos" /> 
-                    <p:column headerText="Id Grupo">
-                        <p:outputLabel value="#{gru.idGrupo}"/>
+                    <p:column headerText="Id Grupo" width="45">
+                        <p:outputLabel value="#{gru.idGrupo}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Codigo Grupo">
-                        <p:outputLabel value="#{gru.codigoGrupo}"/>
+                    <p:column headerText="Codigo Grupo" width="70">
+                        <p:outputLabel value="#{gru.codigoGrupo}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
                     <p:column headerText="Grupo de Seguridad">
                         <p:outputLabel value="#{gru.grupo}"/>

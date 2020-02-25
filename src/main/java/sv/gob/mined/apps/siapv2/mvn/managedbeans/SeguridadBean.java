@@ -94,8 +94,8 @@ public class SeguridadBean implements Serializable{
             seguridadBo.saveSecurityGroup(currentGrupo);
             lstGrupo = seguridadBo.getLstSecurityGroup();
 
-            if (currentGrupo.getIdGrupo()== null) {
-                currentGrupo = new SecurityGroup();
+            if (currentGrupo.getIdGrupo() != null) {
+                nuevoGrupo();
                 deshabilitadoEliminar = true;
             } else {
                 deshabilitadoEliminar = false;

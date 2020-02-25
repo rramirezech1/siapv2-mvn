@@ -121,7 +121,7 @@ public class SecurityGroup implements PersistenciaDao{
     
     @Override
     public String generarInsertSQL() {
-        return "INSERT INTO dbo.security_group (codigoGrupo, grupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, activo, name) VALUES (?,?,?,?,?,?,?)";
+        return "INSERT INTO dbo.security_group (codigoGrupo, grupo, fechaDeInsercion, fechaDeModificacion, fechaDeEliminacion, estadoDeEliminacion, name) VALUES (?,?,?,?,?,?,?)";
     }
 
     @Override

@@ -5,6 +5,7 @@
 package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -211,5 +212,15 @@ public class SeguridadBean implements Serializable{
     public void setLstUsuarioGrupo(List<SecurityUserGroup> lstUsuarioGrupo) {
         this.lstUsuarioGrupo = lstUsuarioGrupo;
     }
-    
+
+    public List<VwUsuarioGrupos> getLstUserGroup() {
+        if (lstUserGroup == null) {
+            lstUserGroup = new ArrayList<>();
+        }
+        return lstUserGroup;
+    }
+
+    public void setLstUserGroup(List<VwUsuarioGrupos> lstUserGroup) {
+        this.lstUserGroup = lstUserGroup;
+    }    
 }

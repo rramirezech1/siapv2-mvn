@@ -53,6 +53,11 @@ public class SeguridadBoImpl implements SeguridadBo {
     public List<SecurityUserGroup> getLstSecurityUserGroup() {
         return securityusergroupdao.findAll();
     }
+    
+    @Override
+    public List<VwUsuarioGrupos> getLstUsuarioGrupos() {
+        return securityusergroupdao.findAllView();
+    }
 
     @Override
     public List<SecurityUsers> getLstSecurityUserByCriteria(String criteria) {

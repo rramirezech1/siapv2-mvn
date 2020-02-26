@@ -815,7 +815,7 @@ public class BancoProveedoresBean implements Serializable {
 
     public List<VwMultasEmpresa> getLstMultas() {
         if (lstMultas == null) {
-            lstMultas = new ArrayList<VwMultasEmpresa>();
+            lstMultas = new ArrayList<>();
         }
         return lstMultas;
     }

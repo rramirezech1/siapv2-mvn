@@ -22,6 +22,8 @@ public interface SeguridadBo {
     public List<SecurityGroup> getLstSecurityGroup();
 
     public List<SecurityUserGroup> getLstSecurityUserGroup();
+    
+    public List<VwUsuarioGrupos> getLstUsuarioGrupos();
      
     public List<SecurityUsers> getLstSecurityUserByCriteria(String criteria);
 

@@ -14,7 +14,7 @@ public class VwUsuarioGrupos {
     private Integer idGrupo;
     private String userName;
     private String grupo;
-    
+    private String nombreUsuario;    
     
     public VwUsuarioGrupos() {
     }
@@ -49,6 +49,14 @@ public class VwUsuarioGrupos {
 
     public void setGrupo(String grupo) {
         this.grupo = grupo;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
    

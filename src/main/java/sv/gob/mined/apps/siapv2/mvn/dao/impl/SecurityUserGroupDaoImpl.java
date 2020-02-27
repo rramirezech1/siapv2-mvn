@@ -36,8 +36,8 @@ public class SecurityUserGroupDaoImpl extends XJdbcTemplate implements SecurityU
      @Override
     public List<SecurityUserGroup> findAll() {
         String sql = "SELECT * FROM Security_user_group";
-        List<VwUsuarioGrupos> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwUsuarioGrupos.class));
-        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwUsuarioGrupos.class));
+        List<SecurityUserGroup> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SecurityUserGroup.class));
+        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SecurityUserGroup.class));
     }
     
     @Override
@@ -50,8 +50,8 @@ public class SecurityUserGroupDaoImpl extends XJdbcTemplate implements SecurityU
                      " siap_2010.dbo.g_personal ON siap_2010.dbo.security_users.personal_id = siap_2010.dbo.g_personal.personal_id\n" +
                      " WHERE (security_user_group.estadoDeEliminacion = 0)";
         
-        List<SecurityUserGroup> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SecurityUserGroup.class));
-        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SecurityUserGroup.class));
+        List<VwUsuarioGrupos> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwUsuarioGrupos.class));
+        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(VwUsuarioGrupos.class));
     }
         
     @Override

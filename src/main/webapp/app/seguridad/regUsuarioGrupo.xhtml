@@ -10,7 +10,7 @@
 
     </h:head>
     <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
-         <ui:define name="content">
+        <ui:define name="content">
             <h:form id="frmPrincipal">
                 <p:menubar>
                     <p:menuitem value="Nuevo" action="#{seguridadBean.nuevoUsuarioGrupo}" update="frmPrincipal" icon="nuevo" ajax="true"/>
@@ -22,7 +22,7 @@
                         <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
                         <p:spacer width="10" height="8"/>
                         <p:growl id="message" showDetail="true" />
-     
+
                         <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
                             <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
@@ -51,18 +51,26 @@
                         </p:selectOneMenu>
                     </h:panelGrid>
                 </p:panel>
-                <p:dataTable id="tblUsrGrupo" value="#{seguridadBean.lstUserGroup}" var="ugr" selectionMode="single" rowKey="#{ugr.idUserGroup}">
+                <p:dataTable id="tblUsrGrupo" value="#{seguridadBean.lstUserGroup}" var="ugr" selectionMode="single" rowKey="#{ugr.idUserGroup}" rows="12" widgetVar="ugrsec"
+                             paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" paginatorPosition="bottom">
+                    <f:facet name="header">
+                        <p:outputPanel style="display: block; width:100%; text-align:right;">
+                            <h:outputText value="Buscar:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('ugrsec').filter()" style="width:200px" placeholder="Introduzca criterio de busqueda"/>
+                        </p:outputPanel>
+                    </f:facet>
                     <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectUsuarioGrupo}" update=":frmPrincipal" /> 
-                    <p:column headerText="Id" width="45">
+                    <p:column headerText="Id" width="45" sortBy="#{ugr.idUserGroup}" filterBy="#{ugr.idUserGroup}" filterStyle="display:none; visibility:hidden;">
                         <p:outputLabel value="#{ugr.idUserGroup}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Grupo" width="200">
+                    <p:column headerText="Grupo" width="200" sortBy="#{ugr.grupo}" filterBy="#{ugr.grupo}" filterStyle="display:none; visibility:hidden;">
                         <p:outputLabel value="#{ugr.grupo}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Usuario" width="200">
+                    <p:column headerText="Usuario" width="130" sortBy="#{ugr.userName}" filterBy="#{ugr.userName}" filterStyle="display:none; visibility:hidden;">
                         <p:outputLabel value="#{ugr.userName}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Nombre">
+                    <p:column headerText="Nombre" sortBy="#{ugr.nombreUsuario}" filterBy="#{ugr.nombreUsuario}" filterStyle="display:none; visibility:hidden;">
                         <p:outputLabel value="#{ugr.nombreUsuario}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
                 </p:dataTable>

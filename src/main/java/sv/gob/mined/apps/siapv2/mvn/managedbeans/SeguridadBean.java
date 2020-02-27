@@ -5,13 +5,13 @@
 package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 
 import java.io.Serializable;
+import static java.lang.Integer.getInteger;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import org.primefaces.component.inputtext.InputText;
-import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,28 +32,28 @@ import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
  */
 @Component(value = "seguridadBean")
 @Scope(value = "view")
-public class SeguridadBean implements Serializable{
+public class SeguridadBean implements Serializable {
 
     private SecurityGroup currentGrupo;
-    private SecurityUserGroup currentUsuarioGrupo = new SecurityUserGroup();;
+    private SecurityUserGroup currentUsuarioGrupo = new SecurityUserGroup();
+    ;
     private Boolean deshabilitado = true;
     private Boolean deshabilitadoEliminar = true;
     private Boolean deshabilitadoEstado = false;
     private List<SecurityGroup> lstGrupo;
-    private List<SecurityUserGroup> lstUsuarioGrupo;
+    //private List<SecurityUserGroup> lstUsuarioGrupo;
     private List<VwUsuarioGrupos> lstUserGroup;
-   
-    
+
     @Autowired
     private SeguridadBo seguridadBo;
     @Autowired
     private UsuarioBo usuBo;
     @Autowired
     JdbcTemplate jdbcTemplate;
-    
+
     @Inject
     private VariablesSession variablesSession;
-   
+
     /**
      * Creates a new instance of RolesBean
      */
@@ -62,15 +62,16 @@ public class SeguridadBean implements Serializable{
 
     @PostConstruct
     public void init() {
-        lstUsuarioGrupo = seguridadBo.getLstSecurityUserGroup();
+        //lstUsuarioGrupo = seguridadBo.getLstSecurityUserGroup();
         lstGrupo = seguridadBo.getLstSecurityGroup();
+        lstUserGroup = seguridadBo.getLstUsuarioGrupos();
     }
-    
+
     public void nuevoGrupo() {
         nuevo();
         currentGrupo = new SecurityGroup();
     }
-    
+
     public void nuevoUsuarioGrupo() {
         nuevo();
         currentUsuarioGrupo = new SecurityUserGroup();
@@ -109,7 +110,7 @@ public class SeguridadBean implements Serializable{
             JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
         }
     }
-    
+
     public void guardarUsuarioGrupo() {
         Boolean valido;
 
@@ -123,9 +124,10 @@ public class SeguridadBean implements Serializable{
         if (currentUsuarioGrupo != null && valido == true) {
             currentUsuarioGrupo.setName(variablesSession.getUsuario());
             seguridadBo.saveSecurityUserGroup(currentUsuarioGrupo);
-            lstUsuarioGrupo = seguridadBo.getLstSecurityUserGroup();
+            //lstUsuarioGrupo = seguridadBo.getLstSecurityUserGroup();
+            lstUserGroup = seguridadBo.getLstUsuarioGrupos();
 
-            if (currentUsuarioGrupo.getIdUserGroup()!= null) {
+            if (currentUsuarioGrupo.getIdUserGroup() != null) {
                 currentUsuarioGrupo = new SecurityUserGroup();
                 deshabilitadoEliminar = true;
             } else {
@@ -137,7 +139,7 @@ public class SeguridadBean implements Serializable{
             JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
         }
     }
-    
+
     public void onRowSelectGrupo(SelectEvent event) {
         SecurityGroup grupo = seguridadBo.buscarSecurityGroupById(((SecurityGroup) event.getObject()).getIdGrupo());
         if (grupo != null) {
@@ -146,15 +148,33 @@ public class SeguridadBean implements Serializable{
             currentGrupo = grupo;
         }
     }
-    
-     public void onRowSelectUsuarioGrupo(SelectEvent event) {
+
+    public void onRowSelectUsuarioGrupo(SelectEvent event) {
         SecurityGroup grupo = seguridadBo.buscarSecurityGroupById(((SecurityGroup) event.getObject()).getIdGrupo());
         if (grupo != null) {
             deshabilitadoEliminar = false;
             currentGrupo = grupo;
         }
     }
-    
+
+    public boolean funcionFiltroGlobal(Object value, Object filter, Locale locale) {
+        String filterText = (filter == null) ? null : filter.toString().trim().toLowerCase();
+        if (filterText == null || filterText.equals("")) {
+            return true;
+        }
+        
+        int filterInt = getInteger(filterText);
+
+        VwUsuarioGrupos vwusrgrp = (VwUsuarioGrupos) value;
+        return vwusrgrp.getIdUserGroup() < filterInt
+                || vwusrgrp.getGrupo().toLowerCase().contains(filterText)
+                || vwusrgrp.getUserName().contains(filterText)
+                || vwusrgrp.getNombreUsuario().toLowerCase().contains(filterText);
+        
+                //|| vwusrgrp.getYear() < filterInt
+                //|| vwusrgrp.getPrice()< filterInt;
+    }
+
     public SecurityGroup getCurrentGrupo() {
         return currentGrupo;
     }
@@ -170,8 +190,6 @@ public class SeguridadBean implements Serializable{
     public void setCurrentUsuarioGrupo(SecurityUserGroup currentUsuarioGrupo) {
         this.currentUsuarioGrupo = currentUsuarioGrupo;
     }
-    
-    
 
     public Boolean getDeshabilitado() {
         return deshabilitado;
@@ -205,14 +223,13 @@ public class SeguridadBean implements Serializable{
         this.lstGrupo = lstGrupo;
     }
 
-    public List<SecurityUserGroup> getLstUsuarioGrupo() {
+    /*public List<SecurityUserGroup> getLstUsuarioGrupo() {
         return lstUsuarioGrupo;
     }
 
     public void setLstUsuarioGrupo(List<SecurityUserGroup> lstUsuarioGrupo) {
         this.lstUsuarioGrupo = lstUsuarioGrupo;
-    }
-
+    }*/
     public List<VwUsuarioGrupos> getLstUserGroup() {
         if (lstUserGroup == null) {
             lstUserGroup = new ArrayList<>();
@@ -222,5 +239,5 @@ public class SeguridadBean implements Serializable{
 
     public void setLstUserGroup(List<VwUsuarioGrupos> lstUserGroup) {
         this.lstUserGroup = lstUserGroup;
-    }    
+    }
 }

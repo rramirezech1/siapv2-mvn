@@ -49,16 +49,18 @@
                         <p:inputText  id="txtGrupo" value="#{seguridadBean.currentGrupo.grupo}" disabled="#{seguridadBean.deshabilitado}" />                        
                     </h:panelGrid>
                 </p:panel>
-                <p:dataTable id="tblGrupos" value="#{seguridadBean.lstGrupo}" var="gru" selectionMode="single" rowKey="#{gru.idGrupo}">
+                <p:dataTable id="tblGrupos" value="#{seguridadBean.lstGrupo}" var="gru" selectionMode="single" rowKey="#{gru.idGrupo}" rows="12"
+                 paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" paginatorPosition="bottom">
                     <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectGrupo}"   
                             update=":frmPrincipal :frmPrincipal:pnlGrupos" /> 
-                    <p:column headerText="Id Grupo" width="45">
+                    <p:column headerText="Id Grupo" width="65" sortBy="#{gru.idGrupo}">
                         <p:outputLabel value="#{gru.idGrupo}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Codigo Grupo" width="70">
+                    <p:column headerText="Codigo Grupo" width="90" sortBy="#{gru.codigoGrupo}">
                         <p:outputLabel value="#{gru.codigoGrupo}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Grupo de Seguridad">
+                    <p:column headerText="Grupo de Seguridad" sortBy="#{gru.grupo}"> 
                         <p:outputLabel value="#{gru.grupo}"/>
                     </p:column>
                 </p:dataTable>

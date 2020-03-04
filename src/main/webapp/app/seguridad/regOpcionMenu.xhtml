@@ -13,96 +13,75 @@
         <ui:define name="content">
             <h:form id="frmPrincipal">
                 <p:menubar>
-                    <p:menuitem value="Nuevo" icon="nuevo" ajax="true" />
-                    <p:menuitem value="Modificar" icon="modificar" />
-                    <p:menuitem value="Eliminar" icon="eliminar" />
-                    <p:menuitem value="Guardar" icon="guardar" />
-                    <p:menuitem value="Recuperar" icon="recuperar" />
-                    <p:menuitem value="Imprimir" icon="imprimir" />
+                    <p:menuitem value="Nuevo" action="#{menuItemBean.nuevoOpcionMenu()}" update="frmPrincipal" icon="nuevo" ajax="true"/>
+                    <p:menuitem value="Guardar" action="#{menuItemBean.guardarOpcionMenu()}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{menuItemBean.deshabilitado}"/>
+                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{menuItemBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
+                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>
-                        <p:outputLabel value="ADMIN" style="font-weight: bold;"/>
+                        <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
                         <p:spacer width="10" height="8"/>
-                        <p:commandButton value="Salir" icon="salir" />
+                        <p:growl id="message" showDetail="true" />
+
+                        <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
+                            <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
+                        </p:confirmDialog>    
                     </f:facet>
                 </p:menubar>
-                <div class="dvProceso">
-                    <div class="dvPaso" style=" position: absolute; border: 1px solid #ccc; border-radius: 10px; top: 300px; left: 550px; width: 150px; height: 35px; text-align: center; padding-top: 6px;" onclick="PF('dlgAsigRolesUsuarios').show();">
-                        <p:outputLabel value="4.1 Asignación de Roles a Usuario" />
-                    </div>
-                </div>
-                <p:overlayPanel id="carPanel" for="carBtn" hideEffect="fade" dynamic="true">  
-                    <p:dataTable id="table" var="car" value="#{tableBean.cars}" rows="10" paginator="true">  
-                        <p:column headerText="Model">  
-                            <h:outputText value="#{car.model}" />  
-                        </p:column>  
-
-                        <p:column headerText="Year">  
-                            <h:outputText value="#{car.year}" />  
-                        </p:column>  
-
-                        <p:column headerText="Manufacturer">  
-                            <h:outputText value="#{car.manufacturer}" />  
-                        </p:column>  
-
-                        <p:column headerText="Color">  
-                            <h:outputText value="#{car.color}" />  
-                        </p:column>  
-                    </p:dataTable>  
-                </p:overlayPanel>
-
-                <p:dialog id="dlgAsigRolesUsuarios" widgetVar="dlgAsigRolesUsuarios" header="3.1 Administracion de la Autorizacion" visible="#{rolesBean.showAsigRolesUsuarios}" style="max-height: 600px !important" >
-                    <p:ajax event="close" listener="#{rolesBean.cerrarPopupRolesUsuario}"/>  
-                    <h:panelGrid id="panelPrincipalAsigRoles" columns="2">
-                        <h:panelGrid id="panelAsigRoles" columns="1">
-                            <p:outputLabel value="3.1.4 Asignacion de Roles a Usuarios"/>
-                            <h:panelGrid columns="2">
-                                <p:outputLabel value="1.4.1 Plantilla de Roles"/>
-                                <p:selectOneMenu id="cbmPlantilla" value="#{planGlobalBean.idConvenio}">
-                                    <f:selectItem itemLabel="Seleccione un valor"/>
-                                    <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
-                                </p:selectOneMenu>
-                            </h:panelGrid>
-                            <p:outputLabel value="1.4.2 Detalle de Usuarios asignados a la plantilla"/>
-                            <h:panelGrid style="float: right" columns="2">
-                                <p:commandButton id="carBtn" value="Block Panel" type="button"/>  
-                                <p:commandButton id="saveBtn" value="+" style="float: right" onclick="PF('dlgAsigRolesPorPlantilla').show();"/>
-                                <p:commandButton value="-" style="float: right" onclick="PF('dlgAsigRolesPorPlantilla').show();"/>
-                            </h:panelGrid>
-                            <p:dataTable id="tblAsigRoles" var="ent4" value="#{rolesBean.entidades4}" widgetVar="tblRoles">  
-                                <p:column headerText="Id">
-                                    <h:outputText value="#{ent4.id}" />  
-                                </p:column>
-                                <p:column headerText="Procedimiento ú Opcion">
-                                    <h:outputText value="#{ent4.procedimiento}" />  
-                                </p:column>
-                            </p:dataTable>     
-                        </h:panelGrid>
-                        <p:outputLabel value="Imagen"/>
+                <p:panel id="pnlOpcionMenu">
+                    <f:facet name="header">
+                        <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                        <p:spacer width="10"/>
+                        <h:outputText value="Mantenimiento de opciones del menu"/>
+                    </f:facet>
+                    <h:panelGrid columns="4" style="width: 100%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank">
+                        <p:outputLabel value="1. Nombre Opción:"/>
+                        <p:inputText id="txtNombreOpcion" value="#{menuItemBean.currentOpcionMenu.nombreOpcionMenu}" style="width: 250px" disabled="#{menuItemBean.deshabilitado}"/>
+                        <p:outputLabel value="2. Etiqueta Opción:"/>
+                        <p:inputText id="txtLabelOpcion" value="#{menuItemBean.currentOpcionMenu.labelOpcionMenu}" disabled="#{menuItemBean.deshabilitado}"/>
+                        <p:outputLabel value="3. Opcion Principal:"/>
+                        <p:selectOneMenu id="cbOpcPadre" value="#{menuItemBean.currentOpcionMenu.idOpcionPadre}" style="width: 250px" disabled="#{menuItemBean.deshabilitado}" filter="true" filterMatchMode="startsWith">
+                            <f:selectItem itemLabel="Seleccione un valor"/>
+                            <f:selectItems value="#{menuItemBean.lstOpcionMenuPadre}" var="opc" itemValue="#{opc.idOpcionMenu}" itemLabel="#{opc.nombreOpcionMenu}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="4. Ruta Opción:"/>
+                        <p:inputText id="txtRutaOpcion" value="#{menuItemBean.currentOpcionMenu.direccionAccesoOpcion}" style="width: 250px" disabled="#{menuItemBean.deshabilitado}"/>   
                     </h:panelGrid>
-                </p:dialog>
+                </p:panel>
 
+                <p:dataTable id="tblOpcionMenu" value="#{menuItemBean.lstOpcionMenu}" var="opmenu" selectionMode="single" rowKey="#{opmenu.idOpcionMenu}" rows="12" widgetVar="opmenu"
+                             paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" paginatorPosition="bottom">
+                    <f:facet name="header">
+                        <p:outputPanel style="display: block; width:100%; text-align:right;">
+                            <h:commandLink>
+                                <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/export.jpg" width="40"/>
+                                <p:dataExporter type="xls" target="tblOpcionMenu" fileName="detalle_menus" />
+                            </h:commandLink>
+                            <p:spacer width="450" height="5"/>
+                            <h:outputText value="Buscar:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('opmenu').filter()" style="width:200px" placeholder="Introduzca criterio de busqueda"/>
+                        </p:outputPanel>
 
-                <p:blockUI block="dlgAsigRolesUsuarios" widgetVar="bui"/>  
-
-                <p:dialog id="dlgAsigRolesPorPlantilla" widgetVar="dlgAsigRolesPorPlantilla" header="3.1 Administracion de la Autorizacion" visible="#{rolesBean.showAsigRolesPorPlantilla}" style="max-height: 600px !important" >
-                    <p:ajax event="close" listener="#{rolesBean.cerrarPopupRolesPorPlantilla}"/>  
-                    <h:panelGrid id="panelAsigRolesPorPlantilla" columns="2">
-                        <h:panelGrid id="panelAsigRolesPlan" columns="1">
-                            <h:panelGrid columns="2">
-                                <p:outputLabel value="1.4.1 Plantilla de Roles Seleccionada"/>
-                                <p:selectOneMenu id="cbmPlantillaSelect" value="#{planGlobalBean.idConvenio}">
-                                    <f:selectItem itemLabel="Seleccione un valor"/>
-                                    <f:selectItems value="#{planGlobalBean.lstConvenios}" var="selectConvenio" itemValue="#{selectConvenio.convenio}" itemLabel="#{selectConvenio.numeroConvenio}"/>
-                                </p:selectOneMenu>
-                            </h:panelGrid>
-                            <p:outputLabel value="1.4.2 Detalle de Usuarios asignados a la plantilla"/>
-                            <p:pickList id="pickList" value="#{rolesBean.usuarios}" var="usuario"   
-                                        itemLabel="#{usuario.usuario}" itemValue="#{usuario.id}" />       
-                        </h:panelGrid>
-                        <p:outputLabel value="Imagen"/>
-                    </h:panelGrid>
-                </p:dialog>
+                    </f:facet>
+                    <p:ajax event="rowSelect" listener="#{menuItemBean.onRowSelectOpcionMenu}" update=":frmPrincipal" /> 
+                    <p:column headerText="Id" width="45" sortBy="#{opmenu.idOpcionMenu}" filterBy="#{opmenu.idOpcionMenu}" filterStyle="display:none; visibility:hidden;">
+                        <p:outputLabel value="#{opmenu.idOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
+                    </p:column>
+                    <p:column headerText="Etiqueta" width="200" sortBy="#{opmenu.labelOpcionMenu}" filterBy="#{opmenu.labelOpcionMenu}" filterStyle="display:none; visibility:hidden;">
+                        <p:outputLabel value="#{opmenu.labelOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
+                    </p:column>
+                    <p:column headerText="Opcion Padre" width="130" sortBy="#{opmenu.opcionPadre}" filterBy="#{opmenu.opcionPadre}" filterStyle="display:none; visibility:hidden;">
+                        <p:outputLabel value="#{opmenu.opcionPadre}" style="display: block; width:100%; text-align:center;"/>
+                    </p:column>
+                    <p:column headerText="Ruta de Acceso" sortBy="#{opmenu.direccionAccesoOpcion}" filterBy="#{opmenu.direccionAccesoOpcion}" filterStyle="display:none; visibility:hidden;">
+                        <p:outputLabel value="#{opmenu.direccionAccesoOpcion}" style="display: block; width:100%; text-align:center;"/>
+                    </p:column>
+                </p:dataTable>
             </h:form>
         </ui:define>
     </ui:composition>

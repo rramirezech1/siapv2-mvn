@@ -50,6 +50,8 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityInfo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityTemplate;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
+import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.dao.OpcionMenuDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRolControl;
 import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 
@@ -62,6 +64,7 @@ public class RolesBoImpl implements RolesBo {
 
     public RolesBoImpl() {
     }
+    
     @Autowired
     private MacroProcesosDao macroprocesodao;
     @Autowired
@@ -88,6 +91,8 @@ public class RolesBoImpl implements RolesBo {
     private SecurityUsersDao securityusersdao;
     @Autowired
     private SecurityGroupDao securitygroupdao;
+    @Autowired
+    private OpcionMenuDao opcionmenudao;
     @Autowired
     private SecurityInfoDao securityinfodao;
     @Autowired
@@ -167,6 +172,21 @@ public class RolesBoImpl implements RolesBo {
     public List<SecurityGroup> getLstSecurityGroup() {
         return securitygroupdao.findAll();
     }
+    
+    @Override
+    public List<OpcionMenu> getLstOpcionMenu() {
+        return opcionmenudao.findAll();
+    }
+    
+    @Override
+    public List<OpcionMenu> getLstOpcionMenuPadre() {
+        return opcionmenudao.findByMenuPadre();
+    }
+    
+    @Override
+    public List<OpcionMenu>getLstOpcionMenuHijo() {
+        return opcionmenudao.findByMenuHijo();
+    }
 
     @Override
     public Integer createPlantillaSeguridad(PlantillasDeSeguridad plantilla, Boolean edit) {
@@ -209,6 +229,11 @@ public class RolesBoImpl implements RolesBo {
     }
     
     @Override
+    public OpcionMenu buscarOpcionMenuById(Integer id) {
+        return opcionmenudao.findOpcionMenuById(id);
+    }
+    
+    @Override
     public Integer saveSecurityGroup(SecurityGroup grupo) {
         securitygroupdao.setSecurityGroup(grupo);
         if (grupo.getIdGrupo() == null) {
@@ -221,6 +246,18 @@ public class RolesBoImpl implements RolesBo {
     }
     
     @Override
+    public Integer saveOpcionMenu(OpcionMenu opcion) {
+        opcionmenudao.setOpcionMenu(opcion);
+        if (opcion.getIdOpcionMenu() == null) {
+            Integer id = opcionmenudao.create();
+            opcion.setIdOpcionMenu(id);
+            return id;
+        } else {
+            return opcionmenudao.update();
+        }
+    }
+        
+    @Override
     public Integer saveSecurityInfo(SecurityInfo securityinfo) {
         securityinfodao.setSecurityInfo(securityinfo);
         return securityinfodao.create();
@@ -228,7 +265,7 @@ public class RolesBoImpl implements RolesBo {
     
     @Override
     public List<SecurityTemplate> getListadosSecurityTemplateModificacion(Integer id) {
-        List<SecurityTemplate> listaretorno = new ArrayList<SecurityTemplate>();
+        List<SecurityTemplate> listaretorno = new ArrayList<>();
         List<SecurityTemplate> lista = securitytemplatedao.findAll();
         List<SecurityInfo> listainfo = securityinfodao.getSecurityInfoByIdPlantilla(id);
         for (SecurityInfo securityInfo : listainfo) {

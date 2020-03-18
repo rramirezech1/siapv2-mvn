@@ -56,8 +56,9 @@ public class MenuTreeBean implements Serializable {
         TreeNode node18 = new DefaultTreeNode(new OpcionMenu1("5.1. Admin. de Grupos", "/app/seguridad/regGrupo.jsf"), node17);
         TreeNode node19 = new DefaultTreeNode(new OpcionMenu1("5.2. Asignacion Usuario-Grupos", "/app/seguridad/regUsuarioGrupo.jsf"), node17);
         TreeNode node20 = new DefaultTreeNode(new OpcionMenu1("5.3. Mantenimiento de Opciones", "/app/seguridad/regOpcionMenu.jsf"), node17);
-        TreeNode node21 = new DefaultTreeNode(new OpcionMenu1("5.4. Admin. de Acceso a Datos", "/app/seguridad/regRolesAutorizacion.jsf"), node17);
-        TreeNode node22 = new DefaultTreeNode(new OpcionMenu1("5.5. Verificacion", "/app/verificacion.jsf"), node17);
+        TreeNode node21 = new DefaultTreeNode(new OpcionMenu1("5.4. Asignacion de permisos de acceso", "/app/seguridad/permisoOpcionMenu.jsf"), node17);        
+        TreeNode node22 = new DefaultTreeNode(new OpcionMenu1("5.5. Admin. de Acceso a Datos", "/app/seguridad/regRolesAutorizacion.jsf"), node17);
+        TreeNode node23 = new DefaultTreeNode(new OpcionMenu1("5.6. Verificacion", "/app/verificacion.jsf"), node17);
         node0.setExpanded(true);
         node6.setExpanded(true);
         node14.setExpanded(false);

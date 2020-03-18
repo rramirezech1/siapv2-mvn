@@ -52,6 +52,8 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
 import sv.gob.mined.apps.siapv2.mvn.dao.OpcionMenuDao;
+import sv.gob.mined.apps.siapv2.mvn.modelo.PermisoOpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.dao.PermisoOpcionMenuDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRolControl;
 import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 
@@ -93,6 +95,8 @@ public class RolesBoImpl implements RolesBo {
     private SecurityGroupDao securitygroupdao;
     @Autowired
     private OpcionMenuDao opcionmenudao;
+    @Autowired
+    private PermisoOpcionMenuDao permisoopcionmenudao;    
     @Autowired
     private SecurityInfoDao securityinfodao;
     @Autowired
@@ -179,6 +183,11 @@ public class RolesBoImpl implements RolesBo {
     }
     
     @Override
+    public List<PermisoOpcionMenu> getLstPermisoOpcionMenu() {
+        return permisoopcionmenudao.findAll();
+    }
+    
+    @Override
     public List<OpcionMenu> getLstOpcionMenuPadre() {
         return opcionmenudao.findByMenuPadre();
     }
@@ -234,6 +243,11 @@ public class RolesBoImpl implements RolesBo {
     }
     
     @Override
+    public PermisoOpcionMenu buscarPermisoOpcionMenuById(Integer id) {
+        return permisoopcionmenudao.findOpcionMenuById(id);
+    }
+    
+    @Override
     public Integer saveSecurityGroup(SecurityGroup grupo) {
         securitygroupdao.setSecurityGroup(grupo);
         if (grupo.getIdGrupo() == null) {
@@ -256,7 +270,19 @@ public class RolesBoImpl implements RolesBo {
             return opcionmenudao.update();
         }
     }
-        
+     
+    @Override
+    public Integer savePermisoOpcionMenu(PermisoOpcionMenu permisoopcion) {
+        permisoopcionmenudao.setPermisoOpcionMenu(permisoopcion);
+        if (permisoopcion.getIdPermisoOpcionMenu() == null) {
+            Integer id = permisoopcionmenudao.create();
+            permisoopcion.setIdPermisoOpcionMenu(id);
+            return id;
+        } else {
+            return permisoopcionmenudao.update();
+        }
+    }
+    
     @Override
     public Integer saveSecurityInfo(SecurityInfo securityinfo) {
         securityinfodao.setSecurityInfo(securityinfo);

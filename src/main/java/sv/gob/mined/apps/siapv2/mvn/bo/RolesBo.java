@@ -28,6 +28,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRolControl;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.PermisoOpcionMenu;
 
 /**
  *
@@ -65,6 +66,8 @@ public interface RolesBo {
     
     public List<OpcionMenu> getLstOpcionMenu();
     
+    public List<PermisoOpcionMenu> getLstPermisoOpcionMenu();
+    
     public List<SecurityUsers> getLstSecurityUserByCriteria(String criteria);
 
     public Integer createPlantillaSeguridad(PlantillasDeSeguridad plantilla, Boolean edit);
@@ -79,6 +82,8 @@ public interface RolesBo {
     
     public OpcionMenu buscarOpcionMenuById(Integer id);
     
+    public PermisoOpcionMenu buscarPermisoOpcionMenuById(Integer id);
+    
     public List<OpcionMenu> getLstOpcionMenuPadre();
     
     public List<OpcionMenu> getLstOpcionMenuHijo();
@@ -86,6 +91,8 @@ public interface RolesBo {
     public Integer saveSecurityGroup(SecurityGroup grupo);
     
     public Integer saveOpcionMenu(OpcionMenu opcion);
+    
+    public Integer savePermisoOpcionMenu(PermisoOpcionMenu permisoopcion);
 
     public Integer saveSecurityInfo(SecurityInfo securityinfo);
 

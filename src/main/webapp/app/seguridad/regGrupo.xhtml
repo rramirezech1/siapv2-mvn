@@ -52,8 +52,7 @@
                 <p:dataTable id="tblGrupos" value="#{seguridadBean.lstGrupo}" var="gru" selectionMode="single" rowKey="#{gru.idGrupo}" rows="12"
                  paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                  currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" paginatorPosition="bottom">
-                    <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectGrupo}"   
-                            update=":frmPrincipal :frmPrincipal:pnlGrupos" /> 
+                    <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectGrupo}" update=":frmPrincipal :frmPrincipal:pnlGrupos" /> 
                     <p:column headerText="Id Grupo" width="65" sortBy="#{gru.idGrupo}">
                         <p:outputLabel value="#{gru.idGrupo}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>

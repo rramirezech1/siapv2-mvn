@@ -37,10 +37,6 @@ import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
 @Scope(value = "view")
 public class MenuItemBean implements Serializable {
 
-    private static Book createBook(String[] attributes) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     private OpcionMenu currentOpcionMenu = new OpcionMenu();
     private PermisoOpcionMenu currentPermisoOpcionMenu = new PermisoOpcionMenu();
     private Boolean deshabilitado = true;
@@ -101,6 +97,40 @@ public class MenuItemBean implements Serializable {
         currentOpcionMenu = new OpcionMenu();
     }
 
+    public void guardarPermisoOpcionMenu() {
+        Boolean valido;
+
+        if (currentOpcionMenu != null) {
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtLabelOpcion", InputText.class, currentOpcionMenu.getLabelOpcionMenu());
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtNombreOpcion", InputText.class, currentOpcionMenu.getNombreOpcionMenu()) && valido;
+        } else {
+            valido = JsfUtil.addErrorStyle("frmPrincipal", "txtNombreOpcion", InputText.class, null);
+        }
+
+        if (currentOpcionMenu != null && valido == true) {
+            currentOpcionMenu.setName(variablesSession.getUsuario());
+            rolBo.saveOpcionMenu(currentOpcionMenu);
+            lstOpcionMenu = rolBo.getLstOpcionMenu();
+
+            if (currentOpcionMenu.getIdOpcionMenu() != null) {
+                nuevoOpcionMenu();
+                deshabilitadoEliminar = true;
+            } else {
+                deshabilitadoEliminar = false;
+            }
+
+            JsfUtil.addSuccessMessage("El registro ha sido guardado");
+        } else {
+            JsfUtil.addErrorMessage("Los campos marcados con rojo son REQUERIDOS");
+        }
+    }
+
+    public void nuevoPermisoOpcionMenu() {
+        nuevo();
+        currentOpcionMenu = new OpcionMenu();
+    }
+
+    
     private void nuevo() {
         deshabilitado = false;
         deshabilitadoEliminar = true;
@@ -168,6 +198,14 @@ public class MenuItemBean implements Serializable {
         this.currentOpcionMenu = currentOpcionMenu;
     }
 
+    public PermisoOpcionMenu getCurrentPermisoOpcionMenu() {
+        return currentPermisoOpcionMenu;
+    }
+
+    public void setCurrentPermisoOpcionMenu(PermisoOpcionMenu currentPermisoOpcionMenu) {
+        this.currentPermisoOpcionMenu = currentPermisoOpcionMenu;
+    }
+
     public List<OpcionMenu> getLstOpcionMenuPadre() {
         return lstOpcionMenuPadre;
     }
@@ -176,6 +214,10 @@ public class MenuItemBean implements Serializable {
         this.lstOpcionMenuPadre = lstOpcionMenuPadre;
     }
 
+    private static Book createBook(String[] attributes) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     private static List<OpcionMenu> cargaOpcionMenuFromCSV(String fileName) {
         List<OpcionMenu> lstOpcionMenu = new ArrayList<>();
         Path pathToFile = Paths.get(fileName);

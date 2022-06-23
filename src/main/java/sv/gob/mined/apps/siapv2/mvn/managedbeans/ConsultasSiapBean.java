@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import sv.gob.mined.apps.siapv2.mvn.bo.ConsultasSiapBo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGrupos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwAutoriza;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwProveedoresSiap;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTecnicoUaci;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwContratosGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGarantiasGrupo;
@@ -35,6 +36,7 @@ public class ConsultasSiapBean implements Serializable{
     private List<VwTecnicoUaci> lstTecnicoUaci;
     private List<VwContratosGrupo> lstContratosGrupo;
     private List<VwOfertasGrupo> lstOfertasGrupo;
+    private List<VwProveedoresSiap> lstProveedores;
     private VwGrupos currentGrupo;
     private VwAutoriza currentAutoriza;
     private VwOfertasGrupo currentOferta;
@@ -105,7 +107,23 @@ public class ConsultasSiapBean implements Serializable{
             trasladoAtribBean();
         }
     }
-         
+     
+     public void buscarProveedorSiap() {
+        String condicion ="";
+        
+//        if (idDepto != null) {
+//            condicion = "idDepartamento ="+ idDepto;
+//        } else if (idMunicipio != null) {
+//            condicion = "idMunicipio ="+ idMunicipio;
+//        } else if (tamanoEmpresa != null) {
+//            condicion = "tamanoEmpresa="+ tamanoEmpresa ;
+//        } else if (idSubSector != null && idSubSector != 0) {
+//            condicion = "idSubSector= "+ idSubSector;
+//        } 
+//        
+//        lstProveedores = consultasSiap.getLstProveedores(condicion);
+    }    
+    
     public void trasladoAtribBean(){
         FacesContext context = FacesContext.getCurrentInstance();
         BancoProveedoresBean bp = context.getApplication().evaluateExpressionGet(context, "#{bancoProveedoresBean}", BancoProveedoresBean.class);
@@ -189,6 +207,14 @@ public class ConsultasSiapBean implements Serializable{
 
     public void setLstOfertasGrupo(List<VwOfertasGrupo> lstOfertasGrupo) {
         this.lstOfertasGrupo = lstOfertasGrupo;
+    }
+
+    public List<VwProveedoresSiap> getLstProveedores() {
+        return lstProveedores;
+    }
+
+    public void setLstProveedores(List<VwProveedoresSiap> lstProveedores) {
+        this.lstProveedores = lstProveedores;
     }
 
     public int getTipoGarantia() {

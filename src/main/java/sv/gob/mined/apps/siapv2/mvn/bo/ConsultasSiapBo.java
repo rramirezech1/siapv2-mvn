@@ -10,6 +10,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwContratosGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwOfertasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwAutoriza;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTecnicoUaci;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwProveedoresSiap;
 
 public interface ConsultasSiapBo {
           
@@ -28,6 +29,8 @@ public interface ConsultasSiapBo {
    public List<VwOfertasGrupo> getLstOfertasByGrupo (Integer grupo);
       
    public List<VwContratosGrupo> getLstContratosByGrupo (Integer grupo);
+   
+   public List<VwProveedoresSiap> getLstProveedoresSiap (String condicion);
    
 }
 

@@ -131,58 +131,7 @@ public class ValidacionUsuarioBean {
         return str2;
     }
     
-    /*public void buscarUsuarioPreguntas() {
-        mostrarRecuperarCont = Boolean.TRUE;
-        if (dui.replace("_", "").length() >= 9) {
-            lstPreguntasUsuario = provBo.findAllByDui(dui);
-            if(lstPreguntasUsuario == null || lstPreguntasUsuario.isEmpty()){
-                JsfUtil.addWarningMessage("El usuario con # Documento Legal " + dui + " no esta registrado");
-            }
-        }
-        RequestContext.getCurrentInstance().update("frmPrincipal:dlgRecuperarContra");
-    }*/   
-    
-   /* public void envioUsrPassMail(String usr) {
-
-    String para = "carlosp@codehero.co";
-    String de = "cpicca@codehero.co";
-
-    // El servidor (host). En este caso usamos localhost
-    String host = "localhost";
-
-    // Obtenemos las propiedades del sistema
-    Properties propiedades = System.getProperties();
-
-    // Configuramos el servidor de correo
-    propiedades.setProperty("mail.smtp.host", host);
-
-    // Obtenemos la sesión por defecto
-    Session sesion = Session.getDefaultInstance(propiedades);
-
-    try{
-      // Creamos un objeto mensaje tipo MimeMessage por defecto.
-      MimeMessage mensaje = new MimeMessage(sesion);
-
-      // Asignamos el ?de o from? al header del correo.
-      mensaje.setFrom(new InternetAddress(de));
-
-      // Asignamos el ?para o to? al header del correo.
-      mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(para));
-
-      // Asignamos el asunto
-      mensaje.setSubject("Primer correo HTML");
-
-      // Asignamos el contenido HTML, tan grande como nosotros queramos
-      mensaje.setContent("<h1>El mensaje de nuestro primer correo HTML</h1>","text/html" );
-
-      // Enviamos el correo
-      Transport.send(mensaje);
-      System.out.println("Mensaje enviado");
-    } catch (MessagingException e) {
-      e.printStackTrace();
-    }
-  }*/
-    
+   
     public Boolean getMostrarSignUp() {
         return mostrarSignUp;
     }

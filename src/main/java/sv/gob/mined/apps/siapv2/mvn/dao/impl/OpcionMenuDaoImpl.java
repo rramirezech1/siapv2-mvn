@@ -92,7 +92,7 @@ public class OpcionMenuDaoImpl extends XJdbcTemplate implements OpcionMenuDao {
     
     @Override
     public List<OpcionMenu> findAll() {
-        String sql = "SELECT idOpcionMenu, nombreOpcionMenu, labelOpcionMenu, direccionAccesoOpcion, idOpcionPadre, dbo.f_obtener_opcion_menu(idOpcionPadre) as opcionPadre FROM opcionMenu WHERE estadoDeEliminacion=0";
+        String sql = "SELECT idOpcionMenu, nombreOpcionMenu, labelOpcionMenu, iconOpcionMenu, direccionAccesoOpcion, idOpcionPadre, dbo.f_obtener_opcion_menu(idOpcionPadre) as opcionPadre FROM opcionMenu WHERE estadoDeEliminacion=0";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(OpcionMenu.class));
     }
 }

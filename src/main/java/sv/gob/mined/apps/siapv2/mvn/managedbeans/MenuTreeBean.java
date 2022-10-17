@@ -4,19 +4,21 @@
  */
 package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.NodeSelectEvent;
-import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.TreeNode;
+import javax.inject.Inject;
+import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.MenuModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu1;
+import sv.gob.mined.apps.siapv2.mvn.bo.SeguridadBo;
+import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
 
 /**
  *
@@ -27,14 +29,33 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu1;
 public class MenuTreeBean implements Serializable {
 
     private MenuModel model;
-    private Integer idUsuario;
+    private String usuario;
+    private List <OpcionMenu> listOpcionMenu = new ArrayList();
+    
+    
+    @Inject
+    private VariablesSession variablesSession;
+    
+    @Autowired
+    private SeguridadBo seguridad;
+    
+    
 
     @PostConstruct
     public void init() {
         model = new DefaultMenuModel();
-        idUsuario = usuarioProcesa();
+        usuario = variablesSession.getUsuario();
+        
+        listOpcionMenu = seguridad.getLstOpcionMenu();
+        creaMenu();
+        
     }
 
+    public void creaMenu(){
+    
+  //      DefaultMenuItem item = DefaultMenuItem.builder().value(opcion.getLabelOpcionMenu()).build();
+        
+    }
     
     public Integer usuarioProcesa(){
     
@@ -49,16 +70,6 @@ public class MenuTreeBean implements Serializable {
         this.model = model;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-   
-
-    
     
     public void logout() {
         FacesContext context = FacesContext.getCurrentInstance();

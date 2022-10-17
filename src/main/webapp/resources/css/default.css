@@ -9,7 +9,7 @@ body {
     background-position:50% 0;
     background-repeat:repeat no-repeat;
     background-image: url(../images/macback.png);
-    color:gray;
+    background-size:cover !important;
 }
 
 /*

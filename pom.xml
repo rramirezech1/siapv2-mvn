@@ -23,17 +23,17 @@
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.faces</groupId>
-            <artifactId>jboss-jsf-api_2.1_spec</artifactId>
-            <version>2.0.7.Final-redhat-1</version>
-            <scope>provided</scope>
-        </dependency>
         
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>5.6.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.olap4j</groupId>
+                    <artifactId>olap4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
@@ -161,13 +161,13 @@
     <repositories>
         <repository>
             <id>maven2</id>
-            <url>http://repo1.maven.org/maven2</url>
+            <url>https://repo1.maven.org/maven2</url>
         </repository>
         <repository>
             <id>maven.repository.redhat.com</id>
             <name>JBOSS EAP 6.X.X Repository for Maven</name>
-            <url>http://maven.repository.redhat.com/techpreview/all</url>
-        </repository> 
+            <url>https://maven.repository.redhat.com/techpreview/all</url>
+        </repository>
         <repository>
             <url>http://repository.primefaces.org/</url>
             <id>PrimeFaces-maven-lib</id>

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 import sv.gob.mined.apps.siapv2.mvn.bo.RolesBo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
 import sv.gob.mined.apps.siapv2.mvn.modelo.PermisoOpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwPermisoOpcionMenu;
 import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
 
@@ -33,6 +34,7 @@ import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
  *
  * @author Infosoft
  */
+
 @Component(value = "menuItemBean")
 @Scope(value = "view")
 public class MenuItemBean implements Serializable {
@@ -44,6 +46,7 @@ public class MenuItemBean implements Serializable {
     private Boolean deshabilitadoEstado = false;
     private List<OpcionMenu> lstOpcionMenu;
     private List<PermisoOpcionMenu> lstPermisoOpcionMenu;
+    private List<VwPermisoOpcionMenu> lstVwPermisoOpcionMenu;
     private List<OpcionMenu> lstOpcionMenuPadre;
 
     @Autowired
@@ -61,7 +64,7 @@ public class MenuItemBean implements Serializable {
     public void init() {
         lstOpcionMenu = rolBo.getLstOpcionMenu();
         lstOpcionMenuPadre = rolBo.getLstOpcionMenuPadre();
-        lstPermisoOpcionMenu = rolBo.getLstPermisoOpcionMenu();
+        lstVwPermisoOpcionMenu = rolBo.getLstPermisoOpcionMenu();
     }
 
     public void guardarOpcionMenu() {
@@ -97,6 +100,7 @@ public class MenuItemBean implements Serializable {
         currentOpcionMenu = new OpcionMenu();
     }
 
+    
     public void guardarPermisoOpcionMenu() {
         Boolean valido;
 
@@ -127,7 +131,7 @@ public class MenuItemBean implements Serializable {
 
     public void nuevoPermisoOpcionMenu() {
         nuevo();
-        currentOpcionMenu = new OpcionMenu();
+        currentPermisoOpcionMenu = new PermisoOpcionMenu();
     }
 
     
@@ -142,6 +146,14 @@ public class MenuItemBean implements Serializable {
         if (opcion != null) {
             deshabilitadoEliminar = false;
             currentOpcionMenu = opcion;
+        }
+    }
+    
+     public void onRowSelectPermisoOpcionMenu(SelectEvent event) {
+        PermisoOpcionMenu perOpcion = rolBo.buscarPermisoOpcionMenuById(((PermisoOpcionMenu) event.getObject()).getIdPermisoOpcionMenu());
+        if (perOpcion != null) {
+            deshabilitadoEliminar = false;
+            currentPermisoOpcionMenu = perOpcion;
         }
     }
 
@@ -206,6 +218,14 @@ public class MenuItemBean implements Serializable {
         this.currentPermisoOpcionMenu = currentPermisoOpcionMenu;
     }
 
+    public List<VwPermisoOpcionMenu> getLstVwPermisoOpcionMenu() {
+        return lstVwPermisoOpcionMenu;
+    }
+
+    public void setLstVwPermisoOpcionMenu(List<VwPermisoOpcionMenu> lstVwPermisoOpcionMenu) {
+        this.lstVwPermisoOpcionMenu = lstVwPermisoOpcionMenu;
+    }
+    
     public List<OpcionMenu> getLstOpcionMenuPadre() {
         return lstOpcionMenuPadre;
     }

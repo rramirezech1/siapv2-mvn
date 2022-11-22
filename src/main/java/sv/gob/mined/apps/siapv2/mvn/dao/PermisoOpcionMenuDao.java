@@ -6,6 +6,7 @@ package sv.gob.mined.apps.siapv2.mvn.dao;
 
 import java.util.List;
 import sv.gob.mined.apps.siapv2.mvn.modelo.PermisoOpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwPermisoOpcionMenu;
 
 /**
  *
@@ -19,18 +20,18 @@ public interface PermisoOpcionMenuDao {
 
     public void setPermisoOpcionMenu(PermisoOpcionMenu permisoopcionmenu);
     
-    public List<PermisoOpcionMenu> findAll();
+    public List<VwPermisoOpcionMenu> findAll();
     
-    public List<PermisoOpcionMenu> findAllByUser(Integer user);
+    public List<VwPermisoOpcionMenu> findAllByUser(Integer user);
     
-    public List<PermisoOpcionMenu> findAllByGroup(Integer group);
+    public List<VwPermisoOpcionMenu> findAllByGroup(Integer group);
 
     public PermisoOpcionMenu findById(Integer idGarantia);
     
-    public PermisoOpcionMenu findOpcionMenuById(Integer idOpcion);
+    public PermisoOpcionMenu findPermisoOpcionMenuById(Integer idPermisoOpcion);
     
-    public List<PermisoOpcionMenu> findByMenuPadre();
+    public List<VwPermisoOpcionMenu> findByMenuPadre();
     
-    public List<PermisoOpcionMenu> findByMenuHijo();
+    public List<VwPermisoOpcionMenu> findByMenuHijo();
     
 }

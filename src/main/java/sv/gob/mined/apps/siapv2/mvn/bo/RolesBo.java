@@ -29,6 +29,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.TipoRolControl;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
 import sv.gob.mined.apps.siapv2.mvn.modelo.PermisoOpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwPermisoOpcionMenu;
 
 /**
  *
@@ -66,7 +67,7 @@ public interface RolesBo {
     
     public List<OpcionMenu> getLstOpcionMenu();
     
-    public List<PermisoOpcionMenu> getLstPermisoOpcionMenu();
+    public List<VwPermisoOpcionMenu> getLstPermisoOpcionMenu();
     
     public List<SecurityUsers> getLstSecurityUserByCriteria(String criteria);
 

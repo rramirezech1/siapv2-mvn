@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sv.gob.mined.apps.siapv2.mvn.bo.SeguridadBo;
+import sv.gob.mined.apps.siapv2.mvn.dao.OpcionMenuDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUserGroup;
@@ -16,6 +17,7 @@ import sv.gob.mined.apps.siapv2.mvn.dao.SecurityInfoDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUsersDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityGroupDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUserGroupDao;
+import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwUsuarioGrupos;
 
 /**
@@ -36,6 +38,8 @@ public class SeguridadBoImpl implements SeguridadBo {
     private SecurityUserGroupDao securityusergroupdao;
     @Autowired
     private SecurityInfoDao securityinfodao;
+    @Autowired
+    private OpcionMenuDao opcionmenudao;
     
     
     @Override
@@ -52,6 +56,12 @@ public class SeguridadBoImpl implements SeguridadBo {
     @Override
     public List<SecurityUserGroup> getLstSecurityUserGroup() {
         return securityusergroupdao.findAll();
+    }
+    
+    
+    @Override
+    public List<OpcionMenu> getLstOpcionMenu() {
+        return opcionmenudao.findAll();
     }
     
     @Override

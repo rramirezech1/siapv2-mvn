@@ -167,7 +167,7 @@
             <id>maven.repository.redhat.com</id>
             <name>JBOSS EAP 6.X.X Repository for Maven</name>
             <url>https://maven.repository.redhat.com/techpreview/all</url>
-        </repository>
+        </repository> 
         <repository>
             <url>http://repository.primefaces.org/</url>
             <id>PrimeFaces-maven-lib</id>

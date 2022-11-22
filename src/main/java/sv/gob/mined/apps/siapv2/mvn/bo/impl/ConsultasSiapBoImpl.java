@@ -12,11 +12,13 @@ import sv.gob.mined.apps.siapv2.mvn.dao.GruposDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.ContratosDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.OfertasDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.AutorizaDao;
+import sv.gob.mined.apps.siapv2.mvn.dao.ProveedoresDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.TecnicoUaciDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwGrupos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwContratosGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwOfertasGrupo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwAutoriza;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwProveedoresSiap;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwTecnicoUaci;
 /**
  *
@@ -39,6 +41,8 @@ public class ConsultasSiapBoImpl implements ConsultasSiapBo {
     private ContratosDao contratos;
     @Autowired
     private OfertasDao ofertas;
+    @Autowired
+    private ProveedoresDao proveedores;
     
     @Override
     public List<VwGrupos> getLstGrupos(String usuarioSession, Integer tipoGrupo) {
@@ -78,6 +82,11 @@ public class ConsultasSiapBoImpl implements ConsultasSiapBo {
     @Override
     public List<VwContratosGrupo> getLstContratosByGrupo(Integer grupo) {
         return contratos.findContratosByGrupo(grupo);
+    }
+    
+    @Override
+    public List<VwProveedoresSiap> getLstProveedoresSiap(String consulta) {
+        return proveedores.findProveedoresSiap(consulta);
     }
   
 }

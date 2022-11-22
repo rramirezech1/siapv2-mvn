@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-       
+
     <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
         <ui:define name ="auxiliar">
             <p:dialog header="Confirmar" widgetVar="dlg2" modal="true" resizable="false" closable="false" height="70" focus="no" >
@@ -20,11 +20,14 @@
         </ui:define>
         <ui:define name="content">
             <h:form id="frmPrincipal">
-                <p:menubar>
-                    <p:menuitem value="Recuperar" icon="recuperar" onclick="PF('dlgBuscarEmp').show();" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
-                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarEstadoEmpresa}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"
-                                partialSubmit="true" process="@this, cbEstado"/>
-                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
+                <p:menubar id="mbMenu">
+                    <p:menuitem value="Recuperar" icon="recuperar" onclick="PF('dlgBuscarEmp').show();"/>
+                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarEstadoEmpresa}" update="frmPrincipal" icon="guardar" 
+                                disabled="#{bancoProveedoresBean.deshabilitado}"
+                                partialSubmit="true" />
+                    <p:menuitem value="Imprimir" icon="imprimir" target="_blank" disabled="#{bancoProveedoresBean.deshabilitado}"
+                                action="#{bancoProveedoresBean.imprimir(1)}" ajax="false"
+                                />
                     <f:facet name="options">
                         <p:outputLabel value="Usuario: "/>
                         <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
@@ -113,7 +116,7 @@
                     </h:panelGrid>
                 </p:panel>
                 <p:dataTable id="tblEmpresas" value="#{bancoProveedoresBean.lstEmpresa}" var="empresa" selectionMode="single" rowKey="#{empresa.identificadorPrimarioDeLaEmpresa}" paginator="true" paginatorPosition="top" rows="6" resizableColumns="true">
-                    <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowConsultaEmpresa}" update=":frmPrincipal:pnlUsuario"/> 
+                    <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowConsultaEmpresa}" update=":frmPrincipal:pnlUsuario :frmPrincipal:mbMenu"/> 
                     <p:column width="10" sortBy="#{empresa.numeroDeNit}">
                         <f:facet name="header">
                             <h:outputText value="Nit" />
@@ -139,7 +142,8 @@
                         <p:outputLabel value="#{empresa.correoElectronico}"/>
                     </p:column>
                 </p:dataTable>
-                    <p:dialog id="dlgBuscarEmp" widgetVar="dlgBuscarEmp" header="Busqueda por Empresa" width="550">
+                <p:dialog id="dlgBuscarEmp" widgetVar="dlgBuscarEmp" header="Busqueda por Empresa" width="550"
+                          resizable="false" draggable="false">
                     <h:panelGrid columns="2">
                         <p:outputLabel value="Razon Social:"/>
                         <p:inputText size="60" value="#{bancoProveedoresBean.razonSocial}"/>
@@ -161,9 +165,9 @@
                             <f:selectItems value="#{bancoProveedoresBean.lstSubSector}" var="subsec" itemValue="#{subsec.identificadorDelSectorEconomico}" itemLabel="#{subsec.descripcionDelSectorEconomico}"/>
                         </p:selectOneMenu>
                     </h:panelGrid>
-                        <f:facet name='footer'>
-                            <p:commandButton value="Buscar" icon="aceptar" action="#{bancoProveedoresBean.buscarEmpresa}" update="tblEmpresas" oncomplete="PF('dlgBuscarEmp').hide();"/>
-                        </f:facet>
+                    <f:facet name="footer">
+                        <p:commandButton value="Buscar" icon="aceptar" action="#{bancoProveedoresBean.buscarEmpresa}" update="tblEmpresas" oncomplete="PF('dlgBuscarEmp').hide();"/>
+                    </f:facet>
                 </p:dialog> 
             </h:form>
         </ui:define>

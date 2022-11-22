@@ -5,6 +5,7 @@
 package sv.gob.mined.apps.siapv2.mvn.bo;
 
 import java.util.List;
+import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityInfo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
@@ -22,6 +23,8 @@ public interface SeguridadBo {
     public List<SecurityGroup> getLstSecurityGroup();
 
     public List<SecurityUserGroup> getLstSecurityUserGroup();
+    
+    public List<OpcionMenu> getLstOpcionMenu();
     
     public List<VwUsuarioGrupos> getLstUsuarioGrupos();
      

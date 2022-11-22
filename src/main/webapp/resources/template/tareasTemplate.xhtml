@@ -21,8 +21,6 @@
                 height: 100%;
                 width: 100%;
             }
-            
-            
         </style>
 
         <script type="text/javascript">
@@ -71,14 +69,8 @@
                             <p:autoUpdate/>
                         </p:growl>
                         
-                        <p:menu id="menuPrincipal" style="width: 95%"/> 
+                        <p:menu id="menuPrincipal" style="width: 95%" model="#{menuTreeBean.model}" /> 
 
-                        <p:tree value="#{menuTreeBean.root}" var="node" id="tree" style="width: 98%" selectionMode="single" selection="#{menuTreeBean.selected}">
-                            <p:ajax event="select" listener="#{menuTreeBean.onNodeSelect}" />  
-                            <p:treeNode id="treeNode">  
-                                <h:outputText value="#{node}" id="lblNode"/>  
-                            </p:treeNode>  
-                        </p:tree>  
                     </h:form>
                 </p:layoutUnit>
 

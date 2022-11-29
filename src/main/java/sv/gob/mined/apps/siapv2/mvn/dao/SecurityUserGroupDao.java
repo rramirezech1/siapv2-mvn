@@ -6,6 +6,7 @@ package sv.gob.mined.apps.siapv2.mvn.dao;
 
 import java.util.List;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUserGroup;
+import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwUsuarioGrupos;
 
 /**
@@ -25,5 +26,8 @@ public interface SecurityUserGroupDao {
     public List<VwUsuarioGrupos> findAllView();
     
     public void setSecurityUserGroup(SecurityUserGroup idUserGroup);
+
+  
+
     
 }

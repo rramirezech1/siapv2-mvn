@@ -24,6 +24,7 @@ public class OpcionMenu implements PersistenciaDao{
     private Integer estadoDeEliminacion;
     private String name;
     private String opcionPadre;
+   
     
     
     

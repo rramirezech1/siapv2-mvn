@@ -25,9 +25,16 @@ public class UsuarioBoImpl implements UsuarioBo {
     public Usuario findUsuarioByNameClave(String userName, String clave) {
         return usuSIAPDao.findUsuarioByNameClave(userName, clave);
     }
-    
+
     @Override
     public List<Usuario> getLstUsuario() {
         return usuSIAPDao.findAll();
     }
+
+    public Usuario findUsuarioOpciones(String user) {
+        System.out.println("El usuario a enviar ya en el UsuarioBolmpl es: " + user);
+        return usuSIAPDao.findUsuarioOpciones(user);
+
+    }
+
 }

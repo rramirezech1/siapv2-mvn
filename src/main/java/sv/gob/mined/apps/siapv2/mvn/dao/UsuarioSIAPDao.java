@@ -14,6 +14,8 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 public interface UsuarioSIAPDao {
 
     public Usuario findUsuarioByNameClave(String usuario, String clave);
+
+    public Usuario findUsuarioOpciones(String us);
      
     public void setUsuario(Usuario userName);
     

@@ -31,6 +31,7 @@ public class Usuario implements PersistenciaDao{
     private Integer idPregunta1;
     private Integer idPregunta2;
     private String perfil;
+    private Integer idGrupo;
 
     public Usuario() {
     }
@@ -185,6 +186,19 @@ public class Usuario implements PersistenciaDao{
     public void setPerfil(String perfil) {
         this.perfil = perfil;
     }
+
+    public Integer getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(Integer idGrupo) {
+        this.idGrupo = idGrupo;
+    }
+
+
+
+
+
 
 
     @Override

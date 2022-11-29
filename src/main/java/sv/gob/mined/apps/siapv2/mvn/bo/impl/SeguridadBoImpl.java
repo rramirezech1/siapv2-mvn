@@ -18,6 +18,7 @@ import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUsersDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityGroupDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUserGroupDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwUsuarioGrupos;
 
 /**
@@ -51,6 +52,16 @@ public class SeguridadBoImpl implements SeguridadBo {
     public List<SecurityGroup> getLstSecurityGroup() {
         return securitygroupdao.findAll();
     }
+
+@Override
+    public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol) {
+System.out.println("El usuario en seguidadBolmpl es: "+rol);
+        return opcionmenudao.getLstSecurityGroupOpciones(rol);
+
+    }
+
+
+
     
     
     @Override
@@ -58,11 +69,7 @@ public class SeguridadBoImpl implements SeguridadBo {
         return securityusergroupdao.findAll();
     }
     
-    
-    @Override
-    public List<OpcionMenu> getLstOpcionMenu() {
-        return opcionmenudao.findAll();
-    }
+   
     
     @Override
     public List<VwUsuarioGrupos> getLstUsuarioGrupos() {
@@ -117,6 +124,15 @@ public class SeguridadBoImpl implements SeguridadBo {
     public Integer saveSecurityInfo(SecurityInfo securityinfo) {
         securityinfodao.setSecurityInfo(securityinfo);
         return securityinfodao.create();
+    }
+
+
+
+     
+    @Override
+    public SecurityUsers usuarioOpciones(String us) {
+       
+        return opcionmenudao.usuarioOpciones(us);
     }
     
 }

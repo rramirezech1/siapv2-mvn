@@ -6,7 +6,6 @@ package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -21,10 +20,8 @@ import org.springframework.stereotype.Component;
 import sv.gob.mined.apps.siapv2.mvn.bo.SeguridadBo;
 import sv.gob.mined.apps.siapv2.mvn.bo.UsuarioBo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
-import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
-import sv.gob.mined.apps.siapv2.mvn.util.JsfUtil;
 
 /**
  *
@@ -48,7 +45,7 @@ public class MenuTreeBean implements Serializable {
 
     @Autowired
     private SeguridadBo seguridad;
-
+    
     @PostConstruct
     public void init() {
 
@@ -188,5 +185,4 @@ public class MenuTreeBean implements Serializable {
     public void setUs(Usuario us) {
         this.us = us;
     }
-
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import sv.gob.mined.apps.siapv2.mvn.dao.PermisoOpcionMenuDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.XJdbcTemplate;
 import sv.gob.mined.apps.siapv2.mvn.modelo.PermisoOpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwPermisoOpcionMenu;
 
 /**
  *
@@ -37,7 +38,7 @@ public class PermisoOpcionMenuDaoImpl extends XJdbcTemplate implements PermisoOp
     }
     
     @Override
-    public List<PermisoOpcionMenu> findAllByUser(Integer user) {
+    public List<VwPermisoOpcionMenu> findAllByUser(Integer user) {
         String sql = "SELECT * "
                 + "  FROM vw_garantias_grupo "
                 + " WHERE grupoSiap = " + user
@@ -47,7 +48,7 @@ public class PermisoOpcionMenuDaoImpl extends XJdbcTemplate implements PermisoOp
     }
     
     @Override
-    public List<PermisoOpcionMenu> findAllByGroup(Integer group) {
+    public List<VwPermisoOpcionMenu> findAllByGroup(Integer group) {
         String sql = "SELECT * "
                 + "  FROM vw_garantias_grupo "
                 + " WHERE grupoSiap = " + group
@@ -68,8 +69,8 @@ public class PermisoOpcionMenuDaoImpl extends XJdbcTemplate implements PermisoOp
     }
     
     @Override
-    public PermisoOpcionMenu findOpcionMenuById(Integer idPermisoOpcionMenu) {
-        String sql = "SELECT * FROM opcionMenu WHERE idOpcionMenu = " + idPermisoOpcionMenu;
+    public PermisoOpcionMenu findPermisoOpcionMenuById(Integer idPermisoOpcionMenu) {
+        String sql = "SELECT * FROM PermisoOpcionMenu WHERE idPermisoOpcionMenu = " + idPermisoOpcionMenu;
         List<PermisoOpcionMenu> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(PermisoOpcionMenu.class));
         if (lst.isEmpty()) {
             return null;
@@ -79,20 +80,20 @@ public class PermisoOpcionMenuDaoImpl extends XJdbcTemplate implements PermisoOp
     }
         
     @Override
-    public List<PermisoOpcionMenu> findByMenuPadre() {
+    public List<VwPermisoOpcionMenu> findByMenuPadre() {
         String sql = "SELECT * FROM opcionMenu WHERE(idOpcionPadre IS NULL)";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(PermisoOpcionMenu.class));
     }
     
     @Override
-    public List<PermisoOpcionMenu> findByMenuHijo() {
+    public List<VwPermisoOpcionMenu> findByMenuHijo() {
         String sql = "SELECT * FROM opcionMenu WHERE(idOpcionPadre IS NOT NULL)";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(PermisoOpcionMenu.class));
     }
     
     @Override
-    public List<PermisoOpcionMenu> findAll() {
-        String sql = "SELECT idOpcionMenu, nombreOpcionMenu, labelOpcionMenu, direccionAccesoOpcion, idOpcionPadre, dbo.f_obtener_opcion_menu(idOpcionPadre) as opcionPadre FROM opcionMenu WHERE estadoDeEliminacion=0";
+    public List<VwPermisoOpcionMenu> findAll() {
+        String sql = "SELECT idPermisoOpcionMenu, idOpcionMenu, idGrupo, dbo.f_obtener_nombre_grupo_seguridad(idGrupo) AS grupo, estadoDeEliminacion, dbo.f_obtener_opcion_menu(idOpcionMenu) AS opcionMenu FROM PermisoOpcionMenu WHERE (estadoDeEliminacion = 0)";
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper(PermisoOpcionMenu.class));
     }
 }

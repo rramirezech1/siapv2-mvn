@@ -59,21 +59,21 @@
                     </h:panelGrid>
                 </p:panel>
 
-                <p:dataTable id="tblPermisoOpcionMenu" value="#{menuItemBean.lstPermisoOpcionMenu}" var="per" selectionMode="single" rowKey="#{per.idPermisoOpcionMenu}" rows="12" widgetVar="per"
+                <p:dataTable id="tblPermisoOpcionMenu" value="#{menuItemBean.lstVwPermisoOpcionMenu}" var="perOp" rowKey="#{perOp.idPermisoOpcionMenu}" selectionMode="single" rows="12" widgetVar="perOp"
                              paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" paginatorPosition="bottom">
-                    <p:ajax event="rowSelect" listener="#{menuItemBean.onRowSelectOpcionMenu}" update=":frmPrincipal" /> 
-                    <p:column headerText="Id" width="45" sortBy="#{per.idPermisoOpcionMenu}" filterBy="#{per.idPermisoOpcionMenu}" filterStyle="display:none; visibility:hidden;">
-                        <p:outputLabel value="#{per.idPermisoOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
+                    <p:ajax event="rowSelect" listener="#{menuItemBean.onRowSelectPermisoOpcionMenu}" update=":frmPrincipal" /> 
+                    <p:column headerText="Id" width="45" sortBy="#{perOp.idPermisoOpcionMenu}" filterBy="#{perOp.idPermisoOpcionMenu}" filterStyle="display:none; visibility:hidden;">
+                        <p:outputLabel value="#{perOp.idPermisoOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Etiqueta" width="200" sortBy="#{opmenu.labelOpcionMenu}" filterBy="#{opmenu.labelOpcionMenu}" filterStyle="display:none; visibility:hidden;">
-                        <p:outputLabel value="#{per.labelOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
+                    <p:column headerText="Opción Padre" width="200" sortBy="#{perOp.opcionPadre}" filterBy="#{perOp.opcionPadre}" filterStyle="display:none; visibility:hidden;">
+                        <p:outputLabel value="#{perOp.opcionPadre}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Opcion Padre" width="130" sortBy="#{opmenu.opcionPadre}" filterBy="#{opmenu.opcionPadre}" filterStyle="display:none; visibility:hidden;">
-                        <p:outputLabel value="#{opmenu.opcionPadre}" style="display: block; width:100%; text-align:center;"/>
+                    <p:column headerText="Opción Menu" width="130" sortBy="#{perOp.labelOpcionMenu}" filterBy="#{perOp.labelOpcionMenu}" filterStyle="display:none; visibility:hidden;">
+                        <p:outputLabel value="#{perOp.labelOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
-                    <p:column headerText="Ruta de Acceso" sortBy="#{opmenu.direccionAccesoOpcion}" filterBy="#{opmenu.direccionAccesoOpcion}" filterStyle="display:none; visibility:hidden;">
-                        <p:outputLabel value="#{opmenu.direccionAccesoOpcion}" style="display: block; width:100%; text-align:center;"/>
+                    <p:column headerText="Grupo" sortBy="#{perOp.grupo}" filterBy="#{perOp.grupo}" filterStyle="display:none; visibility:hidden;">
+                        <p:outputLabel value="#{perOp.grupo}" style="display: block; width:100%; text-align:center;"/>
                     </p:column>
                 </p:dataTable>
             </h:form>

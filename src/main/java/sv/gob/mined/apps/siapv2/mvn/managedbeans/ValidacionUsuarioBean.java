@@ -1,4 +1,3 @@
-
 package sv.gob.mined.apps.siapv2.mvn.managedbeans;
 
 import java.util.List;

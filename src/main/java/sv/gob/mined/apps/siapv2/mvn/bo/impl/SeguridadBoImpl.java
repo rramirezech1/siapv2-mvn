@@ -68,8 +68,7 @@ System.out.println("El usuario en seguidadBolmpl es: "+rol);
     public List<SecurityUserGroup> getLstSecurityUserGroup() {
         return securityusergroupdao.findAll();
     }
-    
-   
+     
     
     @Override
     public List<VwUsuarioGrupos> getLstUsuarioGrupos() {

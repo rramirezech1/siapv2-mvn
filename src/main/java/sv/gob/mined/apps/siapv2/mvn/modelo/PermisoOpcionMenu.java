@@ -72,6 +72,7 @@ public class PermisoOpcionMenu implements PersistenciaDao{
         return fechaDeInsercion;
     }
 
+    @Override
     public void setFechaDeInsercion(Date fechaDeInsercion) {
         this.fechaDeInsercion = fechaDeInsercion;
     }
@@ -80,6 +81,7 @@ public class PermisoOpcionMenu implements PersistenciaDao{
         return fechaDeModificacion;
     }
 
+    @Override
     public void setFechaDeModificacion(Date fechaDeModificacion) {
         this.fechaDeModificacion = fechaDeModificacion;
     }
@@ -88,14 +90,17 @@ public class PermisoOpcionMenu implements PersistenciaDao{
         return fechaDeEliminacion;
     }
 
+    @Override
     public void setFechaDeEliminacion(Date fechaDeEliminacion) {
         this.fechaDeEliminacion = fechaDeEliminacion;
     }
 
+    @Override
     public Integer getEstadoDeEliminacion() {
         return estadoDeEliminacion;
     }
 
+    @Override
     public void setEstadoDeEliminacion(Integer estadoDeEliminacion) {
         this.estadoDeEliminacion = estadoDeEliminacion;
     }
@@ -104,6 +109,7 @@ public class PermisoOpcionMenu implements PersistenciaDao{
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }

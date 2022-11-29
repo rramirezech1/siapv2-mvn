@@ -51,6 +51,7 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityTemplate;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwPermisoOpcionMenu;
 import sv.gob.mined.apps.siapv2.mvn.dao.OpcionMenuDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.PermisoOpcionMenu;
 import sv.gob.mined.apps.siapv2.mvn.dao.PermisoOpcionMenuDao;
@@ -183,7 +184,7 @@ public class RolesBoImpl implements RolesBo {
     }
     
     @Override
-    public List<PermisoOpcionMenu> getLstPermisoOpcionMenu() {
+    public List<VwPermisoOpcionMenu> getLstPermisoOpcionMenu() {
         return permisoopcionmenudao.findAll();
     }
     
@@ -244,7 +245,7 @@ public class RolesBoImpl implements RolesBo {
     
     @Override
     public PermisoOpcionMenu buscarPermisoOpcionMenuById(Integer id) {
-        return permisoopcionmenudao.findOpcionMenuById(id);
+        return permisoopcionmenudao.findPermisoOpcionMenuById(id);
     }
     
     @Override

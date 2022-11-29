@@ -37,6 +37,7 @@ public class MenuTreeBean implements Serializable {
     private List<OpcionMenu> listOpcionMenuPrincipal = new ArrayList();
     private List<OpcionMenu> listOpcionSubMenu = new ArrayList();
     private Usuario us;
+    private boolean estadoMenu=true;
     @Inject
     private UsuarioBo usuBo;
 
@@ -45,7 +46,7 @@ public class MenuTreeBean implements Serializable {
 
     @Autowired
     private SeguridadBo seguridad;
-    
+
     @PostConstruct
     public void init() {
 
@@ -56,14 +57,24 @@ public class MenuTreeBean implements Serializable {
         //System.out.println("El usuario es: " + us.getName());
         //us=seguridad.get   
         //System.out.println("El usuario a enviar es: " + usuario);
-        us = usuBo.findUsuarioOpciones(usuario);
+        
+try{
+
+us = usuBo.findUsuarioOpciones(usuario);
         //System.out.println("El usuario recibido enel MenuTreeBean es: " + us.getName());
         //System.out.println("El rol recibido enel MenuTreeBean es: " + us.getIdGrupo());
         listOpcionMenu = seguridad.getLstSecurityGroupOpciones(us.getIdGrupo());
 
         creaMenu();
+}catch(Exception e){
+ 
+ estadoMenu=false;
+ 
+}
 
-    }
+}
+
+    
 
     public void creaMenu() {
 
@@ -185,4 +196,17 @@ public class MenuTreeBean implements Serializable {
     public void setUs(Usuario us) {
         this.us = us;
     }
+
+    public boolean isEstadoMenu() {
+        return estadoMenu;
+    }
+
+    public void setEstadoMenu(boolean estadoMenu) {
+        this.estadoMenu = estadoMenu;
+    }
+
+
+
+
+
 }

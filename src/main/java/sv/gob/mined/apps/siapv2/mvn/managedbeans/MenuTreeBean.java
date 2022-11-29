@@ -58,10 +58,10 @@ public class MenuTreeBean implements Serializable {
         //listOpcionMenu = seguridad.getLstOpcionMenu(usuario);
         //System.out.println("El usuario es: " + us.getName());
         //us=seguridad.get   
-        System.out.println("El usuario a enviar es: " + usuario);
+        //System.out.println("El usuario a enviar es: " + usuario);
         us = usuBo.findUsuarioOpciones(usuario);
-        System.out.println("El usuario recibido enel MenuTreeBean es: " + us.getName());
-        System.out.println("El rol recibido enel MenuTreeBean es: " + us.getIdGrupo());
+        //System.out.println("El usuario recibido enel MenuTreeBean es: " + us.getName());
+        //System.out.println("El rol recibido enel MenuTreeBean es: " + us.getIdGrupo());
         listOpcionMenu = seguridad.getLstSecurityGroupOpciones(us.getIdGrupo());
 
         creaMenu();
@@ -94,7 +94,7 @@ public class MenuTreeBean implements Serializable {
         DefaultMenuItem itemMenu;
 
         for (OpcionMenu a : listOpcionMenuPrincipal) {
-            System.out.println("El primero for a consultar: " + a.getIdOpcionMenu());
+            //System.out.println("El primero for a consultar: " + a.getIdOpcionMenu());
             if (!listOpcionMenuPrincipal.isEmpty()) {
                 subMenu = new DefaultSubMenu();
                 subMenu.setLabel(a.getNombreOpcionMenu());
@@ -102,7 +102,7 @@ public class MenuTreeBean implements Serializable {
 
                 //creamos los items del submenu
                 for (OpcionMenu b : listOpcionSubMenu) {
-                    System.out.println("El segundo for a consultar: " + b.getIdOpcionPadre());
+                    //System.out.println("El segundo for a consultar: " + b.getIdOpcionPadre());
                     itemMenu = new DefaultMenuItem();
                     if (a.getIdOpcionMenu() == b.getIdOpcionPadre()) {
 

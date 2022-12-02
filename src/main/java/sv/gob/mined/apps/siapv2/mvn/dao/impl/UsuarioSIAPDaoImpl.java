@@ -36,7 +36,7 @@ public class UsuarioSIAPDaoImpl extends XJdbcTemplate2 implements UsuarioSIAPDao
 
     @Override
     public Usuario findUsuarioOpciones(String userName) {
-        System.out.println("El usuario recibido es: " + userName);
+        //System.out.println("El usuario recibido es: " + userName);
         String sql = "SELECT * FROM security_users WHERE name = '" + userName + "'";
         List<Usuario> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(Usuario.class));
         if (lst != null && lst.size() > 0) {

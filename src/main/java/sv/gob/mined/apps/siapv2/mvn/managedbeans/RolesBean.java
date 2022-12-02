@@ -134,7 +134,7 @@ public class RolesBean {
     }
 
     public void newUsers() {
-        System.out.println("este es mi metodo");
+        //System.out.println("este es mi metodo");
 
         showPlantillaRoles = false;
         showAsigRolesPorPlantilla = true;
@@ -211,7 +211,7 @@ public class RolesBean {
     }
 
     public void guardar() {
-        System.out.println("nivel de edicion" + nivelEdicion);
+        //System.out.println("nivel de edicion" + nivelEdicion);
         switch (nivelEdicion) {
             case 1:
                 showEstructuraOp = true;
@@ -228,7 +228,7 @@ public class RolesBean {
                 List<SecurityInfo> lista = prepareCreateSecurityInfo(plantilla.getIdPlantillaSeguridad());
                 Integer id = rolesBo.createPlantillaSeguridad(plantilla, edit);
                 for (SecurityInfo securityInfo : lista) {
-                    System.out.println("securityInfo" + securityInfo.toString());
+                    //System.out.println("securityInfo" + securityInfo.toString());
                     rolesBo.saveSecurityInfo(securityInfo);
                 }
 

@@ -543,7 +543,7 @@ public class RolesBeanAutorizacion {
     }
 
     public void cerrarPopupProcedimiento() {
-        System.out.println("lista" + this.listaActividades);
+        //System.out.println("lista" + this.listaActividades);
         showPlantillayRolSel = true;
         showProcedimiento = false;
         RequestContext.getCurrentInstance().update("frmPrincipal:dlgProcedimiento");
@@ -567,7 +567,7 @@ public class RolesBeanAutorizacion {
                 RequestContext.getCurrentInstance().update("frmPrincipal:menuBtns");
                 RequestContext.getCurrentInstance().update("frmPrincipal:dlgProcesosInst");
                 RequestContext.getCurrentInstance().execute("PF('dlgProcesosInst').show();");
-                System.out.println("enro al metodo nuevo");
+                //System.out.println("enro al metodo nuevo");
                 break;
         }
     }

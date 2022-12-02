@@ -18,7 +18,6 @@ import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUsersDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityGroupDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.SecurityUserGroupDao;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
-import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwUsuarioGrupos;
 
 /**
@@ -55,7 +54,7 @@ public class SeguridadBoImpl implements SeguridadBo {
 
 @Override
     public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol) {
-System.out.println("El usuario en seguidadBolmpl es: "+rol);
+        //System.out.println("El usuario en seguidadBolmpl es: "+rol);
         return opcionmenudao.getLstSecurityGroupOpciones(rol);
 
     }

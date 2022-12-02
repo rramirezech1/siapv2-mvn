@@ -82,17 +82,17 @@ public class OpcionMenuDaoImpl extends XJdbcTemplate implements OpcionMenuDao {
 
     @Override
     public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol) {
-        System.out.println("El usuario en OpcionMenuDaolmpl es: " + rol);
+        //System.out.println("El usuario en OpcionMenuDaolmpl es: " + rol);
         String sql = "SELECT * FROM opcionMenu WHERE idGrupo = " + rol;
         List<OpcionMenu> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(OpcionMenu.class));
         if (lst.isEmpty()) {
             return null;
         } else {
 
-            for (OpcionMenu a : lst) {
-                System.out.println("La opcion menu es: " + a.getNombreOpcionMenu());
-
-            }
+//            for (OpcionMenu a : lst) {
+//                System.out.println("La opcion menu es: " + a.getNombreOpcionMenu());
+//
+//            }
 
             return lst;
         }
@@ -119,11 +119,11 @@ public class OpcionMenuDaoImpl extends XJdbcTemplate implements OpcionMenuDao {
     @Override
     public SecurityUsers usuarioOpciones(String us) {
         SecurityUsers usuario = null;
-        System.out.println("Estoy en el usuario01: " + us);
+        //System.out.println("Estoy en el usuario01: " + us);
         String sql = "SELECT * FROM security_users WHERE name ="+us;
         List<SecurityUsers> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SecurityUsers.class));
 
-        System.out.println("Estoy en el usuario02: " + lst.get(0).getName());
+        //System.out.println("Estoy en el usuario02: " + lst.get(0).getName());
 
         return usuario;
     }

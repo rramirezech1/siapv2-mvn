@@ -32,7 +32,7 @@ public class UsuarioBoImpl implements UsuarioBo {
     }
 
     public Usuario findUsuarioOpciones(String user) {
-        System.out.println("El usuario a enviar ya en el UsuarioBolmpl es: " + user);
+        //System.out.println("El usuario a enviar ya en el UsuarioBolmpl es: " + user);
         return usuSIAPDao.findUsuarioOpciones(user);
 
     }

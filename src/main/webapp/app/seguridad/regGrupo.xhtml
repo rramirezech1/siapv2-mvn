@@ -10,60 +10,58 @@
 
     </h:head>
     <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
-         <ui:define name="content">
-            <h:form id="frmPrincipal">
-                <p:menubar>
-                    <p:menuitem value="Nuevo" action="#{seguridadBean.nuevoGrupo}" update="frmPrincipal pnlGrupos tblGrupos" icon="nuevo" ajax="true"/>
-                    <p:menuitem value="Guardar" action="#{seguridadBean.guardarGrupo}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{seguridadBean.deshabilitado}"/>
-                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{seguridadBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
-                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
-                    <f:facet name="options">
-                        <p:outputLabel value="Usuario: "/>
-                        <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
-                        <p:spacer width="10" height="8"/>
-                        <p:growl id="message" showDetail="true" />
-     
-                        <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
-                            <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
-                        </p:commandButton>
+        <ui:define name="content">
+            <p:menubar>
+                <p:menuitem value="Nuevo" action="#{seguridadBean.nuevoGrupo}" update="frmPrincipal pnlGrupos tblGrupos" icon="nuevo" ajax="true"/>
+                <p:menuitem value="Guardar" action="#{seguridadBean.guardarGrupo}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{seguridadBean.deshabilitado}"/>
+                <p:menuitem value="Eliminar" icon="eliminar" disabled="#{seguridadBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
+                <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
+                <f:facet name="options">
+                    <p:outputLabel value="Usuario: "/>
+                    <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
+                    <p:spacer width="10" height="8"/>
+                    <p:growl id="message" showDetail="true" />
 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
-                        </p:confirmDialog>    
-                    </f:facet>
-                </p:menubar>
-                <p:panel id="pnlGrupos">
-                    <f:facet name="header">
-                        <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
-                        <p:spacer width="10"/>
-                        <h:outputText value="Registro de Grupos"/>
-                    </f:facet>
+                    <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
+                        <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
 
-                    <h:panelGrid columns="2">
-                        <p:outputLabel value="1. Id:"/>
-                        <p:inputText  id="txtIdGrupo" disabled="true" value="#{seguridadBean.currentGrupo.idGrupo}"/>
-                        <p:outputLabel value="2. Codigo Grupo:"/>
-                        <p:inputText id="txtCodGrupo" value="#{seguridadBean.currentGrupo.codigoGrupo}" disabled="#{seguridadBean.deshabilitado}"/>
-                        <p:outputLabel value="3. Nombre Grupo:"/>
-                        <p:inputText  id="txtGrupo" value="#{seguridadBean.currentGrupo.grupo}" disabled="#{seguridadBean.deshabilitado}" />                        
-                    </h:panelGrid>
-                </p:panel>
-                <p:dataTable id="tblGrupos" value="#{seguridadBean.lstGrupo}" var="gru" selectionMode="single" rowKey="#{gru.idGrupo}" rows="12"
-                 paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                 currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" paginatorPosition="bottom">
-                    <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectGrupo}" update=":frmPrincipal :frmPrincipal:pnlGrupos" /> 
-                    <p:column headerText="Id Grupo" width="65" sortBy="#{gru.idGrupo}">
-                        <p:outputLabel value="#{gru.idGrupo}" style="display: block; width:100%; text-align:center;"/>
-                    </p:column>
-                    <p:column headerText="Codigo Grupo" width="90" sortBy="#{gru.codigoGrupo}">
-                        <p:outputLabel value="#{gru.codigoGrupo}" style="display: block; width:100%; text-align:center;"/>
-                    </p:column>
-                    <p:column headerText="Grupo de Seguridad" sortBy="#{gru.grupo}"> 
-                        <p:outputLabel value="#{gru.grupo}"/>
-                    </p:column>
-                </p:dataTable>
-            </h:form>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
+                    </p:confirmDialog>    
+                </f:facet>
+            </p:menubar>
+            <p:panel id="pnlGrupos">
+                <f:facet name="header">
+                    <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                    <p:spacer width="10"/>
+                    <h:outputText value="Registro de Grupos"/>
+                </f:facet>
+
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="1. Id:"/>
+                    <p:inputText  id="txtIdGrupo" disabled="true" value="#{seguridadBean.currentGrupo.idGrupo}"/>
+                    <p:outputLabel value="2. Codigo Grupo:"/>
+                    <p:inputText id="txtCodGrupo" value="#{seguridadBean.currentGrupo.codigoGrupo}" disabled="#{seguridadBean.deshabilitado}"/>
+                    <p:outputLabel value="3. Nombre Grupo:"/>
+                    <p:inputText  id="txtGrupo" value="#{seguridadBean.currentGrupo.grupo}" disabled="#{seguridadBean.deshabilitado}" />                        
+                </h:panelGrid>
+            </p:panel>
+            <p:dataTable id="tblGrupos" value="#{seguridadBean.lstGrupo}" var="gru" selectionMode="single" rowKey="#{gru.idGrupo}" rows="12"
+                         paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" paginatorPosition="bottom">
+                <p:ajax event="rowSelect" listener="#{seguridadBean.onRowSelectGrupo}" update=":frmPrincipal :frmPrincipal:pnlGrupos" /> 
+                <p:column headerText="Id Grupo" width="65" sortBy="#{gru.idGrupo}">
+                    <p:outputLabel value="#{gru.idGrupo}" style="display: block; width:100%; text-align:center;"/>
+                </p:column>
+                <p:column headerText="Codigo Grupo" width="90" sortBy="#{gru.codigoGrupo}">
+                    <p:outputLabel value="#{gru.codigoGrupo}" style="display: block; width:100%; text-align:center;"/>
+                </p:column>
+                <p:column headerText="Grupo de Seguridad" sortBy="#{gru.grupo}"> 
+                    <p:outputLabel value="#{gru.grupo}"/>
+                </p:column>
+            </p:dataTable>
         </ui:define>
     </ui:composition>
 </html>

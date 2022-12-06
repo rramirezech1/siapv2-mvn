@@ -85,19 +85,12 @@
                 </p:layoutUnit>
 
                 <p:layoutUnit resizable="true" position="center"  >
-                    <ui:insert name="content">
-
-
-
-
-                    </ui:insert>
-                   
+                    <h:form id="frmPrincipal" >
+                        <ui:insert name="content"/>
+                    </h:form>
                     <p:outputPanel deferred="true" rendered="#{menuTreeBean.estadoMenu==false}">
-        <h3>No tiene ningún acceso asignado, favor contactar al administrador.</h3>
-       
-    </p:outputPanel>
-                    
-                    
+                        <h3>No tiene ningún acceso asignado, favor contactar al administrador.</h3>
+                    </p:outputPanel>
                 </p:layoutUnit>
             </p:layout> 
         </div>

@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-       
+
     <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
         <ui:define name ="auxiliar">
             <p:dialog header="Confirmar" widgetVar="dlg2" modal="true" resizable="false" closable="false" height="70" focus="no" >
@@ -19,153 +19,151 @@
             </p:dialog>
         </ui:define>
         <ui:define name="content">
-            <h:form id="frmPrincipal">
-                <p:menubar>
-                    <p:menuitem value="Recuperar" icon="recuperar" onclick="PF('dlgBuscarEmp').show();" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
-                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarEstadoEmpresa}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"
-                                partialSubmit="true" process="@this, cbEstado"/>
-                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
-                    <f:facet name="options">
-                        <p:outputLabel value="Usuario: "/>
-                        <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
-                        <p:spacer width="10" height="8"/>
-                        <p:growl id="message" showDetail="true" />
-     
-                        <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
-                            <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
-                        </p:commandButton>
+            <p:menubar>
+                <p:menuitem value="Recuperar" icon="recuperar" onclick="PF('dlgBuscarEmp').show();" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
+                <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarEstadoEmpresa}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"
+                            partialSubmit="true" process="@this, cbEstado"/>
+                <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
+                <f:facet name="options">
+                    <p:outputLabel value="Usuario: "/>
+                    <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
+                    <p:spacer width="10" height="8"/>
+                    <p:growl id="message" showDetail="true" />
 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
-                        </p:confirmDialog>    
-                        
-                    </f:facet>
-                </p:menubar>
-                <p:panel id="pnlUsuario" footer="(*) Campos obligatorios">
-                    <f:facet name="header">
-                        <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                    <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
+                        <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
+                    </p:confirmDialog>    
+
+                </f:facet>
+            </p:menubar>
+            <p:panel id="pnlUsuario" footer="(*) Campos obligatorios">
+                <f:facet name="header">
+                    <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                    <p:spacer width="10"/>
+                    <h:outputText value="Consulta de Oferentes"/>
+                </f:facet>
+
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Razon Social:" for="txtRazonSocial" />
+                    <p:inputText id="txtRazonSocial" value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" size="85" maxlength="100" disabled="true"/>
+                    <p:outputLabel value="Nombre Comercial:" for="txtNombreComercial" />
+                    <p:inputText id="txtNombreComercial" value="#{bancoProveedoresBean.currentEmpresa.nombreComercial}" size="85" maxlength="100" disabled="true"/>
+                    <p:outputLabel value="Dirección:" for="txtDireccion" /> 
+                    <p:inputText id="txtDireccion" value="#{bancoProveedoresBean.currentEmpresa.direccionCompleta}"  size="85" maxlength="100" disabled="true"/>
+                    <p:outputLabel value="Departamento:" for="cbDepartamento" /> 
+                    <h:panelGroup>
+                        <p:selectOneMenu id="cbDepartamento" value="#{bancoProveedoresBean.currentEmpresa.identificadorDelDepartamento}" disabled="true" style="width:150px">
+                            <f:selectItem itemLabel=" "/>
+                            <f:selectItems value="#{bancoProveedoresBean.lstDepaEmp}" var="dep" itemLabel="#{dep.nombre}" itemValue="#{dep.identificadorDelDepartamento}"/>
+                            <p:ajax update="cbDepartamento"/>
+                        </p:selectOneMenu>
                         <p:spacer width="10"/>
-                        <h:outputText value="Consulta de Oferentes"/>
+                        <p:outputLabel value="Municipio:" for="cbMunicipio" /> 
+                        <p:spacer width="10"/>
+                        <p:selectOneMenu id="cbMunicipio" value="#{bancoProveedoresBean.currentEmpresa.idMunicipio}" disabled="true" style="width:320px">
+                            <f:selectItem itemLabel=" "/>
+                            <f:selectItems value="#{bancoProveedoresBean.lstMuniEmp}" var="muni" itemLabel="#{muni.nombre}" itemValue="#{muni.id_municipio}"/>
+                            <p:ajax update="cbMunicipio"/>
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                    <p:outputLabel value="Representante legal:" for="txtRepresentante"/>
+                    <p:inputText id="txtRepresentante" size="85" value="#{bancoProveedoresBean.representante}" disabled="true"/>
+                    <p:outputLabel value="Telefono:" for="txtTelefono" /> 
+                    <h:panelGroup>
+                        <p:inputText id="txtTelefono" value="#{bancoProveedoresBean.currentEmpresa.telefonos}"  size="20" maxlength="100" disabled="true"/>         
+                        <p:spacer width="10"/>
+                        <p:outputLabel value="Fax:" for="txtFaxEmpresa" /> 
+                        <p:spacer width="10"/>
+                        <p:inputText id="txtFaxEmpresa" value="#{bancoProveedoresBean.currentEmpresa.fax}"  size="20" maxlength="100" disabled="true"/>
+                        <p:spacer width="10"/>
+                        <p:outputLabel value="Celular:" for="txtCelEmpresa" /> 
+                        <p:spacer width="10"/>
+                        <p:inputText id="txtCelEmpresa" value="#{bancoProveedoresBean.currentEmpresa.numeroDeCelular}"  size="20" maxlength="100" disabled="true"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Nit:" for="txtNitEmpresa" /> 
+                    <h:panelGroup>
+                        <p:inputText id="txtNitEmpresa" value="#{bancoProveedoresBean.currentEmpresa.numeroDeNit}"  size="20" maxlength="100" disabled="true"/>
+                        <p:spacer width="10"/>
+                        <p:outputLabel value="Registro de IVA:" for="txtIvaEmpresa" /> 
+                        <p:spacer width="10"/>
+                        <p:inputText id="txtIvaEmpresa" value="#{bancoProveedoresBean.currentEmpresa.numeroIVA}"  size="10" maxlength="100" disabled="true"/>
+                        <p:spacer width="10"/>
+                        <p:outputLabel value="Estado:" for="cbEstado" /> 
+                        <p:spacer width="10"/>
+                        <p:selectOneMenu id="cbEstado" value="#{bancoProveedoresBean.currentEmpresa.estadoDeRegistro}" disabled="#{bancoProveedoresBean.deshabilitado}" style="width:150px">
+                            <f:selectItem itemLabel="ACTIVO" itemValue="2" />
+                            <f:selectItem itemLabel="INACTIVO" itemValue="6" />
+                        </p:selectOneMenu>
+                    </h:panelGroup>
+                    <p:outputLabel value="Correo Electronico:" for="txtCorreoEmpresa" /> 
+                    <h:panelGroup>
+                        <p:inputText id="txtCorreoEmpresa" value="#{bancoProveedoresBean.currentEmpresa.correoElectronico}"  size="50" maxlength="100" disabled="true"/>
+                        <p:spacer width="10"/>
+                        <h:commandLink >
+                            <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/export.jpg"/>
+                            <p:dataExporter type="xls" target="tblEmpresas" fileName="listaEmpresas" />
+                        </h:commandLink>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </p:panel>
+            <p:dataTable id="tblEmpresas" value="#{bancoProveedoresBean.lstEmpresa}" var="empresa" selectionMode="single" rowKey="#{empresa.identificadorPrimarioDeLaEmpresa}" paginator="true" paginatorPosition="top" rows="6" resizableColumns="true">
+                <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowConsultaEmpresa}" update=":frmPrincipal:pnlUsuario"/> 
+                <p:column width="10" sortBy="#{empresa.numeroDeNit}">
+                    <f:facet name="header">
+                        <h:outputText value="Nit" />
                     </f:facet>
-
-                    <h:panelGrid columns="2">
-                        <p:outputLabel value="Razon Social:" for="txtRazonSocial" />
-                        <p:inputText id="txtRazonSocial" value="#{bancoProveedoresBean.currentEmpresa.razonSocial}" size="85" maxlength="100" disabled="true"/>
-                        <p:outputLabel value="Nombre Comercial:" for="txtNombreComercial" />
-                        <p:inputText id="txtNombreComercial" value="#{bancoProveedoresBean.currentEmpresa.nombreComercial}" size="85" maxlength="100" disabled="true"/>
-                        <p:outputLabel value="Dirección:" for="txtDireccion" /> 
-                        <p:inputText id="txtDireccion" value="#{bancoProveedoresBean.currentEmpresa.direccionCompleta}"  size="85" maxlength="100" disabled="true"/>
-                        <p:outputLabel value="Departamento:" for="cbDepartamento" /> 
-                        <h:panelGroup>
-                            <p:selectOneMenu id="cbDepartamento" value="#{bancoProveedoresBean.currentEmpresa.identificadorDelDepartamento}" disabled="true" style="width:150px">
-                                <f:selectItem itemLabel=" "/>
-                                <f:selectItems value="#{bancoProveedoresBean.lstDepaEmp}" var="dep" itemLabel="#{dep.nombre}" itemValue="#{dep.identificadorDelDepartamento}"/>
-                                <p:ajax update="cbDepartamento"/>
-                            </p:selectOneMenu>
-                            <p:spacer width="10"/>
-                            <p:outputLabel value="Municipio:" for="cbMunicipio" /> 
-                            <p:spacer width="10"/>
-                            <p:selectOneMenu id="cbMunicipio" value="#{bancoProveedoresBean.currentEmpresa.idMunicipio}" disabled="true" style="width:320px">
-                                <f:selectItem itemLabel=" "/>
-                                <f:selectItems value="#{bancoProveedoresBean.lstMuniEmp}" var="muni" itemLabel="#{muni.nombre}" itemValue="#{muni.id_municipio}"/>
-                                <p:ajax update="cbMunicipio"/>
-                            </p:selectOneMenu>
-                        </h:panelGroup>
-                        <p:outputLabel value="Representante legal:" for="txtRepresentante"/>
-                        <p:inputText id="txtRepresentante" size="85" value="#{bancoProveedoresBean.representante}" disabled="true"/>
-                        <p:outputLabel value="Telefono:" for="txtTelefono" /> 
-                        <h:panelGroup>
-                            <p:inputText id="txtTelefono" value="#{bancoProveedoresBean.currentEmpresa.telefonos}"  size="20" maxlength="100" disabled="true"/>         
-                            <p:spacer width="10"/>
-                            <p:outputLabel value="Fax:" for="txtFaxEmpresa" /> 
-                            <p:spacer width="10"/>
-                            <p:inputText id="txtFaxEmpresa" value="#{bancoProveedoresBean.currentEmpresa.fax}"  size="20" maxlength="100" disabled="true"/>
-                            <p:spacer width="10"/>
-                            <p:outputLabel value="Celular:" for="txtCelEmpresa" /> 
-                            <p:spacer width="10"/>
-                            <p:inputText id="txtCelEmpresa" value="#{bancoProveedoresBean.currentEmpresa.numeroDeCelular}"  size="20" maxlength="100" disabled="true"/>
-                        </h:panelGroup>
-                        <p:outputLabel value="Nit:" for="txtNitEmpresa" /> 
-                        <h:panelGroup>
-                            <p:inputText id="txtNitEmpresa" value="#{bancoProveedoresBean.currentEmpresa.numeroDeNit}"  size="20" maxlength="100" disabled="true"/>
-                            <p:spacer width="10"/>
-                            <p:outputLabel value="Registro de IVA:" for="txtIvaEmpresa" /> 
-                            <p:spacer width="10"/>
-                            <p:inputText id="txtIvaEmpresa" value="#{bancoProveedoresBean.currentEmpresa.numeroIVA}"  size="10" maxlength="100" disabled="true"/>
-                            <p:spacer width="10"/>
-                            <p:outputLabel value="Estado:" for="cbEstado" /> 
-                            <p:spacer width="10"/>
-                            <p:selectOneMenu id="cbEstado" value="#{bancoProveedoresBean.currentEmpresa.estadoDeRegistro}" disabled="#{bancoProveedoresBean.deshabilitado}" style="width:150px">
-                                <f:selectItem itemLabel="ACTIVO" itemValue="2" />
-                                <f:selectItem itemLabel="INACTIVO" itemValue="6" />
-                            </p:selectOneMenu>
-                        </h:panelGroup>
-                        <p:outputLabel value="Correo Electronico:" for="txtCorreoEmpresa" /> 
-                        <h:panelGroup>
-                            <p:inputText id="txtCorreoEmpresa" value="#{bancoProveedoresBean.currentEmpresa.correoElectronico}"  size="50" maxlength="100" disabled="true"/>
-                            <p:spacer width="10"/>
-                            <h:commandLink >
-                                <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/export.jpg"/>
-                                <p:dataExporter type="xls" target="tblEmpresas" fileName="listaEmpresas" />
-                            </h:commandLink>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                </p:panel>
-                <p:dataTable id="tblEmpresas" value="#{bancoProveedoresBean.lstEmpresa}" var="empresa" selectionMode="single" rowKey="#{empresa.identificadorPrimarioDeLaEmpresa}" paginator="true" paginatorPosition="top" rows="6" resizableColumns="true">
-                    <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowConsultaEmpresa}" update=":frmPrincipal:pnlUsuario"/> 
-                    <p:column width="10" sortBy="#{empresa.numeroDeNit}">
-                        <f:facet name="header">
-                            <h:outputText value="Nit" />
-                        </f:facet>
-                        <p:outputLabel value="#{empresa.numeroDeNit}"/>
-                    </p:column>
-                    <p:column width="75" sortBy="#{empresa.razonSocial}">
-                        <f:facet name="header">
-                            <h:outputText value="Razon Social" />
-                        </f:facet>
-                        <p:outputLabel value="#{empresa.razonSocial}"/>
-                    </p:column>
-                    <p:column width="10" sortBy="#{empresa.telefonos}">
-                        <f:facet name="header">
-                            <h:outputText value="Telefono" />
-                        </f:facet>
-                        <p:outputLabel value="#{empresa.telefonos}"/>
-                    </p:column>
-                    <p:column width="60" sortBy="#{empresa.correoElectronico}">
-                        <f:facet name="header">
-                            <h:outputText value="Correo Electronico" />
-                        </f:facet>
-                        <p:outputLabel value="#{empresa.correoElectronico}"/>
-                    </p:column>
-                </p:dataTable>
-                    <p:dialog id="dlgBuscarEmp" widgetVar="dlgBuscarEmp" header="Busqueda por Empresa" width="550">
-                    <h:panelGrid columns="2">
-                        <p:outputLabel value="Razon Social:"/>
-                        <p:inputText size="60" value="#{bancoProveedoresBean.razonSocial}"/>
-                        <p:outputLabel value="Nombre Comercial:"/>
-                        <p:inputText size="60" value="#{bancoProveedoresBean.nombreComercial}"/>
-                        <p:outputLabel value="Numero de Nit:"/>
-                        <p:inputText size="60" value="#{bancoProveedoresBean.numeroDeNit}"/>
-                        <p:outputLabel value="Giro de empresa:"/>
-                        <p:inputText size="60" value="#{bancoProveedoresBean.giroEmpresa}"/>
-                        <p:outputLabel value="Sector Economico:" for="cbSectorEconomico"/>
-                        <p:selectOneMenu id="cbSectorEconomico" value="#{bancoProveedoresBean.idSector}" style="width:380px">
-                            <f:selectItem itemLabel="Seleccione un Sector"/>
-                            <f:selectItems value="#{bancoProveedoresBean.lstSectorEconomico}" var="sec" itemValue="#{sec.identificadorDelSectorEconomico}" itemLabel="#{sec.descripcionDelSectorEconomico}"/>
-                            <p:ajax update="cbSubSector" listener="#{bancoProveedoresBean.setLstSubSectorEconomico}"/>
-                        </p:selectOneMenu>
-                        <p:outputLabel value="Sub-Sector:" for="cbSubSector"/>
-                        <p:selectOneMenu id="cbSubSector" value="#{bancoProveedoresBean.idSubSector}" style="width:380px">
-                            <f:selectItem itemLabel="Seleccione un sub-sector"/>
-                            <f:selectItems value="#{bancoProveedoresBean.lstSubSector}" var="subsec" itemValue="#{subsec.identificadorDelSectorEconomico}" itemLabel="#{subsec.descripcionDelSectorEconomico}"/>
-                        </p:selectOneMenu>
-                    </h:panelGrid>
-                        <f:facet name='footer'>
-                            <p:commandButton value="Buscar" icon="aceptar" action="#{bancoProveedoresBean.buscarEmpresa}" update="tblEmpresas" oncomplete="PF('dlgBuscarEmp').hide();"/>
-                        </f:facet>
-                </p:dialog> 
-            </h:form>
+                    <p:outputLabel value="#{empresa.numeroDeNit}"/>
+                </p:column>
+                <p:column width="75" sortBy="#{empresa.razonSocial}">
+                    <f:facet name="header">
+                        <h:outputText value="Razon Social" />
+                    </f:facet>
+                    <p:outputLabel value="#{empresa.razonSocial}"/>
+                </p:column>
+                <p:column width="10" sortBy="#{empresa.telefonos}">
+                    <f:facet name="header">
+                        <h:outputText value="Telefono" />
+                    </f:facet>
+                    <p:outputLabel value="#{empresa.telefonos}"/>
+                </p:column>
+                <p:column width="60" sortBy="#{empresa.correoElectronico}">
+                    <f:facet name="header">
+                        <h:outputText value="Correo Electronico" />
+                    </f:facet>
+                    <p:outputLabel value="#{empresa.correoElectronico}"/>
+                </p:column>
+            </p:dataTable>
+            <p:dialog id="dlgBuscarEmp" widgetVar="dlgBuscarEmp" header="Busqueda por Empresa" width="550">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Razon Social:"/>
+                    <p:inputText size="60" value="#{bancoProveedoresBean.razonSocial}"/>
+                    <p:outputLabel value="Nombre Comercial:"/>
+                    <p:inputText size="60" value="#{bancoProveedoresBean.nombreComercial}"/>
+                    <p:outputLabel value="Numero de Nit:"/>
+                    <p:inputText size="60" value="#{bancoProveedoresBean.numeroDeNit}"/>
+                    <p:outputLabel value="Giro de empresa:"/>
+                    <p:inputText size="60" value="#{bancoProveedoresBean.giroEmpresa}"/>
+                    <p:outputLabel value="Sector Economico:" for="cbSectorEconomico"/>
+                    <p:selectOneMenu id="cbSectorEconomico" value="#{bancoProveedoresBean.idSector}" style="width:380px">
+                        <f:selectItem itemLabel="Seleccione un Sector"/>
+                        <f:selectItems value="#{bancoProveedoresBean.lstSectorEconomico}" var="sec" itemValue="#{sec.identificadorDelSectorEconomico}" itemLabel="#{sec.descripcionDelSectorEconomico}"/>
+                        <p:ajax update="cbSubSector" listener="#{bancoProveedoresBean.setLstSubSectorEconomico}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Sub-Sector:" for="cbSubSector"/>
+                    <p:selectOneMenu id="cbSubSector" value="#{bancoProveedoresBean.idSubSector}" style="width:380px">
+                        <f:selectItem itemLabel="Seleccione un sub-sector"/>
+                        <f:selectItems value="#{bancoProveedoresBean.lstSubSector}" var="subsec" itemValue="#{subsec.identificadorDelSectorEconomico}" itemLabel="#{subsec.descripcionDelSectorEconomico}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <f:facet name='footer'>
+                    <p:commandButton value="Buscar" icon="aceptar" action="#{bancoProveedoresBean.buscarEmpresa}" update="tblEmpresas" oncomplete="PF('dlgBuscarEmp').hide();"/>
+                </f:facet>
+            </p:dialog> 
         </ui:define>
     </ui:composition>
 </html>

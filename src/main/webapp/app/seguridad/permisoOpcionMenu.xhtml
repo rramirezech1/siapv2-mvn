@@ -11,72 +11,70 @@
     </h:head>
     <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
         <ui:define name="content">
-            <h:form id="frmPrincipal">
-                <p:menubar>
-                    <p:menuitem value="Nuevo" action="#{menuItemBean.nuevoPermisoOpcionMenu()}" update="frmPrincipal" icon="nuevo" ajax="true"/>
-                    <p:menuitem value="Guardar" action="#{menuItemBean.guardarPermisoOpcionMenu()}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{menuItemBean.deshabilitado}"/>
-                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{menuItemBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
-                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
-                    <f:facet name="options">
-                        <p:outputLabel value="Usuario: "/>
-                        <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
-                        <p:spacer width="10" height="8"/>
-                        <p:growl id="message" showDetail="true" />
+            <p:menubar>
+                <p:menuitem value="Nuevo" action="#{menuItemBean.nuevoPermisoOpcionMenu()}" update="frmPrincipal" icon="nuevo" ajax="true"/>
+                <p:menuitem value="Guardar" action="#{menuItemBean.guardarPermisoOpcionMenu()}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{menuItemBean.deshabilitado}"/>
+                <p:menuitem value="Eliminar" icon="eliminar" disabled="#{menuItemBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
+                <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
+                <f:facet name="options">
+                    <p:outputLabel value="Usuario: "/>
+                    <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
+                    <p:spacer width="10" height="8"/>
+                    <p:growl id="message" showDetail="true" />
 
-                        <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
-                            <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
-                        </p:commandButton>
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
-                        </p:confirmDialog>    
-                    </f:facet>
-                </p:menubar>
-                <p:panel id="pnlOpcionMenu">
-                    <f:facet name="header">
-                        <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
-                        <p:spacer width="10"/>
-                        <h:outputText value="Asignacion de permisos a opciones del menu"/>
-                    </f:facet>
-                    <h:panelGrid columns="4" style="width: 100%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank">
-                        <p:outputLabel value="1. Nombre Opción:"/>
-                        <p:selectOneMenu id="cbOpcion" value="#{menuItemBean.currentPermisoOpcionMenu.idOpcionMenu}" style="width: 250px" disabled="#{menuItemBean.deshabilitado}" filter="true" filterMatchMode="startsWith">
-                            <f:selectItem itemLabel="Seleccione un valor"/>
-                            <f:selectItems value="#{menuItemBean.lstOpcionMenu}" var="opc" itemValue="#{opc.idOpcionMenu}" itemLabel="#{opc.nombreOpcionMenu}"/>
-                        </p:selectOneMenu>
+                    <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
+                        <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
+                    </p:confirmDialog>    
+                </f:facet>
+            </p:menubar>
+            <p:panel id="pnlOpcionMenu">
+                <f:facet name="header">
+                    <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                    <p:spacer width="10"/>
+                    <h:outputText value="Asignacion de permisos a opciones del menu"/>
+                </f:facet>
+                <h:panelGrid columns="4" style="width: 100%; border:0px none; background-color:transparent;" styleClass="form-group ui-panelgrid-blank">
+                    <p:outputLabel value="1. Nombre Opción:"/>
+                    <p:selectOneMenu id="cbOpcion" value="#{menuItemBean.currentPermisoOpcionMenu.idOpcionMenu}" style="width: 250px" disabled="#{menuItemBean.deshabilitado}" filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="Seleccione un valor"/>
+                        <f:selectItems value="#{menuItemBean.lstOpcionMenu}" var="opc" itemValue="#{opc.idOpcionMenu}" itemLabel="#{opc.nombreOpcionMenu}"/>
+                    </p:selectOneMenu>
 
-                        <p:outputLabel value="2. Grupo de Seguridad:"/>
-                        <p:selectOneMenu id="cbGrupo" value="#{menuItemBean.currentPermisoOpcionMenu.idGrupo}" style="width: 250px" disabled="#{menuItemBean.deshabilitado}" filter="true" filterMatchMode="startsWith">
-                            <f:selectItem itemLabel="Seleccione un valor"/>
-                            <f:selectItems value="#{seguridadBean.lstGrupo}" var="gru" itemValue="#{gru.idGrupo}" itemLabel="#{gru.grupo}"/>
-                        </p:selectOneMenu>
+                    <p:outputLabel value="2. Grupo de Seguridad:"/>
+                    <p:selectOneMenu id="cbGrupo" value="#{menuItemBean.currentPermisoOpcionMenu.idGrupo}" style="width: 250px" disabled="#{menuItemBean.deshabilitado}" filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="Seleccione un valor"/>
+                        <f:selectItems value="#{seguridadBean.lstGrupo}" var="gru" itemValue="#{gru.idGrupo}" itemLabel="#{gru.grupo}"/>
+                    </p:selectOneMenu>
 
-                        <p:outputLabel value="3. Usuario:"/>
-                        <p:selectOneMenu id="cbUsuario" value="#{menuItemBean.currentPermisoOpcionMenu.userName}" style="width: 250px" disabled="#{menuItemBean.deshabilitado}" filter="true" filterMatchMode="startsWith">
-                            <f:selectItem itemLabel="Seleccione un valor"/>
-                            <f:selectItems value="#{validacionUsuarioBean.lstUsuario}" var="usr" itemValue="#{usr.userName}" itemLabel="#{usr.primerNombre} #{usr.segundoNombre} #{usr.primerApellido} #{usr.segundoApellido}"/>
-                        </p:selectOneMenu>
-                    </h:panelGrid>
-                </p:panel>
+                    <p:outputLabel value="3. Usuario:"/>
+                    <p:selectOneMenu id="cbUsuario" value="#{menuItemBean.currentPermisoOpcionMenu.userName}" style="width: 250px" disabled="#{menuItemBean.deshabilitado}" filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="Seleccione un valor"/>
+                        <f:selectItems value="#{validacionUsuarioBean.lstUsuario}" var="usr" itemValue="#{usr.userName}" itemLabel="#{usr.primerNombre} #{usr.segundoNombre} #{usr.primerApellido} #{usr.segundoApellido}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
 
-                <p:dataTable id="tblPermisoOpcionMenu" value="#{menuItemBean.lstVwPermisoOpcionMenu}" var="perOp" rowKey="#{perOp.idPermisoOpcionMenu}" selectionMode="single" rows="12" widgetVar="perOp"
-                             paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" paginatorPosition="bottom">
-                    <p:ajax event="rowSelect" listener="#{menuItemBean.onRowSelectPermisoOpcionMenu}" update=":frmPrincipal" /> 
-                    <p:column headerText="Id" width="45" sortBy="#{perOp.idPermisoOpcionMenu}" filterBy="#{perOp.idPermisoOpcionMenu}" filterStyle="display:none; visibility:hidden;">
-                        <p:outputLabel value="#{perOp.idPermisoOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
-                    </p:column>
-                    <p:column headerText="Opción Padre" width="200" sortBy="#{perOp.opcionPadre}" filterBy="#{perOp.opcionPadre}" filterStyle="display:none; visibility:hidden;">
-                        <p:outputLabel value="#{perOp.opcionPadre}" style="display: block; width:100%; text-align:center;"/>
-                    </p:column>
-                    <p:column headerText="Opción Menu" width="130" sortBy="#{perOp.labelOpcionMenu}" filterBy="#{perOp.labelOpcionMenu}" filterStyle="display:none; visibility:hidden;">
-                        <p:outputLabel value="#{perOp.labelOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
-                    </p:column>
-                    <p:column headerText="Grupo" sortBy="#{perOp.grupo}" filterBy="#{perOp.grupo}" filterStyle="display:none; visibility:hidden;">
-                        <p:outputLabel value="#{perOp.grupo}" style="display: block; width:100%; text-align:center;"/>
-                    </p:column>
-                </p:dataTable>
-            </h:form>
+            <p:dataTable id="tblPermisoOpcionMenu" value="#{menuItemBean.lstVwPermisoOpcionMenu}" var="perOp" rowKey="#{perOp.idPermisoOpcionMenu}" selectionMode="single" rows="12" widgetVar="perOp"
+                         paginator="true"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} registros" paginatorPosition="bottom">
+                <p:ajax event="rowSelect" listener="#{menuItemBean.onRowSelectPermisoOpcionMenu}" update=":frmPrincipal" /> 
+                <p:column headerText="Id" width="45" sortBy="#{perOp.idPermisoOpcionMenu}" filterBy="#{perOp.idPermisoOpcionMenu}" filterStyle="display:none; visibility:hidden;">
+                    <p:outputLabel value="#{perOp.idPermisoOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
+                </p:column>
+                <p:column headerText="Opción Padre" width="200" sortBy="#{perOp.opcionPadre}" filterBy="#{perOp.opcionPadre}" filterStyle="display:none; visibility:hidden;">
+                    <p:outputLabel value="#{perOp.opcionPadre}" style="display: block; width:100%; text-align:center;"/>
+                </p:column>
+                <p:column headerText="Opción Menu" width="130" sortBy="#{perOp.labelOpcionMenu}" filterBy="#{perOp.labelOpcionMenu}" filterStyle="display:none; visibility:hidden;">
+                    <p:outputLabel value="#{perOp.labelOpcionMenu}" style="display: block; width:100%; text-align:center;"/>
+                </p:column>
+                <p:column headerText="Grupo" sortBy="#{perOp.grupo}" filterBy="#{perOp.grupo}" filterStyle="display:none; visibility:hidden;">
+                    <p:outputLabel value="#{perOp.grupo}" style="display: block; width:100%; text-align:center;"/>
+                </p:column>
+            </p:dataTable>
         </ui:define>
     </ui:composition>
 </html>

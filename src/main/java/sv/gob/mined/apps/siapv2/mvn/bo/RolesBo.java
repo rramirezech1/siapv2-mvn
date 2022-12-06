@@ -8,17 +8,12 @@ import java.util.List;
 import sv.gob.mined.apps.siapv2.mvn.dto.CadenaWhereMetasActividades;
 import sv.gob.mined.apps.siapv2.mvn.modelo.ActorDelProceso;
 import sv.gob.mined.apps.siapv2.mvn.modelo.DetalleAccesoPlantilla;
-import sv.gob.mined.apps.siapv2.mvn.modelo.EstructuraDeLaEstrategia;
 import sv.gob.mined.apps.siapv2.mvn.modelo.GEstructuraOrganizativa;
 import sv.gob.mined.apps.siapv2.mvn.modelo.MacroProcesos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.NivelesOrganigramaInstitucional;
 import sv.gob.mined.apps.siapv2.mvn.modelo.NivelesRealizacGeograf;
-import sv.gob.mined.apps.siapv2.mvn.modelo.PgActividades;
-import sv.gob.mined.apps.siapv2.mvn.modelo.PgConvenio;
-import sv.gob.mined.apps.siapv2.mvn.modelo.PgMetas;
 import sv.gob.mined.apps.siapv2.mvn.modelo.PlantillaAccesoDatos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.PlantillasDeSeguridad;
-import sv.gob.mined.apps.siapv2.mvn.modelo.PoaAnosPlanAccion;
 import sv.gob.mined.apps.siapv2.mvn.modelo.ProcedimientoTarea;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Procesos;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityInfo;
@@ -107,27 +102,8 @@ public interface RolesBo {
 
     public void deleteDetallesPlantillaPorModificacion(Integer id);
 
-    public List<EstructuraDeLaEstrategia> getListadoEstructuraDeLaEstrategia();
-
-    public List<PgConvenio> getListadoDeConvenio();
-
-    public List<PoaAnosPlanAccion> getListadoPoaAnosPlanAccionByConvenio(Integer idConvenio);
-
-    public List<PgMetas> getListadodeMetas();
-
-    public List<PgActividades> getLitadoActividades();
-
-    public List<PgActividades> getListadoActividadesPorMeta(Integer meta);
-
-    public List<PgMetas> getListadodeMetasByConvenio(Integer convenio);
-
-    public PgMetas getMetaById(Integer Meta);
-
-    public PgActividades getPgActividadById(Integer id);
-    
     public List<CadenaWhereMetasActividades> getListaCadenaWhereMetasActividades(Integer id);
     
     public DetalleAccesoPlantilla getDepPlantillaById(Integer id);   
     
-    public EstructuraDeLaEstrategia getEstructuraById(Integer id);   
 }

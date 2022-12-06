@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-    
+
     <!--script type="text/javascript">
             /**
             * JSF Validator
@@ -24,7 +24,7 @@
                }
            };
      </script-->
-    
+
     <ui:composition template="#{pageContext.servletContext.contextPath}/resources/template/tareasTemplate.xhtml">
         <ui:define name ="auxiliar">
             <p:dialog header="Confirmar" widgetVar="dlg2" modal="true" resizable="false" closable="false" height="70" focus="no" >
@@ -37,90 +37,88 @@
             </p:dialog>
         </ui:define>
         <ui:define name="content">
-            <h:form id="frmPrincipal">
-                <p:menubar>
-                    <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevoUsuario}" update="frmPrincipal pnlUsuario tblUsuarios" icon="nuevo" ajax="true"/>
-                    <p:menuitem value="Modificar" icon="modificar" onclick="PF('dlgBuscarUsr').show();" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
-                    <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
-                    <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarUsuario}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"
-                                partialSubmit="true" process="@this,txtPrimerNombre,txtSegundoNombre,txtPrimerApellido,txtSegundoApellido,txtTelefono,txtEmail,txtUsuarioDeAcceso,txtPass"/>
-                    <p:menuitem value="Recuperar" icon="recuperar" onclick="PF('dlgBuscarUsr').show();" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
-                    <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
-                    <f:facet name="options">
-                        <p:outputLabel value="Usuario: "/>
-                        <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
-                        <p:spacer width="10" height="8"/>
-                        <p:growl id="message" showDetail="true" />
-     
-                        <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
-                            <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
-                        </p:commandButton>
+            <p:menubar>
+                <p:menuitem value="Nuevo" action="#{bancoProveedoresBean.nuevoUsuario}" update="frmPrincipal pnlUsuario tblUsuarios" icon="nuevo" ajax="true"/>
+                <p:menuitem value="Modificar" icon="modificar" onclick="PF('dlgBuscarUsr').show();" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
+                <p:menuitem value="Eliminar" icon="eliminar" disabled="#{bancoProveedoresBean.deshabilitadoEliminar}" onclick="PF('dlg2').show();"/>
+                <p:menuitem value="Guardar" action="#{bancoProveedoresBean.guardarUsuario}" update="frmPrincipal" icon="guardar" ajax="true" disabled="#{bancoProveedoresBean.deshabilitado}"
+                            partialSubmit="true" process="@this,txtPrimerNombre,txtSegundoNombre,txtPrimerApellido,txtSegundoApellido,txtTelefono,txtEmail,txtUsuarioDeAcceso,txtPass"/>
+                <p:menuitem value="Recuperar" icon="recuperar" onclick="PF('dlgBuscarUsr').show();" disabled="#{!bancoProveedoresBean.deshabilitado}"/>
+                <p:menuitem value="Imprimir" icon="imprimir" disabled="true"/>
+                <f:facet name="options">
+                    <p:outputLabel value="Usuario: "/>
+                    <p:outputLabel value="#{variablesSession.usuario}" style="font-weight: bold;"/>
+                    <p:spacer width="10" height="8"/>
+                    <p:growl id="message" showDetail="true" />
 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
-                        </p:confirmDialog>    
-                    </f:facet>
-                </p:menubar>
-                <p:panel id="pnlUsuario" footer="(*) Campos obligatorios">
-                    <f:facet name="header">
-                        <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
-                        <p:spacer width="10"/>
-                        <h:outputText value="Registro de Usuarios"/>
-                    </f:facet>
+                    <p:commandButton value="Salir" icon="salir" action="#{validacionUsuarioBean.logout}" process="@this">
+                        <p:confirm header="Confirmación" message="¿Esta Seguro de salir del sistema?" icon="pi pi-exclamation-triangle" />
+                    </p:commandButton>
 
-                    <h:panelGrid columns="4">
-                        <p:outputLabel value="Primer Nombre: (*) " for="txtPrimerNombre" />
-                        <p:inputText id="txtPrimerNombre" value="#{bancoProveedoresBean.currentUsuario.primerNombre}" size="25" maxlength="100" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                        <p:outputLabel value="Segundo Nombre:" for="txtSegundoNombre" />
-                        <p:inputText id="txtSegundoNombre" value="#{bancoProveedoresBean.currentUsuario.segundoNombre}" size="25" maxlength="100" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                        <p:outputLabel value="Primer Apellido: (*) " for="txtPrimerApellido" />
-                        <p:inputText id="txtPrimerApellido" value="#{bancoProveedoresBean.currentUsuario.primerApellido}"  size="25" maxlength="100" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                        <p:outputLabel value="Segundo Apellido:" for="txtSegundoApellido" />
-                        <p:inputText id="txtSegundoApellido" value="#{bancoProveedoresBean.currentUsuario.segundoApellido}" size="25" maxlength="100" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                        <p:outputLabel value="Teléfono: (*) " for="txtTelefono" />
-                        <p:inputMask id="txtTelefono" mask="99999999" value="#{bancoProveedoresBean.currentUsuario.telefono}"  size="10" maxlength="10" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                        <p:outputLabel value="Correo electronico: (*) " for="txtEmail" />
-                        <p:inputText id="txtEmail" value="#{bancoProveedoresBean.currentUsuario.EMail}" size="25" maxlength="50" disabled="#{bancoProveedoresBean.deshabilitado}">
-                            <!--<f:validator validatorId="custom.emailValidator" />-->
-                        </p:inputText>
-                        <p:outputLabel value="Usuario: (*) " for="txtUsuarioDeAcceso" />
-                        <h:panelGroup>
-                            <p:watermark value="Mínimo 8 caracteres" for="txtUsuarioDeAcceso"/>
-                            <p:inputText id="txtUsuarioDeAcceso" value="#{bancoProveedoresBean.currentUsuario.userName}"  size="25"  maxlength="50" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                        </h:panelGroup>
-                        <p:outputLabel value="Contraseña: (*) " for="txtPass" />
-                        <h:panelGroup>
-                            <p:watermark value="Mínimo 8 caracteres" for="txtPass"/>
-                            <p:inputText id="txtPass" value="#{bancoProveedoresBean.currentUsuario.password}"  size="25" maxlength="50" disabled="#{bancoProveedoresBean.deshabilitado}"/>
-                        </h:panelGroup>
-                    </h:panelGrid>
-                </p:panel>
-                 <p:dataTable id="tblUsuarios" value="#{bancoProveedoresBean.lstUsuario}" var="usuario" selectionMode="single" rowKey="#{usuario.userName}" paginator="true" paginatorPosition="top" rows="11">
-                    <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowSelectUsuario}" update=":frmPrincipal:pnlUsuario"/> 
-                    <p:column headerText="Usuario"><p:outputLabel value="#{usuario.userName}"/></p:column>
-                    <p:column headerText="Nombres"><p:outputLabel value="#{usuario.primerNombre} #{usuario.segundoNombre}"/></p:column>
-                    <p:column headerText="Apellidos"><p:outputLabel value="#{usuario.primerApellido} #{usuario.segundoApellido}"/></p:column>
-                    <!--p:column headerText="Telefono" style="text-align: right;"><p:outputLabel value="#{usuario.telefono}"/></p:column-->
-                    <p:column headerText="Correo Electronico"><p:outputLabel value="#{usuario.EMail}"/></p:column>
-                    <!--p:column headerText="Ingreso" style="text-align: center; vertical-align: middle;">
-                        <p:commandButton icon="linkMtto" onclick="this.form.target='_blank';" action="#{bancoProveedoresBean.linkRegistro}" ajax="false">
-                            <f:setPropertyActionListener target="#{bancoProveedoresBean.usuario}" value="#{usuario.userName}" />
-                            <f:setPropertyActionListener target="#{bancoProveedoresBean.claveDeAcceso}" value="#{usuario.password}" />
-                        </p:commandButton>
-                    </p:column-->
-                </p:dataTable>
-                    <p:dialog id="dlgBuscarUsr" widgetVar="dlgBuscarUsr" header="Busqueda de Usuarios" width="500">
-                    <h:panelGrid columns="4">
-                        <p:outputLabel value="Nombre:"/>
-                        <p:inputText value="#{bancoProveedoresBean.nombreCompleto}" size="60"/>
-                        <p:spacer width="25"/>
-                    </h:panelGrid>
-                        <f:facet name='footer'>
-                            <p:commandButton value="Buscar" icon="aceptar" action="#{bancoProveedoresBean.buscarUsuarios}" update="tblUsuarios" oncomplete="PF('dlgBuscarUsr').hide();"/>
-                        </f:facet>
-                </p:dialog> 
-            </h:form>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="aceptar" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="cancelar" />
+                    </p:confirmDialog>    
+                </f:facet>
+            </p:menubar>
+            <p:panel id="pnlUsuario" footer="(*) Campos obligatorios">
+                <f:facet name="header">
+                    <p:graphicImage url="#{pageContext.servletContext.contextPath}/resources/images/representante_14.png" />
+                    <p:spacer width="10"/>
+                    <h:outputText value="Registro de Usuarios"/>
+                </f:facet>
+
+                <h:panelGrid columns="4">
+                    <p:outputLabel value="Primer Nombre: (*) " for="txtPrimerNombre" />
+                    <p:inputText id="txtPrimerNombre" value="#{bancoProveedoresBean.currentUsuario.primerNombre}" size="25" maxlength="100" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    <p:outputLabel value="Segundo Nombre:" for="txtSegundoNombre" />
+                    <p:inputText id="txtSegundoNombre" value="#{bancoProveedoresBean.currentUsuario.segundoNombre}" size="25" maxlength="100" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    <p:outputLabel value="Primer Apellido: (*) " for="txtPrimerApellido" />
+                    <p:inputText id="txtPrimerApellido" value="#{bancoProveedoresBean.currentUsuario.primerApellido}"  size="25" maxlength="100" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    <p:outputLabel value="Segundo Apellido:" for="txtSegundoApellido" />
+                    <p:inputText id="txtSegundoApellido" value="#{bancoProveedoresBean.currentUsuario.segundoApellido}" size="25" maxlength="100" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    <p:outputLabel value="Teléfono: (*) " for="txtTelefono" />
+                    <p:inputMask id="txtTelefono" mask="99999999" value="#{bancoProveedoresBean.currentUsuario.telefono}"  size="10" maxlength="10" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    <p:outputLabel value="Correo electronico: (*) " for="txtEmail" />
+                    <p:inputText id="txtEmail" value="#{bancoProveedoresBean.currentUsuario.EMail}" size="25" maxlength="50" disabled="#{bancoProveedoresBean.deshabilitado}">
+                        <!--<f:validator validatorId="custom.emailValidator" />-->
+                    </p:inputText>
+                    <p:outputLabel value="Usuario: (*) " for="txtUsuarioDeAcceso" />
+                    <h:panelGroup>
+                        <p:watermark value="Mínimo 8 caracteres" for="txtUsuarioDeAcceso"/>
+                        <p:inputText id="txtUsuarioDeAcceso" value="#{bancoProveedoresBean.currentUsuario.userName}"  size="25"  maxlength="50" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Contraseña: (*) " for="txtPass" />
+                    <h:panelGroup>
+                        <p:watermark value="Mínimo 8 caracteres" for="txtPass"/>
+                        <p:inputText id="txtPass" value="#{bancoProveedoresBean.currentUsuario.password}"  size="25" maxlength="50" disabled="#{bancoProveedoresBean.deshabilitado}"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </p:panel>
+            <p:dataTable id="tblUsuarios" value="#{bancoProveedoresBean.lstUsuario}" var="usuario" selectionMode="single" rowKey="#{usuario.userName}" paginator="true" paginatorPosition="top" rows="11">
+                <p:ajax event="rowSelect" listener="#{bancoProveedoresBean.onRowSelectUsuario}" update=":frmPrincipal:pnlUsuario"/> 
+                <p:column headerText="Usuario"><p:outputLabel value="#{usuario.userName}"/></p:column>
+                <p:column headerText="Nombres"><p:outputLabel value="#{usuario.primerNombre} #{usuario.segundoNombre}"/></p:column>
+                <p:column headerText="Apellidos"><p:outputLabel value="#{usuario.primerApellido} #{usuario.segundoApellido}"/></p:column>
+                <!--p:column headerText="Telefono" style="text-align: right;"><p:outputLabel value="#{usuario.telefono}"/></p:column-->
+                <p:column headerText="Correo Electronico"><p:outputLabel value="#{usuario.EMail}"/></p:column>
+                <!--p:column headerText="Ingreso" style="text-align: center; vertical-align: middle;">
+                    <p:commandButton icon="linkMtto" onclick="this.form.target='_blank';" action="#{bancoProveedoresBean.linkRegistro}" ajax="false">
+                        <f:setPropertyActionListener target="#{bancoProveedoresBean.usuario}" value="#{usuario.userName}" />
+                        <f:setPropertyActionListener target="#{bancoProveedoresBean.claveDeAcceso}" value="#{usuario.password}" />
+                    </p:commandButton>
+                </p:column-->
+            </p:dataTable>
+            <p:dialog id="dlgBuscarUsr" widgetVar="dlgBuscarUsr" header="Busqueda de Usuarios" width="500">
+                <h:panelGrid columns="4">
+                    <p:outputLabel value="Nombre:"/>
+                    <p:inputText value="#{bancoProveedoresBean.nombreCompleto}" size="60"/>
+                    <p:spacer width="25"/>
+                </h:panelGrid>
+                <f:facet name='footer'>
+                    <p:commandButton value="Buscar" icon="aceptar" action="#{bancoProveedoresBean.buscarUsuarios}" update="tblUsuarios" oncomplete="PF('dlgBuscarUsr').hide();"/>
+                </f:facet>
+            </p:dialog> 
         </ui:define>
     </ui:composition>
 </html>

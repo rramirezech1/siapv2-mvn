@@ -18,16 +18,15 @@ public interface SecurityUserGroupDao {
     public int create();
 
     public int update();
-    
+
     public List<SecurityUserGroup> findAll();
-    
+
+    public List<SecurityUserGroup> findByUser(String username);
+
     public SecurityUserGroup findById(Integer idUserGroup);
-    
+
     public List<VwUsuarioGrupos> findAllView();
-    
+
     public void setSecurityUserGroup(SecurityUserGroup idUserGroup);
 
-  
-
-    
 }

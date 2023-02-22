@@ -6,6 +6,7 @@ package sv.gob.mined.apps.siapv2.mvn.dao;
 
 import java.util.List;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUserGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 
@@ -37,7 +38,9 @@ public interface OpcionMenuDao {
 
     //public List<OpcionMenu> findByOpciones();
 
-    public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol);
+    //public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol);
+
+    public List<OpcionMenu> getLstSecurityGroupOpciones(List<SecurityUserGroup> list);
 
     public SecurityUsers usuarioOpciones(String us);
 

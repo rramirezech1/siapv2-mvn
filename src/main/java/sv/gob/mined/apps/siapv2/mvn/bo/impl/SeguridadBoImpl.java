@@ -29,7 +29,7 @@ public class SeguridadBoImpl implements SeguridadBo {
 
     public SeguridadBoImpl() {
     }
-    
+
     @Autowired
     private SecurityUsersDao securityusersdao;
     @Autowired
@@ -40,35 +40,39 @@ public class SeguridadBoImpl implements SeguridadBo {
     private SecurityInfoDao securityinfodao;
     @Autowired
     private OpcionMenuDao opcionmenudao;
-    
-    
+
     @Override
     public List<SecurityUsers> getLstSecurityUser() {
         return securityusersdao.findAll();
     }
-    
-     @Override
+
+    @Override
     public List<SecurityGroup> getLstSecurityGroup() {
         return securitygroupdao.findAll();
     }
 
-@Override
-    public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol) {
-        //System.out.println("El usuario en seguidadBolmpl es: "+rol);
-        return opcionmenudao.getLstSecurityGroupOpciones(rol);
+//    @Override
+//    public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol) {
+//        //System.out.println("El usuario en seguidadBolmpl es: "+rol);
+//        return opcionmenudao.getLstSecurityGroupOpciones(rol);
+//    }
 
+    @Override
+    public List<OpcionMenu> getLstSecurityGroupOpciones(List<SecurityUserGroup> list) {
+        //System.out.println("El usuario en seguidadBolmpl es: "+rol);
+        return opcionmenudao.getLstSecurityGroupOpciones(list);
     }
 
+    @Override
+    public List<SecurityUserGroup> getLstSecurityUserGroupByUser(String username) {
+        return securityusergroupdao.findByUser(username);
+    }
 
-
-    
-    
     @Override
     public List<SecurityUserGroup> getLstSecurityUserGroup() {
         return securityusergroupdao.findAll();
     }
-     
-    
+
     @Override
     public List<VwUsuarioGrupos> getLstUsuarioGrupos() {
         return securityusergroupdao.findAllView();
@@ -88,12 +92,12 @@ public class SeguridadBoImpl implements SeguridadBo {
     public SecurityGroup buscarSecurityGroupById(Integer id) {
         return securitygroupdao.findById(id);
     }
-    
+
     @Override
     public SecurityUserGroup buscarSecurityUserGroupById(Integer idUserGroup) {
         return securityusergroupdao.findById(idUserGroup);
     }
-    
+
     @Override
     public Integer saveSecurityGroup(SecurityGroup grupo) {
         securitygroupdao.setSecurityGroup(grupo);
@@ -105,11 +109,11 @@ public class SeguridadBoImpl implements SeguridadBo {
             return securitygroupdao.update();
         }
     }
-    
+
     @Override
     public Integer saveSecurityUserGroup(SecurityUserGroup userGroup) {
         securityusergroupdao.setSecurityUserGroup(userGroup);
-        if (userGroup.getIdUserGroup()== null) {
+        if (userGroup.getIdUserGroup() == null) {
             Integer id = securityusergroupdao.create();
             userGroup.setIdUserGroup(id);
             return id;
@@ -117,20 +121,17 @@ public class SeguridadBoImpl implements SeguridadBo {
             return securityusergroupdao.update();
         }
     }
-    
+
     @Override
     public Integer saveSecurityInfo(SecurityInfo securityinfo) {
         securityinfodao.setSecurityInfo(securityinfo);
         return securityinfodao.create();
     }
 
-
-
-     
     @Override
     public SecurityUsers usuarioOpciones(String us) {
-       
+
         return opcionmenudao.usuarioOpciones(us);
     }
-    
+
 }

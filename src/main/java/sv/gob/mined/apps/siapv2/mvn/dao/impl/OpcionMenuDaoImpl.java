@@ -4,12 +4,14 @@
  */
 package sv.gob.mined.apps.siapv2.mvn.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 import sv.gob.mined.apps.siapv2.mvn.dao.OpcionMenuDao;
 import sv.gob.mined.apps.siapv2.mvn.dao.XJdbcTemplate;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUserGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUsers;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 
@@ -81,21 +83,29 @@ public class OpcionMenuDaoImpl extends XJdbcTemplate implements OpcionMenuDao {
     }
 
     @Override
-    public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol) {
-        //System.out.println("El usuario en OpcionMenuDaolmpl es: " + rol);
-        String sql = "SELECT * FROM opcionMenu WHERE idGrupo = " + rol;
-        List<OpcionMenu> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(OpcionMenu.class));
-        if (lst.isEmpty()) {
-            return null;
-        } else {
+    public List<OpcionMenu> getLstSecurityGroupOpciones(List<SecurityUserGroup> list) {
+        List<OpcionMenu> opciones = new ArrayList<>();
 
-//            for (OpcionMenu a : lst) {
-//                System.out.println("La opcion menu es: " + a.getNombreOpcionMenu());
-//
-//            }
+        for (SecurityUserGroup a : list) {
+            Integer id = a.getIdGrupo();
+            String sql = "SELECT * FROM PermisoOpcionMenu WHERE idGrupo in (" + id + ")";
 
-            return lst;
+            List<OpcionMenu> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(OpcionMenu.class));
+
+            for (OpcionMenu b : lst) {
+
+                String sql2 = "SELECT * FROM OpcionMenu WHERE (idOpcionPadre IS NULL) AND (idOpcionMenu =" + b.getIdOpcionMenu() + ")"
+                        + " UNION ALL SELECT * FROM OpcionMenu WHERE (idOpcionPadre = " + b.getIdOpcionMenu() +")";
+
+                List<OpcionMenu> lst2 = getJdbcTemplate().query(sql2, new BeanPropertyRowMapper(OpcionMenu.class));
+
+                for (OpcionMenu c : lst2) {
+                    opciones.add(c);
+                }
+            }
+
         }
+        return opciones;
     }
 
     @Override
@@ -117,14 +127,14 @@ public class OpcionMenuDaoImpl extends XJdbcTemplate implements OpcionMenuDao {
     }
 
     @Override
-    public SecurityUsers usuarioOpciones(String us) {
+    public SecurityUsers usuarioOpciones(String us
+    ) {
         SecurityUsers usuario = null;
         //System.out.println("Estoy en el usuario01: " + us);
-        String sql = "SELECT * FROM security_users WHERE name ="+us;
+        String sql = "SELECT * FROM security_users WHERE name =" + us;
         List<SecurityUsers> lst = getJdbcTemplate().query(sql, new BeanPropertyRowMapper(SecurityUsers.class));
 
         //System.out.println("Estoy en el usuario02: " + lst.get(0).getName());
-
         return usuario;
     }
 

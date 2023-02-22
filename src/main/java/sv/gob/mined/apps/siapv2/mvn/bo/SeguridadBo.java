@@ -20,29 +20,32 @@ import sv.gob.mined.apps.siapv2.mvn.modelo.view.VwUsuarioGrupos;
 public interface SeguridadBo {
 
     public List<SecurityUsers> getLstSecurityUser();
-    
+
     public List<SecurityGroup> getLstSecurityGroup();
 
     public List<SecurityUserGroup> getLstSecurityUserGroup();
-    
-    public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol);
-    
+
+    public List<SecurityUserGroup> getLstSecurityUserGroupByUser(String username);
+
+    //public List<OpcionMenu> getLstSecurityGroupOpciones(Integer rol);
+    public List<OpcionMenu> getLstSecurityGroupOpciones(List<SecurityUserGroup> lista);
+
     public List<VwUsuarioGrupos> getLstUsuarioGrupos();
-     
+
     public List<SecurityUsers> getLstSecurityUserByCriteria(String criteria);
 
     public SecurityUsers buscarSecurityUserById(Integer id);
-    
+
     public SecurityGroup buscarSecurityGroupById(Integer id);
-    
+
     public SecurityUserGroup buscarSecurityUserGroupById(Integer id);
-    
+
     public Integer saveSecurityGroup(SecurityGroup grupo);
-    
+
     public Integer saveSecurityUserGroup(SecurityUserGroup userGroup);
-    
+
     public Integer saveSecurityInfo(SecurityInfo securityinfo);
 
     public SecurityUsers usuarioOpciones(String us);
-    
+
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import sv.gob.mined.apps.siapv2.mvn.bo.SeguridadBo;
 import sv.gob.mined.apps.siapv2.mvn.bo.UsuarioBo;
 import sv.gob.mined.apps.siapv2.mvn.modelo.OpcionMenu;
+import sv.gob.mined.apps.siapv2.mvn.modelo.SecurityUserGroup;
 import sv.gob.mined.apps.siapv2.mvn.modelo.Usuario;
 import sv.gob.mined.apps.siapv2.mvn.sessionbeans.VariablesSession;
 
@@ -36,8 +37,9 @@ public class MenuTreeBean implements Serializable {
     private List<OpcionMenu> listOpcionMenu = new ArrayList();
     private List<OpcionMenu> listOpcionMenuPrincipal = new ArrayList();
     private List<OpcionMenu> listOpcionSubMenu = new ArrayList();
+    private List<SecurityUserGroup> listGrupos = new ArrayList();
     private Usuario us;
-    private boolean estadoMenu=true;
+    private boolean estadoMenu = true;
     @Inject
     private UsuarioBo usuBo;
 
@@ -53,28 +55,14 @@ public class MenuTreeBean implements Serializable {
         model = new DefaultMenuModel();
         usuario = variablesSession.getUsuario();
 
-        //listOpcionMenu = seguridad.getLstOpcionMenu(usuario);
-        //System.out.println("El usuario es: " + us.getName());
-        //us=seguridad.get   
-        //System.out.println("El usuario a enviar es: " + usuario);
-        
-try{
-
-us = usuBo.findUsuarioOpciones(usuario);
-        //System.out.println("El usuario recibido enel MenuTreeBean es: " + us.getName());
-        //System.out.println("El rol recibido enel MenuTreeBean es: " + us.getIdGrupo());
-        listOpcionMenu = seguridad.getLstSecurityGroupOpciones(us.getIdGrupo());
-
-        creaMenu();
-}catch(Exception e){
- 
- estadoMenu=false;
- 
-}
-
-}
-
-    
+        try {
+            listGrupos = seguridad.getLstSecurityUserGroupByUser(usuario);
+            listOpcionMenu = seguridad.getLstSecurityGroupOpciones(listGrupos); 
+            creaMenu();
+        } catch (Exception e) {
+            estadoMenu = false;
+        }
+    }
 
     public void creaMenu() {
 
@@ -82,14 +70,12 @@ us = usuBo.findUsuarioOpciones(usuario);
         for (OpcionMenu a : listOpcionMenu) {
 
             if (a.getIdOpcionPadre() == null) {
-
                 listOpcionMenuPrincipal.add(a);
                 //System.out.println("Estoy en el menu principal: " + a.getNombreOpcionMenu());
             } else if (a.getIdOpcionPadre() != null) {
                 listOpcionSubMenu.add(a);
                 //System.out.println("Estoy en el Submenu: " + a.getNombreOpcionMenu());
             }
-
         }
         establecerPermisos();
 
@@ -204,9 +190,5 @@ us = usuBo.findUsuarioOpciones(usuario);
     public void setEstadoMenu(boolean estadoMenu) {
         this.estadoMenu = estadoMenu;
     }
-
-
-
-
 
 }
